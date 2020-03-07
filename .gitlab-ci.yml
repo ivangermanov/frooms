@@ -4,6 +4,7 @@ stages:
 build:
   stage: build
   script:
+    - cd froom
     - npm install
     - npm run build
   artifacts:
