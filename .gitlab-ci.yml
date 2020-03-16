@@ -3,6 +3,9 @@ stages:
 
 deploy:
     stage: deploy
-    image: mwienk/docker-lftp
+    image: ubuntu:18.04
+    before_script:
+      - apt-get update -qy
+      - apt-get install -y lftp
     script:
       - lftp --help
