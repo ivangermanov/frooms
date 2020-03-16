@@ -1,11 +1,4 @@
-image: docker:latest
-
-services:
-- docker:dind
-
-before_script:
-- docker version
-- chkconfig docker on
+image: node:latest
 
 stages:
     - build
@@ -14,7 +7,6 @@ build:
   stage: build
   script:
     - cd froom
-    - npm install
     - npm run build
   artifacts:
     paths:
