@@ -92,22 +92,24 @@
   <ItemGroup>
     <Compile Include="FroomDbContext.cs" />
     <Compile Include="FroomDbContextFactory.cs" />
-    <Compile Include="Migrations\202003161623450_Initial.cs" />
-    <Compile Include="Migrations\202003161623450_Initial.designer.cs">
-      <DependentUpon>202003161623450_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\202003162122209_Initial.cs" />
+    <Compile Include="Migrations\202003162122209_Initial.designer.cs">
+      <DependentUpon>202003162122209_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Reservation.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\GenericRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IGenericRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202003161623450_Initial.resx">
-      <DependentUpon>202003161623450_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202003162122209_Initial.resx">
+      <DependentUpon>202003162122209_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
