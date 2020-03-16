@@ -16,6 +16,8 @@ build:
 deploy:
     stage: deploy
     image: ubuntu:18.04
+    only:
+      - master
     before_script:
       - apt-get update -qy
       - apt-get install -y lftp
