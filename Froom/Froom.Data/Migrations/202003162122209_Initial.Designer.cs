@@ -13,7 +13,7 @@ namespace Froom.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202003161623450_Initial"; }
+            get { return "202003162122209_Initial"; }
         }
         
         string IMigrationMetadata.Source
