@@ -23,6 +23,7 @@ export default Vue.extend({
       mapOptions: {
         crs: CRS.Simple,
         attributionControl: false,
+        zoom: 2,
         minZoom: 2,
         maxZoom: 4,
         maxBounds: [
