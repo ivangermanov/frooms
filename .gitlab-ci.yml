@@ -1,5 +1,17 @@
 stages:
+    - build
     - deploy
+
+build:
+  stage: build
+  image: node:latest
+  script:
+    - cd froom
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - froom/dist/
 
 deploy:
     stage: deploy
@@ -8,4 +20,4 @@ deploy:
       - apt-get update -qy
       - apt-get install -y lftp
     script:
-      - lftp --help
+      - lftp -e "open $FTP_ADDRESS; user $FTP_USER $FTP_PASSWORD; cd domains; mirror -X .* -X .*/ --reverse --verbose --delete ./froom/dist/ domains/$FTP.USER.$FTP_ADDRESS/; bye"
