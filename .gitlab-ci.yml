@@ -1,5 +1,17 @@
 stages:
+    - build
     - deploy
+
+build:
+  stage: build
+  image: node:latest
+  script:
+    - cd froom
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - froom/dist/
 
 deploy:
     stage: deploy
