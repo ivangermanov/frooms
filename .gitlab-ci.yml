@@ -1,11 +1,4 @@
-image: docker:latest
-
-services:
-- docker:dind
-
-before_script:
-- docker version
-- chkconfig docker on
+image: node:latest
 
 stages:
     - build
