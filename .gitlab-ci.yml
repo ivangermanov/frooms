@@ -5,4 +5,4 @@ deploy:
     stage: deploy
     image: mwienk/docker-lftp
     script:
-      - docker run -it mwienk/docker-lftp lftp --help
+      - lftp --help
