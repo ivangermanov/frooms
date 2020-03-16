@@ -15,6 +15,6 @@ build:
 
 deploy:
     stage: deploy
-    image: ustcmirror/lftpsync:latest
+    image: mwienk/docker-lftp
     script:
-      - lftp
+      - which lftp
