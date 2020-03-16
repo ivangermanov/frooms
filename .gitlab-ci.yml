@@ -20,5 +20,5 @@ deploy:
       - apt-get update -qy
       - apt-get install -y lftp
     script:
-      - echo $FTP_ADDRESS
-      - lftp -e "open ftpes://$FTP_ADDRESS; user $FTP_USER $FTP_PASSWORD; cd domains; mirror -X .* -X .*/ --reverse --verbose --delete ./froom/dist/ domains/$FTP.USER.$FTP_ADDRESS/; bye"
+      - update-ca-certificates
+      - lftp -e "open $FTP_ADDRESS; user $FTP_USER $FTP_PASSWORD; cd domains; mirror -X .* -X .*/ --reverse --verbose --delete ./froom/dist/ domains/$FTP.USER.$FTP_ADDRESS/; bye"
