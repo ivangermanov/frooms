@@ -6,6 +6,7 @@ stages:
 build:
   stage: build
   script:
+    - echo $VENUS_PASSWORD
     - cd froom
     - npm install
     - npm run build
