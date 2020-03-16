@@ -1,12 +1,9 @@
-image: node:latest
-
 stages:
     - build
+    - deploy
 
 build:
-  stage: build
-  before_script:
-    - apt-get install lftp
+  image: node:latest
   script:
     - cd froom
     - npm install
@@ -14,3 +11,8 @@ build:
   artifacts:
     paths:
       - froom/dist/
+
+deploy:
+    image: ustcmirror/lftpsync:latest
+    script:
+      - lftp
