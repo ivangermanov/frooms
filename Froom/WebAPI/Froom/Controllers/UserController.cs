@@ -31,7 +31,7 @@ namespace Froom.Controllers
                 response.Add(new UserInfo { Id = u.Id, Name = u.Name, Number = u.Number, Role = u.Role });
             }
 
-            return Ok(JsonConvert.SerializeObject(response));
+            return Ok(response);
         }
 
         [HttpGet]
@@ -46,7 +46,9 @@ namespace Froom.Controllers
             {
                 return NotFound();
             }
-            return Ok(JsonConvert.SerializeObject(new UserInfo { Id = user.Id, Name = user.Name, Number = user.Number, Role = user.Role }));
+            UserInfo userInfo = new UserInfo { Id = user.Id, Name = user.Name, Number = user.Number, Role = user.Role };
+
+            return Ok(userInfo);
         }
     }
 }
