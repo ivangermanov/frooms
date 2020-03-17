@@ -2,22 +2,41 @@ stages:
     - build
     - deploy
 
-build:
+build web-api:
+  stage: build
+  image: mcr.microsoft.com/dotnet/framework/sdk:4.8
+  script:
+    - cd froom/WebAPI
+    - msbuild Froom.sln
+  artifacts:
+    paths:
+      - froom/
+
+build vue:
   stage: build
   image: node:latest
   script:
-    - cd froom
+    - cd froom/vue
     - npm install
     - npm run build
   artifacts:
     paths:
       - froom/dist/
 
-deploy:
+deploy web-api:
+    stage: deploy
+    script:
+      - echo "deploying"
+    only:
+      - master
+      - develop
+
+deploy vue:
     stage: deploy
     image: ubuntu:18.04
     only:
       - master
+      - develop
     before_script:
       - apt-get update -qy
       - apt-get install -y lftp
