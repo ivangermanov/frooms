@@ -1,16 +1,14 @@
 stages:
-    - build
-    - deploy
+  - build
+  - deploy
 
 build web-api:
   stage: build
   image: docker
   script:
-    - cd froom/WebAPI
-    - msbuild Froom.sln
-  artifacts:
-    paths:
-      - froom/
+    - ls
+    - docker build -f froom/WebAPI/WebAPI/Dockerfile -t ivanger/froom-build-web-api:latest .
+    - docker push ivanger/froom-build-web-api:latest
 
 build vue:
   stage: build
@@ -21,26 +19,28 @@ build vue:
     - npm run build
   artifacts:
     paths:
-      - froom/dist/
+      - froom/vue/dist/
 
 deploy web-api:
-    stage: deploy
-    script:
-      - echo "deploying"
-    only:
-      - master
-      - develop
+  stage: deploy
+  image: ivanger/froom-deploy-web-api
+  script:
+    - rancher login https://rancher.kn01.fhict.nl/v3 --token $RANCHER_CLI_BEARER_TOKEN
+    - 'rancher kubectl --namespace=jam patch deployment froom-web-api --type=strategic -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"froom-web-api\",\"image\": \"ivanger/froom-build-web-api\",\"env\":[{\"name\":\"FORCE_RESTART_AT\",\"value\":\"$CI_PIPELINE_ID\"}]}]}}}}"'
+  only:
+    - master
+    - develop
 
 deploy vue:
-    stage: deploy
-    image: ubuntu:18.04
-    only:
-      - master
-      - develop
-    before_script:
-      - apt-get update -qy
-      - apt-get install -y lftp
-      - apt-get install ca-certificates -y
-    script:
-      - update-ca-certificates
-      - lftp -e "open $FTP_ADDRESS; user $FTP_USER $FTP_PASSWORD; mirror -p -X .* -X .*/ --reverse --verbose --delete ./froom/dist/ domains/$FTP_USER.$FTP_ADDRESS/; bye"
+  stage: deploy
+  image: ubuntu:18.04
+  only:
+    - master
+    - develop
+  before_script:
+    - apt-get update -qy
+    - apt-get install -y lftp
+    - apt-get install ca-certificates -y
+  script:
+    - update-ca-certificates
+    - lftp -e "open $FTP_ADDRESS; user $FTP_USER $FTP_PASSWORD; mirror -p -X .* -X .*/ --reverse --verbose --delete ./froom/dist/ domains/$FTP_USER.$FTP_ADDRESS/; bye"
