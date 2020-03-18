@@ -12,6 +12,7 @@ build web-api:
   script:
     - cd froom/WebAPI
     - docker build -f WebAPI/Dockerfile -t ivanger/froom-build-web-api:latest .
+    - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
     - docker push ivanger/froom-build-web-api:latest
 
 build vue:
