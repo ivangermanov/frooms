@@ -4,7 +4,7 @@ stages:
 
 build web-api:
   stage: build
-  image: mcr.microsoft.com/dotnet/framework/sdk:4.8
+  image: docker
   script:
     - cd froom/WebAPI
     - msbuild Froom.sln
