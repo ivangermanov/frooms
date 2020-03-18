@@ -4,9 +4,14 @@ stages:
 
 build web-api:
   stage: build
+  image: docker
+  services:
+    - docker:dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
   script:
-    - docker --help
-    - docker build -f froom/WebAPI/WebAPI/Dockerfile -t RANDOMNAMEBLABLABLABLFDLB .
+    - cd froom/WebAPI
+    - docker build -f WebAPI/Dockerfile -t ivanger/froom-build-web-api:latest .
     - docker push ivanger/froom-build-web-api:latest
 
 build vue:

@@ -43,7 +43,7 @@ export default Vue.extend({
         ]
       },
       created() {
-        axios.get("weatherforecast").then(r => {
+        axios.get("http://froom.kn01.fhict.nl/weatherforecast").then(r => {
           console.log(r);
         });
       }
