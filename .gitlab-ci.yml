@@ -4,10 +4,9 @@ stages:
 
 build web-api:
   stage: build
-  image: docker
   script:
-    - ls
-    - docker build -f froom/WebAPI/WebAPI/Dockerfile -t ivanger/froom-build-web-api:latest .
+    - docker --help
+    - docker build -f froom/WebAPI/WebAPI/Dockerfile -t RANDOMNAMEBLABLABLABLFDLB .
     - docker push ivanger/froom-build-web-api:latest
 
 build vue:
