@@ -12,17 +12,17 @@
   </no-ssr>
 </template>
 <script lang="ts">
-import Vue from "vue";
-import axios from "axios";
-import { CRS } from "leaflet";
-import { LMap, LImageOverlay } from "vue2-leaflet";
+import Vue from 'vue'
+import axios from 'axios'
+import { CRS } from 'leaflet'
+import { LMap, LImageOverlay } from 'vue2-leaflet'
 
 export default Vue.extend({
   components: {
     LMap,
     LImageOverlay
   },
-  data() {
+  data () {
     return {
       mapOptions: {
         crs: CRS.Simple,
@@ -36,18 +36,27 @@ export default Vue.extend({
         ]
       },
       overlayOptions: {
-        url: "https://i.ibb.co/bQYTGBR/floor.png",
+        url: 'https://i.ibb.co/bQYTGBR/floor.png',
         bounds: [
           [0, 0],
           [1416, 512]
         ]
-      },
-      created() {
-        axios.get("http://froom.kn01.fhict.nl/weatherforecast").then(r => {
-          console.log(r);
-        });
       }
-    };
+    }
+  },
+  beforeMount () {
+    // eslint-disable-next-line no-console
+    console.log('Test')
+    axios
+      .get('/weatherforecast', {
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        }
+      })
+      .then((r) => {
+        // eslint-disable-next-line no-console
+        console.log(r)
+      })
   }
-});
+})
 </script>

@@ -4,16 +4,18 @@ stages:
 
 build web-api:
   stage: build
-  image: docker
-  services:
-    - docker:dind
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1.200-buster-arm32v7
   variables:
     DOCKER_TLS_CERTDIR: ""
   script:
     - cd froom/WebAPI
-    - docker build -f WebAPI/Dockerfile -t ivanger/froom-build-web-api:latest .
-    - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-    - docker push ivanger/froom-build-web-api:latest
+    - dotnet restore "WebAPI/WebAPI.csproj"
+    - dotnet build "WebAPI/WebAPI.csproj" -c Release
+    - dotnet publish "WebAPI/WebAPI.csproj" -c Release
+  artifacts:
+    paths:
+      - froom/WebAPI/WebAPI/bin/Release/
+    
 
 build vue:
   stage: build
