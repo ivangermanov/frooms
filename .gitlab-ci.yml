@@ -15,4 +15,30 @@ build web-api:
   artifacts:
     paths:
       - WebAPI/WebAPI/bin/Release/
-    
+      
+build vue:
+  stage: build
+  image: node:latest
+  script:
+    - cd froom/vue
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - froom/vue/dist/
+
+deploy webApi&Vue:
+    stage: deploy
+    image: ubuntu:18.04
+#    only:
+ #       - master
+#        - develop
+    before_script:
+        - apt-get update -qy
+        - apt-get install -y lftp
+        - apt-get install ca-certificates -y
+    script:
+        - update-ca-certificates
+        - lftp -e "open $FTP_ADDRESS; user $FTP_USER $FTP_PASSWORD;""
+        - lftp -e "mirror -p -X .* -X .*/ --reverse --verbose --delete .WebAPI/WebAPI/bin/Release/ domains/$FTP_USER.$FTP_ADDRESS/;"
+        - lftp -e "mirror -p -X .* -X .*/ --reverse --verbose --delete ./froom/vue/dist/ domains/$FTP_USER.$FTP_ADDRESS/vue/dist; bye"
