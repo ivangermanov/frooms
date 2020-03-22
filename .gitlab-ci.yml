@@ -1,9 +1,9 @@
-stages:
+tdstages:
   - build
   - deploy
 build web-api:
   stage: build
-  image: mcr.microsoft.com/dotnet/core/sdk:3.1.200-buster-arm32v7
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1
   variables:
     DOCKER_TLS_CERTDIR: ""
   script:
@@ -15,29 +15,29 @@ build web-api:
     paths:
       - WebAPI/WebAPI/bin/Release/
       
-build vue:
-  stage: build
-  image: node:latest
-  script:
-    - cd froom/vue
-    - npm install
-    - npm run build
-  artifacts:
-    paths:
-      - froom/vue/dist/
+#build vue:
+#  stage: build
+#  image: node:latest
+#  script:
+#    - cd froom/vue
+#    - npm install
+#    - npm run build
+#  artifacts:
+#    paths:
+#      - froom/vue/dist/
 
-deploy web-api:
-    stage: deploy
-    image: ubuntu:18.04
+#deploy web-api:
+#    stage: deploy
+#    image: ubuntu:18.04
 #    only:
  #       - master
 #        - develop
-    before_script:
-        - apt-get update -qy
-        - apt-get install -y lftp
-        - apt-get install ca-certificates -y
-    script:
-        - update-ca-certificates
-        - lftp -e "open $FTP_ADDRESS; user $FTP_USER $FTP_PASSWORD;""
-        - lftp -e "mirror -p -X .* -X .*/ --reverse --verbose --delete .WebAPI/WebAPI/bin/Release/ domains/$FTP_USER.$FTP_ADDRESS/;"
-        - lftp -e "mirror -p -X .* -X .*/ --reverse --verbose --delete ./froom/vue/dist/ domains/$FTP_USER.$FTP_ADDRESS/vue/dist; bye"
+#    before_script:
+#        - apt-get update -qy
+#        - apt-get install -y lftp
+#        - apt-get install ca-certificates -y
+#    script:
+#        - update-ca-certificates
+#        - lftp -e "open $FTP_ADDRESS; user $FTP_USER $FTP_PASSWORD;""
+#        - lftp -e "mirror -p -X .* -X .*/ --reverse --verbose --delete .WebAPI/WebAPI/bin/Release/ domains/$FTP_USER.$FTP_ADDRESS/;"
+#        - lftp -e "mirror -p -X .* -X .*/ --reverse --verbose --delete ./froom/vue/dist/ domains/$FTP_USER.$FTP_ADDRESS/vue/dist; bye"
