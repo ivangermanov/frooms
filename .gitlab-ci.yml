@@ -17,7 +17,7 @@ build vue:
   stage: build
   image: node:latest
   script:
-    - cd  /WebAPI/WebAPI/vue
+    - cd  WebAPI/WebAPI/vue
     - npm install
     - npm run build
   artifacts:
