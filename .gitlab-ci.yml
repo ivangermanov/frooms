@@ -27,7 +27,7 @@ build vue:
     paths:
       - froom/vue/dist/
 
-deploy apivue:
+deploy web-api:
     stage: deploy
     image: ubuntu:18.04
 #    only:
