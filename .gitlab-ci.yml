@@ -22,7 +22,7 @@ build vue:
     - npm run build
   artifacts:
     paths:
-      - froom/vue/dist/
+      - WebAPI/WebAPI/vue/dist/
 
 #deploy web-api:
 #    stage: deploy
