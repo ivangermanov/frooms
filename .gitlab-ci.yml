@@ -1,11 +1,9 @@
-tdstages:
+stages:
   - build
 #  - deploy
 build web-api:
   stage: build
   image: mcr.microsoft.com/dotnet/core/sdk:3.1
-  variables:
-    DOCKER_TLS_CERTDIR: ""
   script:
     - cd ./WebAPI
     - dotnet restore "WebAPI/WebAPI.csproj"
