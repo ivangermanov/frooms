@@ -13,16 +13,16 @@ build web-api:
     paths:
       - WebAPI/WebAPI/bin/Release/
       
-#build vue:
-#  stage: build
-#  image: node:latest
-#  script:
-#    - cd froom/vue
-#    - npm install
-#    - npm run build
-#  artifacts:
-#    paths:
-#      - froom/vue/dist/
+build vue:
+  stage: build
+  image: node:latest
+  script:
+    - cd froom/vue
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - froom/vue/dist/
 
 #deploy web-api:
 #    stage: deploy
