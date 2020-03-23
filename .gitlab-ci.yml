@@ -29,9 +29,9 @@ build vue:
 deploy web-api:
     stage: deploy
     image: ubuntu:latest
-    only:
-        - master
-        - develop
+#    only:
+#        - master
+#        - develop
     before_script:
         - apt-get update -qy
         - apt-get install -y lftp
