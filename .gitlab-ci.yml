@@ -39,4 +39,4 @@ deploy web-api:
     script:
         - update-ca-certificates
         - lftp -e "open $FTP_ADDRESS; user $FTP_USER $FTP_PASSWORD;mirror -p -X .* -X .*/ --reverse --verbose --delete ./WebAPI/WebAPI/bin/Release/ domains/$FTP_USERcore.$FTP_ADDRESS/;"
-        - lftp -e "mirror -p -X .* -X .*/ --reverse --verbose --delete ./froom/vue/dist/ domains/$FTP_USERcore.$FTP_ADDRESS/vue/dist; bye"
+        - lftp -e "mirror -p -X .* -X .*/ --reverse --verbose --delete ./WebAPI/WebAPI/vue/dist/ domains/$FTP_USERcore.$FTP_ADDRESS/vue/dist; bye"
