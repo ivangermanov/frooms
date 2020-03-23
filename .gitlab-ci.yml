@@ -20,6 +20,7 @@ build vue:
     - cd  WebAPI/WebAPI/vue
     - npm install
     - npm run build
+    
   artifacts:
     paths:
       - WebAPI/WebAPI/vue/dist/
