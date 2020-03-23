@@ -1,9 +1,11 @@
 <template>
   <no-ssr>
     <l-map
+      ref="map"
       :options="mapOptions"
       style="height: 100%; padding: 10px; z-index: 0;"
     >
+      <l-draw-toolbar position="topright" />
       <l-image-overlay
         :url="overlayOptions.url"
         :bounds="overlayOptions.bounds"
@@ -13,14 +15,15 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import axios from 'axios'
 import { CRS } from 'leaflet'
 import { LMap, LImageOverlay } from 'vue2-leaflet'
+import LDrawToolbar from './LDrawToolbar.vue'
 
 export default Vue.extend({
   components: {
     LMap,
-    LImageOverlay
+    LImageOverlay,
+    LDrawToolbar
   },
   data () {
     return {
@@ -43,20 +46,6 @@ export default Vue.extend({
         ]
       }
     }
-  },
-  beforeMount () {
-    // eslint-disable-next-line no-console
-    console.log('Test')
-    axios
-      .get('/weatherforecast', {
-        headers: {
-          'Access-Control-Allow-Origin': '*'
-        }
-      })
-      .then((r) => {
-        // eslint-disable-next-line no-console
-        console.log(r)
-      })
   }
 })
 </script>
