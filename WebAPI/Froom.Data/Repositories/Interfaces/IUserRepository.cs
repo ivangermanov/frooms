@@ -11,7 +11,7 @@ namespace Froom.Data.Repositories.Interfaces
         /// Adds a user to the database context.
         /// </summary>
         /// <param name="user"> The user to be added.</param>
-        Task<User> AddAsync(User user);
+        Task AddAsync(User user);
 
         /// <summary>
         /// Gets all users from the database context.
