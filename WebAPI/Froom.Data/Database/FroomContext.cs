@@ -1,4 +1,4 @@
-﻿using Froom.Data.Entities;
+﻿    using Froom.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Froom.Data.Database
@@ -35,6 +35,9 @@ namespace Froom.Data.Database
                     .HasForeignKey(r => r.BuildingId)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.NoAction);
+
+                options.Property(b => b.MapDetails)
+                    .HasColumnType("jsonb");
             });
 
             modelBuilder.Entity<Building>(options =>
