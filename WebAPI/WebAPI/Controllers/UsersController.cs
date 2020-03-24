@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Froom.Data.Database;
+using Froom.Data.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -13,9 +12,9 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly UserContext _context;
+        private readonly FroomContext _context;
 
-        public UsersController(UserContext context)
+        public UsersController(FroomContext context)
         {
             _context = context;
         }
@@ -47,10 +46,10 @@ namespace WebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(long id, User user)
         {
-            if (id != user.UserID)
-            {
-                return BadRequest();
-            }
+            //if (id != user.Id)
+            //{
+            //    return BadRequest();
+            //}
 
             _context.Entry(user).State = EntityState.Modified;
 
@@ -82,7 +81,7 @@ namespace WebAPI.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.UserID }, user);
+            return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
         // DELETE: api/Users/5
@@ -103,7 +102,8 @@ namespace WebAPI.Controllers
 
         private bool UserExists(long id)
         {
-            return _context.Users.Any(e => e.UserID == id);
+            //return _context.Users.Any(e => e.Id == id);
+            return true;
         }
     }
 }
