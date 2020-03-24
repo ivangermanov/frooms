@@ -1,5 +1,6 @@
 ﻿using Froom.Data.Database;
 using Froom.Data.Entities;
+using Froom.Data.Exceptions;
 using Froom.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,24 +21,29 @@ namespace Froom.Data.Repositories
             _users = _context.Set<User>();
         }
 
-        public Task<User> AddAsync(User user)
+        public async Task AddAsync(User user)
         {
-            throw new NotImplementedException();
+            await _users.AddAsync(user);
+            await _context.SaveChangesAsync();
         }
 
         public IQueryable<User> GetAll()
         {
-            throw new NotImplementedException();
+            return _users.Include(u => u.Reservations);
         }
 
-        public Task<User> GetByIdAsync(Guid id)
+        public async Task<User> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _users
+                .Include(u => u.Reservations)
+                .SingleOrDefaultAsync(u => u.Id == id) ??
+                throw new DoesNotExistException($"User with ID: {id} does not exist.");
         }
 
-        public Task Update(User user)
+        public async Task Update(User user)
         {
-            throw new NotImplementedException();
+            _users.Update(user);
+            await _context.SaveChangesAsync();
         }
     }
 }
