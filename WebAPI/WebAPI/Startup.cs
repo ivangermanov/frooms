@@ -24,7 +24,7 @@ namespace WebAPI
         {
             services.AddDbContext<FroomContext>(options => {
                 options.UseSqlServer(
-                    Configuration["ConnectionString:FontysDB2"],
+                    Configuration["ConnectionString:FontysDB"],
                     x => x.MigrationsAssembly("Froom.Data"));
             });
             services.AddControllers();
