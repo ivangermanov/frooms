@@ -17,5 +17,7 @@ namespace Froom.Data.Entities
         public int Capacity { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; }
+
+        public MapDetails MapDetails { get; set; }
     }
 }
