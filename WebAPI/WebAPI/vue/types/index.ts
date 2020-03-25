@@ -1,0 +1,1 @@
+export { IRoom } from './room'
