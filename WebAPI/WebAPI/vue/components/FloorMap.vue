@@ -1,7 +1,6 @@
 <template>
   <no-ssr>
     <l-map
-      ref="map"
       :options="mapOptions"
       style="height: 100%; padding: 10px; z-index: 0;"
     >

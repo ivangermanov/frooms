@@ -1,42 +1,64 @@
 <template>
-  <div style="display: none;" />
+  <l-control v-if="mounted" position="topright" class="leaflet-bar">
+    <a class="leaflet-draw-draw-circle">
+      <v-icon :dense="true" color="black" title="Save layers">
+        mdi-check
+      </v-icon>
+    </a>
+  </l-control>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import L from 'leaflet'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw-src.css'
 
-export default {
+export default Vue.extend({
   props: {
     position: {
       type: String,
       default: 'topright'
     }
   },
-  mounted () {
+  data () {
+    return {
+      mounted: false
+    }
+  },
+  beforeMount () {
     this.$nextTick(() => {
-      const map = this.$parent.$parent.$refs.map.mapObject
+      this.attachToolbar()
+      this.mounted = true
+    })
+  },
+  methods: {
+    attachToolbar () {
+      const map: L.Map = (this.$parent as any).mapObject
 
-      const editableLayers = new L.FeatureGroup()
+      const editableLayers = new L.GeoJSON()
       map.addLayer(editableLayers)
-
-      const options = {
+      const options: L.Control.DrawConstructorOptions | any = {
         position: 'topright',
         draw: {
-          polyline: false,
           polygon: {
             allowIntersection: false,
             showLength: false,
+            showArea: false,
             drawError: {
               color: '#e1e100'
             },
-            shapeOptions: {
-              color: '#bada55'
-            }
+            repeatMode: true
           },
-          circle: { showRadius: false },
-          rectangle: { showArea: false },
+          circle: {
+            showRadius: false,
+            repeatMode: true
+          },
+          rectangle: {
+            showArea: false,
+            repeatMode: true
+          },
+          polyline: false,
           marker: false,
           circlemarker: false
         },
@@ -52,8 +74,10 @@ export default {
         const layer = e.layer
 
         editableLayers.addLayer(layer)
+        const json: any = editableLayers.toGeoJSON()
+        console.log(json.features)
       })
-    })
+    }
   }
-}
+})
 </script>
