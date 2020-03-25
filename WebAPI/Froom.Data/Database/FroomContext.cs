@@ -1,5 +1,10 @@
 ﻿    using Froom.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Froom.Data.Database
 {
@@ -36,8 +41,20 @@ namespace Froom.Data.Database
                     .IsRequired()
                     .OnDelete(DeleteBehavior.NoAction);
 
-                options.Property(b => b.MapDetails)
-                    .HasColumnType("jsonb");
+                var valueComparer = new ValueComparer<ICollection<Point>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList());
+
+                options.Property(e => e.Points)
+                    .HasConversion(
+                        v => JsonConvert
+                                .SerializeObject(v,
+                                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                        v => JsonConvert
+                                .DeserializeObject<ICollection<Point>>(v,
+                                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }))
+                    .Metadata.SetValueComparer(valueComparer);
             });
 
             modelBuilder.Entity<Building>(options =>

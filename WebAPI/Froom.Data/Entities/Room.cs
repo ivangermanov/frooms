@@ -18,6 +18,21 @@ namespace Froom.Data.Entities
 
         public ICollection<Reservation> Reservations { get; set; }
 
-        public MapDetails MapDetails { get; set; }
+        public ICollection<Point> Points { get; set; }
+
+        public Shape Shape { get; set; }
+    }
+
+    public class Point
+    {
+        public double X { get; set; }
+        public double Y { get; set; }
+    }
+
+    public enum Shape
+    {
+        RECTANGLE = 0,
+        CIRCLE = 1,
+        POLYGON = 2
     }
 }
