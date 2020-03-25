@@ -15,6 +15,7 @@ namespace Froom.Data.Entities
         public ICollection<Room> Rooms { get; set; }
     }
 
+    // TODO: Ivan - I think it's better to keep this as string
     public enum FontysCampus
     {
         EINDHOVEN = 0,
