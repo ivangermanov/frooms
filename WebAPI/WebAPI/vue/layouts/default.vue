@@ -34,6 +34,7 @@
     </v-app-bar>
     <v-content>
       <nuxt />
+      <portal-target name="modals" />
     </v-content>
   </v-app>
 </template>
@@ -53,6 +54,11 @@ export default {
           icon: 'mdi-chart-bubble',
           title: 'Floor map',
           to: '/floor-map'
+        },
+        {
+          icon: 'mdi-briefcase-search',
+          title: 'Reserve a room',
+          to: '/reserve-room'
         }
       ],
       miniVariant: false,

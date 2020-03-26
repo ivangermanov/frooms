@@ -37,6 +37,7 @@ export default {
   buildModules: [
     '@nuxtjs/vuetify',
     '@nuxtjs/dotenv',
+    '@nuxtjs/moment',
     [
       '@nuxt/typescript-build',
       {
@@ -53,7 +54,8 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    'nuxt-leaflet'
+    'nuxt-leaflet',
+    'portal-vue/nuxt'
   ],
   /*
    ** Axios module configuration

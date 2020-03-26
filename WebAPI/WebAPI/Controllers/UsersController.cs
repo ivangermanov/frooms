@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Froom.Data.Database;
 using Froom.Data.Entities;
@@ -39,14 +41,14 @@ namespace WebAPI.Controllers
 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
         // TODO: Put parameter as DTO, not whole DB entity
-        public async Task<IActionResult> PutUser(long id, User user)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutUser(Guid id, User user)
         {
-            //if (id != user.Id)
-            //{
-            //    return BadRequest();
-            //}
+            if (id != user.Id)
+            {
+                return BadRequest();
+            }
 
             _context.Entry(user).State = EntityState.Modified;
 
@@ -73,7 +75,7 @@ namespace WebAPI.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new {id = user.Id}, user);
+            return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
         [HttpDelete("{id}")]
@@ -88,10 +90,9 @@ namespace WebAPI.Controllers
             return user;
         }
 
-        private bool UserExists(long id)
+        private bool UserExists(Guid id)
         {
-            //return _context.Users.Any(e => e.Id == id);
-            return true;
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }
