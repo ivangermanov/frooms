@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Froom.Data.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,7 +23,8 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<FroomContext>(options => {
+            services.AddDbContext<FroomContext>(options =>
+            {
                 options.UseSqlServer(
                     Configuration["ConnectionString:FontysDB"],
                     x => x.MigrationsAssembly("Froom.Data"));
@@ -34,10 +36,7 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseSpaStaticFiles();
 
@@ -50,20 +49,6 @@ namespace WebAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-
-                // NOTE: VueCliProxy is meant for developement and hot module reload
-                // NOTE: SSR has not been tested
-                // Production systems should only need the UseSpaStaticFiles() (above)
-                // You could wrap this proxy in either
-                // if (System.Diagnostics.Debugger.IsAttached)
-                // or a preprocessor such as #if DEBUG
-                endpoints.MapToVueCliProxy(
-                    "{*path}",
-                    new SpaOptions { SourcePath = "vue" },
-                    npmScript: (System.Diagnostics.Debugger.IsAttached) ? "dev" : null,
-                    regex: "Compiled successfully",
-                    forceKill: true
-                );
             });
         }
     }
