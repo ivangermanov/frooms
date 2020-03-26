@@ -1,6 +1,6 @@
 <template>
   <l-control v-if="mounted" position="topright" class="leaflet-bar">
-    <a class="leaflet-draw-draw-circle">
+    <a class="leaflet-draw-draw-circle" @click="emitShapes">
       <v-icon :dense="true" color="black" title="Save layers">
         mdi-check
       </v-icon>
@@ -23,7 +23,8 @@ export default Vue.extend({
   },
   data () {
     return {
-      mounted: false
+      mounted: false,
+      layers: L.geoJSON()
     }
   },
   beforeMount () {
@@ -36,8 +37,7 @@ export default Vue.extend({
     attachToolbar () {
       const map: L.Map = (this.$parent as any).mapObject
 
-      const editableLayers = new L.GeoJSON()
-      map.addLayer(editableLayers)
+      map.addLayer(this.layers)
       const options: L.Control.DrawConstructorOptions | any = {
         position: 'topright',
         draw: {
@@ -50,10 +50,7 @@ export default Vue.extend({
             },
             repeatMode: true
           },
-          circle: {
-            showRadius: false,
-            repeatMode: true
-          },
+          circle: false,
           rectangle: {
             showArea: false,
             repeatMode: true
@@ -63,20 +60,32 @@ export default Vue.extend({
           circlemarker: false
         },
         edit: {
-          featureGroup: editableLayers
+          featureGroup: this.layers
         }
       }
 
       const drawControl = new L.Control.Draw(options)
       map.addControl(drawControl)
 
-      map.on(L.Draw.Event.CREATED, function (e) {
+      map.on(L.Draw.Event.CREATED, (e) => {
         const layer = e.layer
 
-        editableLayers.addLayer(layer)
-        const json: any = editableLayers.toGeoJSON()
-        console.log(json.features)
+        this.layers.addLayer(layer)
       })
+    },
+    emitShapes () {
+      // const features = this.layers.toGeoJSON()
+
+      // const payload: IRoom[] = [{
+      //   number: 1,
+      //   buildingName: 'test',
+      //   floor: 1,
+      //   points: [{ x: 10, y: 10 }],
+      //   shape: EShape.RECTANGLE,
+      //   capacity: 5
+      // }]
+      // console.log(features, payload)
+      this.$emit('emitShapes', this.layers)
     }
   }
 })

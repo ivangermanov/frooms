@@ -1,7 +1,7 @@
 import Repository from './repository'
 import { IRoom } from '@/types/index'
 
-const resource = '/room'
+const resource = '/rooms'
 
 export default {
   get () {

@@ -1,6 +1,13 @@
 import axios from 'axios'
 
-const baseDomain = 'https://i380810core.venus.fhict.nl/'
-const baseURL = `${baseDomain}/api`
+let baseDomain = ''
 
-export default axios.create({ baseURL })
+if (process.env.NODE_ENV === 'development') {
+  baseDomain = 'https://localhost:44338'
+}
+
+console.log(baseDomain)
+
+const baseUrl = `${baseDomain}/api`
+
+export default axios.create({ baseURL: baseUrl })
