@@ -1,1 +1,1 @@
-export { IRoom } from './room'
+export { IRoom } from './room/IRoom'
