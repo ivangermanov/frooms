@@ -5,7 +5,7 @@ namespace Froom.Data.Entities
     public class Room
     {
         public int Id { get; set; }
-
+        // TODO: This should be a string
         public int Number { get; set; }
 
         public int Floor { get; set; }
