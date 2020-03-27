@@ -73,11 +73,8 @@ export default Vue.extend({
     async saveShapes (geoJSON: GeoJSON) {
       const payload = GeoJSONToIRooms(geoJSON)
 
-      await RoomRepository.postRooms(payload).then(() => {
-        this.$emit('save', true)
-      }).catch(() => {
-        this.$emit('save', false)
-      })
+      const success = await RoomRepository.postRooms(payload).catch(() => {})
+      this.$emit('save', !!success)
     }
   }
 })
