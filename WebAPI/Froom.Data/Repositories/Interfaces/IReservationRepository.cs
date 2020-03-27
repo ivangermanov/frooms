@@ -1,4 +1,5 @@
 ﻿using Froom.Data.Entities;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace Froom.Data.Repositories.Interfaces
         /// Adds a reservation to the database context.
         /// </summary>
         /// <param name="reservation"> The reservation to be added.</param>
-        Task<Reservation> AddAsync(Reservation reservation);
+        Task AddAsync(Reservation reservation);
 
         /// <summary>
         /// Gets all reservations from the database context.
@@ -27,13 +28,13 @@ namespace Froom.Data.Repositories.Interfaces
         /// Gets all reservations for a specific user.
         /// </summary>
         /// <param name="userId"> The id of the user.</param>
-        IQueryable<Reservation> GetForUser(int userId);
+        IQueryable<Reservation> GetForUser(Guid userId);
 
         /// <summary>
         /// Updates information about a reservation.
         /// </summary>
         /// <param name="reservation"> The reservation to be updated.</param>
-        Task Update(Reservation reservation);
+        Task UpdateAsync(Reservation reservation);
 
         /// <summary>
         /// Updates information about a reservation.
