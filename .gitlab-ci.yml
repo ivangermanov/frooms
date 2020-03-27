@@ -31,13 +31,12 @@ build vue:
 deploy:
     stage: deploy
     image: alpine:3.7
-    only:
-        - master
-        - develop
+    only: 
+      - master
+      - develop
     before_script:
-        - apk add lftp
+        - apk add 'lftp<4.9.1-r0'
     script:
-        - lftp -e "rm -rf /domains/${FTP_DOMAIN}; mkdir /domains/${FTP_DOMAIN}; exit" -u $FTP_USER,$FTP_PASSWORD $FTP_ADDRESS
-        - lftp -e "mirror --verbose --reverse --no-perms WebAPI/WebAPI/bin/Release/netcoreapp3.1/publish/ domains/$FTP_DOMAIN/; exit" -u $FTP_USER,$FTP_PASSWORD $FTP_ADDRESS
-        - lftp -e "mirror --verbose --reverse --no-perms WebAPI/WebAPI/vue/dist/ domains/$FTP_DOMAIN/vue/dist; exit" -u $FTP_USER,$FTP_PASSWORD $FTP_ADDRESS
-        
+        - lftp -e "mirror -p --reverse --verbose --delete WebAPI/WebAPI/bin/Release/netcoreapp3.1/publish/ domains/$FTP_DOMAIN/;
+                   mirror -p --reverse --verbose --delete WebAPI/WebAPI/vue/dist/ domains/$FTP_DOMAIN/vue/dist; exit"
+                   -u $FTP_USER,$FTP_PASSWORD $FTP_ADDRESS
