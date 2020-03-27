@@ -10,7 +10,7 @@ namespace Froom.Data.Repositories.Interfaces
         /// Adds a building to the database context.
         /// </summary>
         /// <param name="building"> The building to be added.</param>
-        Task<Building> AddAsync(Building building);
+        Task AddAsync(Building building);
 
         /// <summary>
         /// Gets all reservations from the database context.
@@ -27,13 +27,13 @@ namespace Froom.Data.Repositories.Interfaces
         /// Gets all reservations for a specific user.
         /// </summary>
         /// <param name="campus"> The campus to get the building for.</param>
-        IQueryable<Building> GetForCampus(FontysCampus campus);
+        IQueryable<Building> GetForCampusAsync(FontysCampus campus);
 
         /// <summary>
         /// Updates information about a building.
         /// </summary>
         /// <param name="building"> The building to be updated.</param>
-        Task Update(Building building);
+        Task UpdateAsync(Building building);
 
         /// <summary>
         /// Updates information about a building.
