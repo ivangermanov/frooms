@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Froom.Data.Models
 {
-    public class AddRoomModel
+    public class PostRoomModel
     {
         public string Number { get; set; }
         public int Floor { get; set; }
