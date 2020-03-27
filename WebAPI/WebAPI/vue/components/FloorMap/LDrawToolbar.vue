@@ -19,6 +19,10 @@ export default Vue.extend({
     position: {
       type: String,
       default: 'topright'
+    },
+    saved: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -68,24 +72,16 @@ export default Vue.extend({
       map.addControl(drawControl)
 
       map.on(L.Draw.Event.CREATED, (e) => {
-        const layer = e.layer
+        this.$emit('modifyShapes', false)
 
+        const layer = e.layer
         this.layers.addLayer(layer)
       })
     },
     emitShapes () {
-      // const features = this.layers.toGeoJSON()
-
-      // const payload: IRoom[] = [{
-      //   number: 1,
-      //   buildingName: 'test',
-      //   floor: 1,
-      //   points: [{ x: 10, y: 10 }],
-      //   shape: EShape.RECTANGLE,
-      //   capacity: 5
-      // }]
-      // console.log(features, payload)
-      this.$emit('emitShapes', this.layers)
+      if (!this.saved) {
+        this.$emit('emitShapes', this.layers)
+      }
     }
   }
 })

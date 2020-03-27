@@ -4,7 +4,12 @@
       :options="mapOptions"
       style="height: 100%; padding: 10px; z-index: 0;"
     >
-      <l-draw-toolbar position="topright" @emitShapes="saveShapes" />
+      <l-draw-toolbar
+        position="topright"
+        :saved="saved"
+        @emitShapes="saveShapes"
+        @modifyShapes="$emit('save', $event)"
+      />
       <l-image-overlay
         :url="overlayOptions.url"
         :bounds="overlayOptions.bounds"
@@ -27,6 +32,12 @@ export default Vue.extend({
     LMap,
     LImageOverlay,
     LDrawToolbar
+  },
+  props: {
+    saved: {
+      type: Boolean,
+      default: true
+    }
   },
   data () {
     return {
@@ -58,12 +69,15 @@ export default Vue.extend({
   methods: {
     async fetch () {
       const r = await RoomRepository.get()
-      console.log(r)
     },
     async saveShapes (geoJSON: GeoJSON) {
       const payload = GeoJSONToIRooms(geoJSON)
-      console.log(payload)
-      await RoomRepository.postRooms(payload)
+
+      await RoomRepository.postRooms(payload).then(() => {
+        this.$emit('save', true)
+      }).catch(() => {
+        this.$emit('save', false)
+      })
     }
   }
 })
