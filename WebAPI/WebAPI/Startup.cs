@@ -1,4 +1,6 @@
 using Froom.Data.Database;
+using Froom.Data.Repositories;
+using Froom.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices;
@@ -7,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VueCliMiddleware;
+using WebAPI.Services;
+using WebAPI.Services.Interfaces;
 
 namespace WebAPI
 {
@@ -22,12 +26,16 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<FroomContext>(options =>
+            services.AddDbContext<FroomContext>(options =>  
             {
                 options.UseSqlServer(
                     Configuration["ConnectionString:FontysDB"],
                     x => x.MigrationsAssembly("Froom.Data"));
             });
+
+            services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddTransient<IRoomService, RoomService>();
+
             services.AddControllers();
             services.AddSpaStaticFiles(opt => opt.RootPath = "vue/dist");
         }
