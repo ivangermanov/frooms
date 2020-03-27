@@ -1,4 +1,4 @@
-﻿using Froom.Data.Dtos.Rooms;
+using Froom.Data.Dtos.Rooms;
 using Froom.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddRoomModel model)
+        public async Task<IActionResult> Add(PostRoomModel model)
         {
             await _roomService.AddAsync(model);
 
