@@ -13,6 +13,7 @@ build web-api:
   artifacts:
     paths:
       - WebAPI/WebAPI/bin/Release/
+    expire_in: 1 week
       
 build vue:
   stage: build
@@ -25,19 +26,18 @@ build vue:
   artifacts:
     paths:
       - WebAPI/WebAPI/vue/dist/
-
- 
+    expire_in: 1 week
 
 deploy:
     stage: deploy
-    image: ubuntu:latest
+    image: alpine:3.7
     only:
         - master
         - develop
     before_script:
-        - apt-get update -qy
-        - apt-get install -y lftp
-        - apt-get install ca-certificates -y
+        - apk add lftp
     script:
-        - update-ca-certificates
-        - lftp -e "open $FTP_ADDRESS; user $FTP_USER $FTP_PASSWORD;mirror -p -X .* -X .*/ --reverse --verbose --delete ./WebAPI/WebAPI/bin/Release/publish domains/$FTP_DOMAIN/; mirror -p -X .* -X .*/ --reverse --verbose --delete ./WebAPI/WebAPI/vue/dist/ domains/$FTP_DOMAIN/vue/dist/; bye"
+        - lftp -e "rm -rf /domains/${FTP_DOMAIN}; mkdir /domains/${FTP_DOMAIN}; exit" -u $FTP_USER,$FTP_PASSWORD $FTP_ADDRESS
+        - lftp -e "mirror --verbose --reverse --no-perms WebAPI/WebAPI/bin/Release/netcoreapp3.1/publish/ domains/$FTP_DOMAIN/; exit" -u $FTP_USER,$FTP_PASSWORD $FTP_ADDRESS
+        - lftp -e "mirror --verbose --reverse --no-perms WebAPI/WebAPI/vue/dist/ domains/$FTP_DOMAIN/vue/dist; exit" -u $FTP_USER,$FTP_PASSWORD $FTP_ADDRESS
+        
