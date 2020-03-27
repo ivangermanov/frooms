@@ -10,7 +10,7 @@ namespace Froom.Data.Repositories.Interfaces
         /// Adds a report to the database context.
         /// </summary>
         /// <param name="report"> The report to be added.</param>
-        Task<Report> AddAsync(Report report);
+        Task AddAsync(Report report);
 
         /// <summary>
         /// Gets all reservations from the database context.
@@ -27,7 +27,7 @@ namespace Froom.Data.Repositories.Interfaces
         /// Updates information about a report.
         /// </summary>
         /// <param name="report"> The report to be updated.</param>
-        Task Update(Report report);
+        Task UpdateAsync(Report report);
 
         /// <summary>
         /// Updates information about a report.

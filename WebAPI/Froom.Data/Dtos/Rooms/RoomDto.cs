@@ -7,11 +7,21 @@ namespace Froom.Data.Dtos.Rooms
 {
     public class RoomDto
     {
-        public int Number { get; set; }
+        public string Number { get; set; }
         public int Floor { get; set; }
-        public Building Building { get; set; }
+        public string BuildingName { get; set; }
+        public string CampusName { get; set; }
         public int Capacity { get; set; }
         public ICollection<Point> Points { get; set; }
-        public Shape Shape { get; set; }
+
+        public RoomDto(Room room, FontysCampus campus)
+        {
+            Number = room.Number;
+            Floor = room.Floor;
+            BuildingName = room.BuildingName;
+            CampusName = campus.ToString();
+            Capacity = room.Capacity;
+            Points = room.Points;
+        }
     }
 }
