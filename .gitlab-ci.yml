@@ -40,4 +40,4 @@ deploy:
         - apt-get install ca-certificates -y
     script:
         - update-ca-certificates
-        - lftp -e "open $FTP_ADDRESS; user $FTP_USER $FTP_PASSWORD;mirror -p -X .* -X .*/ --reverse --verbose --delete ./WebAPI/WebAPI/bin/Release/ domains/$FTP_DOMAIN/; mirror -p -X .* -X .*/ --reverse --verbose --delete ./WebAPI/WebAPI/vue/dist/ domains/$FTP_DOMAIN/vue/dist/; bye"
+        - lftp -e "open $FTP_ADDRESS; user $FTP_USER $FTP_PASSWORD;mirror -p -X .* -X .*/ --reverse --verbose --delete ./WebAPI/WebAPI/bin/Release/publish domains/$FTP_DOMAIN/; mirror -p -X .* -X .*/ --reverse --verbose --delete ./WebAPI/WebAPI/vue/dist/ domains/$FTP_DOMAIN/vue/dist/; bye"
