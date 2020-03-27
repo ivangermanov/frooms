@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Froom.Data.Repositories
 {
     /// <inheritdoc cref="IRoomRepository"/>
-    internal class RoomRepository : IRoomRepository
+    public class RoomRepository : IRoomRepository
     {
         private readonly FroomContext _context;
         private readonly DbSet<Room> _rooms;
