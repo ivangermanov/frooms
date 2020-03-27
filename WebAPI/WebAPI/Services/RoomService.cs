@@ -1,4 +1,4 @@
-﻿using Froom.Data.Dtos.Rooms;
+using Froom.Data.Dtos.Rooms;
 using Froom.Data.Entities;
 using Froom.Data.Models;
 using Froom.Data.Repositories.Interfaces;
@@ -20,11 +20,11 @@ namespace WebAPI.Services
             _roomRepository = roomRepository;
         }
 
-        public async Task AddAsync(AddRoomModel model)
+        public async Task AddAsync(PostRoomModel model)
         {
             if (model is null)
             {
-                throw new ArgumentException($"{nameof(AddRoomModel)} is null.");
+                throw new ArgumentException($"{nameof(PostRoomModel)} is null.");
             }
 
             var newRoom = new Room
