@@ -3,11 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Froom.Data.Database;
 using Froom.Data.Entities;
+using Froom.Data.Exceptions;
 using Froom.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Froom.Data.Repositories
 {
+    /// <inheritdoc cref="IRoomRepository"/>
     internal class RoomRepository : IRoomRepository
     {
         private readonly FroomContext _context;
@@ -28,22 +30,27 @@ namespace Froom.Data.Repositories
 
         public IQueryable<Room> GetAll()
         {
-            throw new NotImplementedException();
+            return _rooms.Include(u => u.Reservations);
         }
 
-        public Task<Room> GetByIdAsync(int id)
+        public async Task<Room> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _rooms
+                .Include(u => u.Reservations)
+                .SingleOrDefaultAsync(r => r.Id == id) ??
+                throw new DoesNotExistException($"Room with ID: {id} does not exist.");
         }
 
-        public Task Update(Room room)
+        public async Task UpdateAsync(Room room)
         {
-            throw new NotImplementedException();
+            _rooms.Update(room);
+            await _context.SaveChangesAsync();
         }
 
-        public Task RemoveAsync(Room room)
+        public async Task RemoveAsync(Room room)
         {
-            throw new NotImplementedException();
+            _rooms.Remove(room);
+            await _context.SaveChangesAsync();
         }
     }
 }

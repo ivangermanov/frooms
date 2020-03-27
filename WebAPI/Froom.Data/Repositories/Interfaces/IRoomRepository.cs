@@ -27,7 +27,7 @@ namespace Froom.Data.Repositories.Interfaces
         /// Updates information about a room.
         /// </summary>
         /// <param name="room"> The room to be updated.</param>
-        Task Update(Room room);
+        Task UpdateAsync(Room room);
 
         /// <summary>
         /// Updates information about a room.
