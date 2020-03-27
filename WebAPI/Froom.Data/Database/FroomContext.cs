@@ -37,7 +37,8 @@ namespace Froom.Data.Database
 
                 options.HasOne(r => r.Building)
                     .WithMany(b => b.Rooms)
-                    .HasForeignKey(r => r.BuildingId)
+                    .HasForeignKey(r => r.BuildingName)
+                    .HasPrincipalKey(b => b.Name)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.NoAction);
 

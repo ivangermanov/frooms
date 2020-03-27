@@ -30,7 +30,9 @@ namespace Froom.Data.Repositories
 
         public IQueryable<Room> GetAll()
         {
-            return _rooms.Include(u => u.Reservations);
+            return _rooms
+                .Include(r => r.Building)
+                .Include(u => u.Reservations);
         }
 
         public async Task<Room> GetByIdAsync(int id)
