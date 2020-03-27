@@ -16,7 +16,7 @@ export default {
   },
   beforeRouteLeave (_to, _from, next) {
     if (!this.saved) {
-      const answer = window.confirm('You have unsaved changes! Do you really want to leave?')
+      const answer = window.confirm('Your unsaved changes will be lost! Do you really want to leave?')
       if (answer) {
         next()
       } else {
