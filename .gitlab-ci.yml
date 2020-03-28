@@ -2,7 +2,7 @@ stages:
     - migrate
     
     
-build web-api:
+migrate web-api:
   stage: build
   tags:
     -shell_executor
