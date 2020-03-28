@@ -3,7 +3,7 @@ stages:
     
     
 migrate web-api:
-  stage: build
+  stage: migrate
   tags:
     - shell_executor
   script:
