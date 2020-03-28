@@ -5,7 +5,7 @@ stages:
 migrate web-api:
   stage: build
   tags:
-    -shell_executor
+    - shell_executor
   script:
     - cd ./WebAPI
     - dotnet ef database update
