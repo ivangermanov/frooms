@@ -8,4 +8,5 @@ migrate web-api:
     - shell_executor
   script:
     - cd ./WebAPI/WebAPI
+    - dotnet tool restore
     - dotnet ef database update
