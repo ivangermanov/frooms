@@ -1,41 +1,11 @@
 stages:
-  - build
-  - deploy
-  
+    - migrate
+    
+    
 build web-api:
   stage: build
-  image: mcr.microsoft.com/dotnet/core/sdk:3.1
+  tags:
+    -shell_executor
   script:
     - cd ./WebAPI
-    - dotnet restore "WebAPI/WebAPI.csproj"
-    - dotnet build "WebAPI/WebAPI.csproj" -c Release
-    - dotnet publish "WebAPI/WebAPI.csproj" -c Release
-  artifacts:
-    paths:
-      - WebAPI/WebAPI/bin/Release/
-      
-build vue:
-  stage: build
-  image: node:latest
-  script:
-    - cd  WebAPI/WebAPI/vue
-    - npm install
-    - npm run build
-    
-  artifacts:
-    paths:
-      - WebAPI/WebAPI/vue/dist/
-
-deploy:
-    stage: deploy
-    image: ubuntu:latest
-    only:
-        - master
-        - develop
-    before_script:
-        - apt-get update -qy
-        - apt-get install -y lftp
-        - apt-get install ca-certificates -y
-    script:
-        - update-ca-certificates
-        - lftp -e "open $FTP_ADDRESS; user $FTP_USER $FTP_PASSWORD;mirror -p -X .* -X .*/ --reverse --verbose --delete ./WebAPI/WebAPI/bin/Release/ domains/$FTP_USERcore.$FTP_ADDRESS/; mirror -p -X .* -X .*/ --reverse --verbose --delete ./WebAPI/WebAPI/vue/dist/ domains/$FTP_USERcore.$FTP_ADDRESS/vue/dist; bye"
+    - dotnet ef database update
