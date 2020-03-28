@@ -7,5 +7,5 @@ migrate web-api:
   tags:
     - shell_executor
   script:
-    - cd ./WebAPI
+    - cd ./WebAPI/WebAPI
     - dotnet ef database update
