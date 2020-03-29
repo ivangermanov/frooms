@@ -1,12 +1,51 @@
+# cache:
+#   untracked: true
+#   key: "$CI_BUILD_REF_NAME"
+#   paths:
+#     - WebAPI/WebAPI/vue/node_modules/
+
+
+#stages:
+#    - migrate
+    
+    
+#migrate web-api:
+#  stage: migrate
+#  tags:
+#    - shell_executor
+#  script:
+#    - cd ./WebAPI/WebAPI
+#    - dotnet tool restore
+#    - dotnet ef database update
+ 
+ 
 stages:
-    - migrate
-    
-    
-migrate web-api:
-  stage: migrate
-  tags:
-    - shell_executor
+  - build
+  
+# build web-api:
+#   stage: build
+#   image: mcr.microsoft.com/dotnet/core/sdk:3.1
+#   script:
+#     - cd ./WebAPI
+#     - dotnet restore "WebAPI/WebAPI.csproj"
+#     - dotnet build "WebAPI/WebAPI.csproj" -c Release
+#     - dotnet publish "WebAPI/WebAPI.csproj" -c Release
+#   artifacts:
+#     paths:
+#       - WebAPI/WebAPI/bin/Release/
+#     expire_in: 1 week
+      
+build vue:
+  stage: build
+  
+  image: node:latest
   script:
-    - cd ./WebAPI/WebAPI
-    - dotnet tool restore
-    - dotnet ef database update
+    - cd  WebAPI/WebAPI/vue
+    - npm install
+    - npm run build
+    
+  artifacts:
+    paths:
+      - WebAPI/WebAPI/vue/dist/
+    expire_in: 1 week
+
