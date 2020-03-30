@@ -1,1 +1,1 @@
-export { IRoom, EShape, IPoint, GeoJSONToIRooms } from './room'
+export { Room, IRoom, EShape, IPoint, CreateIRoom } from './room'

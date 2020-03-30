@@ -11,7 +11,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class RoomsController : ControllerBase
     {
-        IRoomService _roomService;
+        readonly IRoomService _roomService;
 
         public RoomsController(IRoomService roomService)
         {
