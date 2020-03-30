@@ -1,4 +1,5 @@
+export { Room } from './Room'
 export { IRoom } from './IRoom'
 export { EShape } from './EShape'
 export { IPoint } from './IPoint'
-export { GeoJSONToIRooms } from './functions'
+export { CreateIRoom } from './functions'

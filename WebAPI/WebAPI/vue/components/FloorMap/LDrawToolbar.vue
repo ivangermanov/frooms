@@ -1,6 +1,6 @@
 <template>
   <l-control v-if="mounted" position="topright" class="leaflet-bar">
-    <a class="leaflet-draw-draw-circle" @click="emitShapes">
+    <a class="leaflet-draw-draw-circle" @click="saveLayers">
       <v-icon :dense="true" color="black" title="Save layers">
         mdi-check
       </v-icon>
@@ -19,10 +19,6 @@ export default Vue.extend({
     position: {
       type: String,
       default: 'topright'
-    },
-    saved: {
-      type: Boolean,
-      default: true
     }
   },
   data () {
@@ -72,16 +68,14 @@ export default Vue.extend({
       map.addControl(drawControl)
 
       map.on(L.Draw.Event.CREATED, (e) => {
-        this.$emit('modifyShapes', false)
-
         const layer = e.layer
         this.layers.addLayer(layer)
+
+        this.$emit('addLayer', layer)
       })
     },
-    emitShapes () {
-      if (!this.saved) {
-        this.$emit('emitShapes', this.layers)
-      }
+    saveLayers () {
+      this.$emit('saveLayers', this.layers)
     }
   }
 })

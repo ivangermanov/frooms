@@ -6,9 +6,8 @@
     >
       <l-draw-toolbar
         position="topright"
-        :saved="saved"
-        @emitShapes="saveShapes"
-        @modifyShapes="$emit('save', $event)"
+        @saveLayers="saveShapes"
+        @addLayer="modifyShapes"
       />
       <l-image-overlay
         :url="overlayOptions.url"
@@ -19,11 +18,12 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
+import { mapMutations } from 'vuex'
 import { CRS, GeoJSON } from 'leaflet'
 import { LMap, LImageOverlay } from 'vue2-leaflet'
 import LDrawToolbar from './LDrawToolbar.vue'
 import { RepositoryFactory } from '@/api/repositoryFactory'
-import { GeoJSONToIRooms } from '@/types'
+import { IRoom, CreateIRoom } from '@/types'
 
 const RoomRepository = RepositoryFactory.room
 
@@ -32,12 +32,6 @@ export default Vue.extend({
     LMap,
     LImageOverlay,
     LDrawToolbar
-  },
-  props: {
-    saved: {
-      type: Boolean,
-      default: true
-    }
   },
   data () {
     return {
@@ -60,7 +54,13 @@ export default Vue.extend({
         ]
       },
       floor: 2,
-      buildingName: 'r1'
+      buildingName: 'r1',
+      rooms: [] as IRoom[]
+    }
+  },
+  computed: {
+    saved () : Boolean {
+      return this.$store.state.roomAdmin.saved
     }
   },
   created () {
@@ -70,12 +70,28 @@ export default Vue.extend({
     async fetch () {
       const r = await RoomRepository.get()
     },
-    async saveShapes (geoJSON: GeoJSON) {
-      const payload = GeoJSONToIRooms(geoJSON)
+    async saveShapes (_geoJSON: GeoJSON) {
+      if (this.saved) { return }
+
+      const payload = this.rooms
 
       const success = await RoomRepository.postRooms(payload).catch(() => {})
-      this.$emit('save', !!success)
-    }
+
+      if (success) {
+        this.setSaved(true)
+      }
+    },
+    modifyShapes (feature: GeoJSON) {
+      // Todo: Remove random number
+      const randNumber = Math.random().toString(36).substring(7)
+
+      const room = CreateIRoom(feature, randNumber, this.floor, this.buildingName)
+      this.rooms.push(room)
+      this.setSaved(false)
+    },
+    ...mapMutations({
+      setSaved: 'roomAdmin/setSaved'
+    })
   }
 })
 </script>

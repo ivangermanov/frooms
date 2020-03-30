@@ -10,6 +10,5 @@ namespace Froom.Data.Models
         public string BuildingName { get; set; }
         public int Capacity { get; set; }
         public ICollection<Point> Points { get; set; }
-        public Shape Shape { get; set; }
     }
 }
