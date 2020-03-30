@@ -33,7 +33,7 @@ build vue:
     - npm run build
     
   tags:
-    - vue-runner
+    - node-runner
   artifacts:
     paths:
       - WebAPI/WebAPI/vue/dist/
@@ -41,9 +41,9 @@ build vue:
 
 migrate web-api:
  stage: migrate
- only: 
-      - master
-      - develop
+# only: 
+#      - master
+#      - develop
  tags:
    - shell-runner
  script:
@@ -54,9 +54,9 @@ migrate web-api:
 deploy:
     stage: deploy
     image: alpine:3.7
-    only: 
-      - master
-      - develop
+#    only: 
+#      - master
+#      - develop
     before_script:
         - apk add 'lftp<4.9.1-r0'
     tags:
