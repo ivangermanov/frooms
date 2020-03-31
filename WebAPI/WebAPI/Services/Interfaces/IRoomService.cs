@@ -9,6 +9,6 @@ namespace WebAPI.Services.Interfaces
     {
         public Task AddAsync(PostRoomModel model);
 
-        public IQueryable<RoomDto> Rooms();
+        public IQueryable<RoomDto> GetRooms();
     }
 }

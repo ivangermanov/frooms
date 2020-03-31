@@ -40,7 +40,7 @@ namespace WebAPI.Services
             await _roomRepository.AddAsync(newRoom);
         }
 
-        public IQueryable<RoomDto> Rooms()
+        public IQueryable<RoomDto> GetRooms()
         {
            return _roomRepository.GetAll().Select(r => new RoomDto(r, r.Building.Campus));
         }
