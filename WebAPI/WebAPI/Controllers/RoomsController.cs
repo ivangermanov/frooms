@@ -23,13 +23,13 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(IEnumerable<RoomDto>), 200)]
         public IActionResult Rooms()
         {
-            return Ok(_roomService.Rooms());
+            return Ok(_roomService.FilterRooms(null, null, null));
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(PostRoomModel model)
         {
-            await _roomService.AddAsync(model);
+            await _roomService.AddRoomAsync(model);
 
             return Ok();
         }
