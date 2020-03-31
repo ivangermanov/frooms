@@ -1,5 +1,5 @@
-using Froom.Data.Dtos.Rooms;
-using Froom.Data.Models;
+using Froom.Data.Dtos;
+using Froom.Data.Models.Rooms;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
