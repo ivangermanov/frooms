@@ -1,6 +1,6 @@
-using Froom.Data.Dtos.Rooms;
+using Froom.Data.Dtos;
 using Froom.Data.Entities;
-using Froom.Data.Models;
+using Froom.Data.Models.Rooms;
 using Froom.Data.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace WebAPI.Services
             _roomRepository = roomRepository;
         }
 
-        public async Task AddAsync(PostRoomModel model)
+        public async Task AddRoomAsync(PostRoomModel model)
         {
             if (model is null)
             {
@@ -40,9 +40,18 @@ namespace WebAPI.Services
             await _roomRepository.AddAsync(newRoom);
         }
 
-        public IQueryable<RoomDto> Rooms()
+        public IQueryable<RoomDto> FilterRooms(string? campus, string? buildingName, int? floor)
         {
-           return _roomRepository.GetAll().Select(r => new RoomDto(r, r.Building.Campus));
+            var rooms = _roomRepository.GetAll()
+                .Where(r => r.Building.Campus == (campus ?? string.Empty))
+                .Where(r => r.BuildingName == (buildingName ?? string.Empty));
+
+            if (floor == null)
+                return rooms.Select(r => new RoomDto(r, r.Building.Campus));
+
+            return rooms
+                .Where(r => r.Floor == floor)
+                .Select(r => new RoomDto(r, r.Building.Campus));
         }
     }
 }

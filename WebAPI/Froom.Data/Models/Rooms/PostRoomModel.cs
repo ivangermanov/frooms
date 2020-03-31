@@ -1,7 +1,7 @@
 ﻿using Froom.Data.Entities;
 using System.Collections.Generic;
 
-namespace Froom.Data.Models
+namespace Froom.Data.Models.Rooms
 {
     public class PostRoomModel
     {
