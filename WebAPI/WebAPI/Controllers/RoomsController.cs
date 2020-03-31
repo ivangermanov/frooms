@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(IEnumerable<RoomDto>), 200)]
         public IActionResult GetRooms()
         {
-            return Ok(_roomService.Rooms());
+            return Ok(_roomService.GetRooms());
         }
 
         [HttpPost]
