@@ -28,7 +28,6 @@ stages:
 #       - WebAPI/WebAPI/bin/Release/
 #     expire_in: 1 week
  
-      
 # build vue:
 #   stage: build
 #   image: node:latest
