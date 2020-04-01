@@ -39,5 +39,14 @@ namespace WebAPI.Controllers
 
             return Ok();
         }
+
+        [HttpPost]
+        [Route("addRange")]
+        public async Task<IActionResult> AddRange(PostRoomModel[] models)
+        {
+            await _roomService.AddRangeAsync(models);
+
+            return Ok();
+        }
     }
 }

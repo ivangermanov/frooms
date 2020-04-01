@@ -20,6 +20,26 @@ namespace WebAPI.Services
             _roomRepository = roomRepository;
         }
 
+        public async Task AddRangeAsync(PostRoomModel[] models)
+        {
+            if (models is null)
+                throw new ArgumentException("The collection of rooms is null.");
+
+            var newRooms = models
+                .Select(m => new Room
+                    {   
+                        Number = m.Number,
+                        Floor = m.Floor,
+                        BuildingName = m.BuildingName,
+                        Capacity = m.Capacity,
+                        Reservations = new List<Reservation>(),
+                        Points = m.Points,
+                    })
+                .ToArray();
+
+            await _roomRepository.AddRangeAsync(newRooms);
+        }
+
         public async Task AddRoomAsync(PostRoomModel model)
         {
             if (model is null)
