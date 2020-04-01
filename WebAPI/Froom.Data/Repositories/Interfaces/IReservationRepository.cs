@@ -27,8 +27,8 @@ namespace Froom.Data.Repositories.Interfaces
         /// <summary>
         /// Gets all reservations for a specific user.
         /// </summary>
-        /// <param name="userId"> The id of the user.</param>
-        IQueryable<Reservation> GetForUser(Guid userId);
+        /// <param name="userId"> The unique number of the user.</param>
+        IQueryable<Reservation> GetForUser(int userNumber);
 
         /// <summary>
         /// Updates information about a reservation.
