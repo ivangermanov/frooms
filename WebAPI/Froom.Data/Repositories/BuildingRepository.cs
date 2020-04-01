@@ -41,7 +41,7 @@ namespace Froom.Data.Repositories
                 throw new DoesNotExistException($"Building with ID: {id} does not exist.");
         }
 
-        public IQueryable<Building> GetForCampusAsync(FontysCampus campus)
+        public IQueryable<Building> GetForCampusAsync(string campus)
         {
             return _buildings
                 .Include(u => u.Rooms)
