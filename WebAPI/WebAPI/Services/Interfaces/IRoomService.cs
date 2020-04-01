@@ -15,6 +15,12 @@ namespace WebAPI.Services.Interfaces
         public Task AddRoomAsync(PostRoomModel model);
 
         /// <summary>
+        /// Adds multiple new rooms.
+        /// </summary>
+        /// <param name="models">The rooms to be added.</param>
+        public Task AddRangeAsync(PostRoomModel[] models);
+
+        /// <summary>
         /// Filters the rooms by campus, building and floor.
         /// </summary>
         /// <param name="campus">The name of the campus.</param>
