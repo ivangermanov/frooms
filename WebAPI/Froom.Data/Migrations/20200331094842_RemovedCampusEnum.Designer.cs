@@ -4,14 +4,16 @@ using Froom.Data.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Froom.Data.Migrations
 {
     [DbContext(typeof(FroomContext))]
-    partial class FroomContextModelSnapshot : ModelSnapshot
+    [Migration("20200331094842_RemovedCampusEnum")]
+    partial class RemovedCampusEnum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,8 +40,7 @@ namespace Froom.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
-                        .IsUnique();
+                    b.HasIndex("Id");
 
                     b.ToTable("Buildings");
                 });
