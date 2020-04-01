@@ -4,14 +4,16 @@ using Froom.Data.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Froom.Data.Migrations
 {
     [DbContext(typeof(FroomContext))]
-    partial class FroomContextModelSnapshot : ModelSnapshot
+    [Migration("20200401205427_ReservationDuration_TimeSpan")]
+    partial class ReservationDuration_TimeSpan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,8 +110,8 @@ namespace Froom.Data.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserNumber")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -117,7 +119,7 @@ namespace Froom.Data.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.HasIndex("UserNumber");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reservations");
                 });
@@ -171,8 +173,7 @@ namespace Froom.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Number")
-                        .IsUnique();
+                    b.HasIndex("Id", "Number");
 
                     b.ToTable("Users");
                 });
@@ -211,8 +212,7 @@ namespace Froom.Data.Migrations
 
                     b.HasOne("Froom.Data.Entities.User", "User")
                         .WithMany("Reservations")
-                        .HasForeignKey("UserNumber")
-                        .HasPrincipalKey("Number")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });

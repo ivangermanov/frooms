@@ -12,12 +12,12 @@ namespace Froom.Data.Dtos
         public int Capacity { get; set; }
         public ICollection<Point> Points { get; set; }
 
-        public RoomDto(Room room, string campus)
+        public RoomDto(Room room)
         {
             Number = room.Number;
             Floor = room.Floor;
             BuildingName = room.BuildingName;
-            CampusName = campus;
+            CampusName = room.Building.Campus;
             Capacity = room.Capacity;
             Points = room.Points;
         }
