@@ -60,7 +60,7 @@ deploy:
     before_script:
         - apk add 'lftp<4.9.1-r0'
     tags:
-        - deploy-runner
+        - deployment-runner
     script:
          - echo "Hello world!"
 #        - lftp -e "mirror -p --reverse --verbose --delete WebAPI/WebAPI/bin/Release/netcoreapp3.1/publish/ domains/$FTP_DOMAIN/;
