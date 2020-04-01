@@ -47,9 +47,9 @@ stages:
 
 migrate web-api:
  stage: migrate
- only: 
-      - master
-      - develop
+#  only: 
+#       - master
+#       - develop
  tags:
    - shell-runner
  script:
