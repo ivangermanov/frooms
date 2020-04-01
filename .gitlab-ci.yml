@@ -4,10 +4,14 @@ cache:
     paths:
         - WebAPI/WebAPI/vue/node_modules/
 
+
+
 stages:
   - build
   - migrate
   - deploy
+  
+  
     
 build web-api:
   stage: build
@@ -23,6 +27,7 @@ build web-api:
     paths:
       - WebAPI/WebAPI/bin/Release/
     expire_in: 1 week
+ 
       
 build vue:
   stage: build
@@ -39,11 +44,12 @@ build vue:
       - WebAPI/WebAPI/vue/dist/
     expire_in: 1 week
 
+
 migrate web-api:
  stage: migrate
-# only: 
-#      - master
-#      - develop
+ only: 
+      - master
+      - develop
  tags:
    - shell-runner
  script:
@@ -51,18 +57,18 @@ migrate web-api:
    - dotnet tool restore
    - dotnet ef database update
    
+   
 deploy:
     stage: deploy
     image: alpine:3.7
-#    only: 
-#      - master
-#      - develop
+    only: 
+      - master
+      - develop
     before_script:
         - apk add 'lftp<4.9.1-r0'
     tags:
         - deployment-runner
     script:
-         - echo "Hello world!"
-#        - lftp -e "mirror -p --reverse --verbose --delete WebAPI/WebAPI/bin/Release/netcoreapp3.1/publish/ domains/$FTP_DOMAIN/;
-#                   mirror -p --reverse --verbose --delete WebAPI/WebAPI/vue/dist/ domains/$FTP_DOMAIN/vue/dist; exit"
-#                   -u $FTP_USER,$FTP_PASSWORD $FTP_ADDRESS
+        - lftp -e "mirror -p --reverse --verbose --delete WebAPI/WebAPI/bin/Release/netcoreapp3.1/publish/ domains/$FTP_DOMAIN/;
+                   mirror -p --reverse --verbose --delete WebAPI/WebAPI/vue/dist/ domains/$FTP_DOMAIN/vue/dist; exit"
+                   -u $FTP_USER,$FTP_PASSWORD $FTP_ADDRESS
