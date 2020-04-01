@@ -7,9 +7,9 @@ cache:
 
 
 stages:
-  - build
-  - migrate
-  - deploy
+ - build
+ - migrate
+ - deploy
   
   
     
@@ -28,7 +28,6 @@ build web-api:
       - WebAPI/WebAPI/bin/Release/
     expire_in: 1 week
  
-      
 build vue:
   stage: build
   image: node:latest
@@ -52,11 +51,13 @@ migrate web-api:
       - develop
  tags:
    - shell-runner
+ before_script:
+   - powershell -File C:\PowershellScripts\connectToFontys.ps1
  script:
    - cd ./WebAPI/WebAPI
    - dotnet tool restore
    - dotnet ef database update
-   
+   - powershell -File C:\PowershellScripts\disconnectFromFontys.ps1
    
 deploy:
     stage: deploy
@@ -70,5 +71,5 @@ deploy:
         - deployment-runner
     script:
         - lftp -e "mirror -p --reverse --verbose --delete WebAPI/WebAPI/bin/Release/netcoreapp3.1/publish/ domains/$FTP_DOMAIN/;
-                   mirror -p --reverse --verbose --delete WebAPI/WebAPI/vue/dist/ domains/$FTP_DOMAIN/vue/dist; exit"
-                   -u $FTP_USER,$FTP_PASSWORD $FTP_ADDRESS
+                  mirror -p --reverse --verbose --delete WebAPI/WebAPI/vue/dist/ domains/$FTP_DOMAIN/vue/dist; exit"
+                  -u $FTP_USER,$FTP_PASSWORD $FTP_ADDRESS
