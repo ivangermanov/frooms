@@ -1,7 +1,18 @@
+cache:
+    untracked: true
+    key: "$CI_BUILD_REF_NAME"
+    paths:
+        - WebAPI/WebAPI/vue/node_modules/
+
+
+
 stages:
-  - build
-  - deploy
+ - build
+ - migrate
+ - deploy
   
+  
+    
 build web-api:
   stage: build
   image: mcr.microsoft.com/dotnet/core/sdk:3.1
@@ -10,11 +21,13 @@ build web-api:
     - dotnet restore "WebAPI/WebAPI.csproj"
     - dotnet build "WebAPI/WebAPI.csproj" -c Release
     - dotnet publish "WebAPI/WebAPI.csproj" -c Release
+  tags:
+    - dotnet-runner
   artifacts:
     paths:
       - WebAPI/WebAPI/bin/Release/
     expire_in: 1 week
-      
+ 
 build vue:
   stage: build
   image: node:latest
@@ -23,11 +36,29 @@ build vue:
     - npm install
     - npm run build
     
+  tags:
+    - node-runner
   artifacts:
     paths:
       - WebAPI/WebAPI/vue/dist/
     expire_in: 1 week
 
+
+migrate web-api:
+ stage: migrate
+ only: 
+      - master
+      - develop
+ tags:
+   - shell-runner
+ before_script:
+   - powershell -File C:\PowershellScripts\connectToFontys.ps1
+ script:
+   - cd ./WebAPI/WebAPI
+   - dotnet tool restore
+   - dotnet ef database update
+   - powershell -File C:\PowershellScripts\disconnectFromFontys.ps1
+   
 deploy:
     stage: deploy
     image: alpine:3.7
@@ -36,7 +67,9 @@ deploy:
       - develop
     before_script:
         - apk add 'lftp<4.9.1-r0'
+    tags:
+        - deployment-runner
     script:
         - lftp -e "mirror -p --reverse --verbose --delete WebAPI/WebAPI/bin/Release/netcoreapp3.1/publish/ domains/$FTP_DOMAIN/;
-                   mirror -p --reverse --verbose --delete WebAPI/WebAPI/vue/dist/ domains/$FTP_DOMAIN/vue/dist; exit"
-                   -u $FTP_USER,$FTP_PASSWORD $FTP_ADDRESS
+                  mirror -p --reverse --verbose --delete WebAPI/WebAPI/vue/dist/ domains/$FTP_DOMAIN/vue/dist; exit"
+                  -u $FTP_USER,$FTP_PASSWORD $FTP_ADDRESS

@@ -1,5 +1,5 @@
-using Froom.Data.Dtos.Rooms;
-using Froom.Data.Models;
+using Froom.Data.Dtos;
+using Froom.Data.Models.Rooms;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,13 +23,13 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(IEnumerable<RoomDto>), 200)]
         public IActionResult GetRooms()
         {
-            return Ok(_roomService.GetRooms());
+            return Ok(_roomService.FilterRooms(null, null, null));
         }
 
         [HttpPost]
         public async Task<IActionResult> PostRooms(PostRoomModel model)
         {
-            await _roomService.AddAsync(model);
+            await _roomService.AddRoomAsync(model);
 
             return Ok();
         }
