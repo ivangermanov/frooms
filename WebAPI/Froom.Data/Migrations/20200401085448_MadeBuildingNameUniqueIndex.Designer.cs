@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Froom.Data.Migrations
 {
     [DbContext(typeof(FroomContext))]
-    [Migration("20200401084509_ChangedJsonSerializing")]
-    partial class ChangedJsonSerializing
+    [Migration("20200401085448_MadeBuildingNameUniqueIndex")]
+    partial class MadeBuildingNameUniqueIndex
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

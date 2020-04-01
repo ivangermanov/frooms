@@ -2,7 +2,7 @@
 
 namespace Froom.Data.Migrations
 {
-    public partial class ChangedJsonSerializing : Migration
+    public partial class MadeBuildingNameUniqueIndex : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
