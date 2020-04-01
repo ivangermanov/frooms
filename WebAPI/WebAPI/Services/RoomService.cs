@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Services
@@ -27,17 +28,12 @@ namespace WebAPI.Services
                 throw new ArgumentException($"{nameof(PostRoomModel)} is null.");
             }
 
-            var newRoom = new Room
-            {
-                Number = model.Number,
-                Floor = model.Floor,
-                BuildingName = model.BuildingName,
-                Capacity = model.Capacity,
-                Reservations = new List<Reservation>(),
-                Points = model.Points,
-            };
+            // TODO: Use Mapper properly
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<PostRoomModel, Room>());
+            var mapper = config.CreateMapper();
 
-            await _roomRepository.AddAsync(newRoom);
+            var room = mapper.Map<Room>(model);
+            await _roomRepository.AddAsync(room);
         }
 
         public IQueryable<RoomDto> FilterRooms(string? campus, string? buildingName, int? floor)
