@@ -1,6 +1,7 @@
-﻿using Froom.Data.Models.Users;
+﻿using Froom.Data.Entities;
+using Froom.Data.Models.Users;
 using Froom.Data.Repositories.Interfaces;
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebAPI.Services.Interfaces;
 
@@ -16,9 +17,17 @@ namespace WebAPI.Services
             _userRepository = userRepository;
         }
 
-        public Task AddUserAsync(PostUserModel model)
+        public async Task AddUserAsync(PostUserModel model)
         {
-            throw new NotImplementedException();
+            var user = new User()
+            {
+                Name = model.Name,
+                Role = model.Role,
+                Number = model.Number,
+                Reservations = new List<Reservation>()
+            };
+
+            await _userRepository.AddAsync(user);
         }
     }
 }
