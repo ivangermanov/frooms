@@ -42,25 +42,16 @@ namespace Froom.Data.Database
                     .IsRequired()
                     .OnDelete(DeleteBehavior.NoAction);
 
-                var valueComparer = new ValueComparer<ICollection<Point>>(
-                    (c1, c2) => c1.SequenceEqual(c2),
-                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                    c => c.ToList());
-
-                options.Property(e => e.Points)
-                    .HasConversion(
-                        v => JsonConvert
-                                .SerializeObject(v,
-                                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                        v => JsonConvert
-                                .DeserializeObject<ICollection<Point>>(v,
-                                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }))
-                    .Metadata.SetValueComparer(valueComparer);
+                // This Converter will perform the conversion to and from Json to the desired type
+                options.Property(e => e.Points).HasConversion(
+                    v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                    v => JsonConvert.DeserializeObject<ICollection<Point>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
             });
 
             modelBuilder.Entity<Building>(options =>
             {
-                options.HasIndex(b => b.Id);
+                options.HasIndex(b => b.Name)
+                    .IsUnique();
             });
 
             modelBuilder.Entity<Reservation>(options =>
