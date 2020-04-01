@@ -53,7 +53,7 @@ migrate web-api:
  tags:
    - shell-runner
  script:
-   - powershell -File C:\PowershellScripts\poweconnectToFontys.ps1
+   - powershell -File C:\PowershellScripts\connectToFontys.ps1
    - cd ./WebAPI/WebAPI
    - dotnet tool restore
    - dotnet ef database update
