@@ -1,22 +1,22 @@
-import { GeoJSON } from 'leaflet'
+import { Polyline } from 'leaflet'
 import { IRoom } from './IRoom'
 import { EShape } from './EShape'
 import { IPoint } from './IPoint'
 import { Room } from './Room'
 
 export function CreateIRoom (
-  geoJSON: GeoJSON,
+  polyline: Polyline,
   number: string,
   floor: number,
   buildingName: string,
   shape: EShape = EShape.POLYGON,
   capacity: number = 0
 ): IRoom {
-  const GeoJSONToIRoom = (geoJSON: GeoJSON): IRoom => {
-    const feature = geoJSON.toGeoJSON() as GeoJSON.Feature
+  const GeoJSONToIRoom = (polyline: Polyline): IRoom => {
+    const feature = polyline.toGeoJSON()
     const geometry = feature.geometry
 
-    const coordinates: [] = (geometry as any).coordinates.flat()
+    const coordinates = geometry.coordinates.flat()
     const points: IPoint[] = coordinates.map(coord => ({
       x: coord[0],
       y: coord[1]
@@ -29,7 +29,7 @@ export function CreateIRoom (
     return room
   }
 
-  const room = GeoJSONToIRoom(geoJSON)
+  const room = GeoJSONToIRoom(polyline)
   room.number = number
   room.floor = floor
   room.buildingName = buildingName
@@ -38,6 +38,22 @@ export function CreateIRoom (
   return room
 }
 
-export function IRoomToGeoJSON (room: IRoom) {
+export function IRoomToGeoJSONFeature (room: IRoom): GeoJSON.Feature {
+  const coordinates: GeoJSON.Position[] = room.points.map(point => [point.x, point.y])
 
+  const geometry: GeoJSON.LineString = {
+    type: 'LineString',
+    coordinates
+  }
+
+  const feature: GeoJSON.Feature = {
+    properties: {
+      number: room.number,
+      capacity: room.capacity
+    },
+    type: 'Feature',
+    geometry
+  }
+
+  return feature
 }

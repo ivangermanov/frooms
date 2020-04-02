@@ -8,11 +8,13 @@
       <with-rooms-data v-if="mapObject">
         <template
           v-slot="{
+            roomLayers,
             saveShapes,
             modifyShapes
           }"
         >
           <l-draw
+            :fetched-layers="roomLayers"
             :map-object="mapObject"
             @saveLayers="saveShapes"
             @addLayer="modifyShapes"
