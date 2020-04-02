@@ -1,11 +1,13 @@
 <template>
   <no-ssr>
     <l-map
+      ref="map"
       :options="mapOptions"
       style="height: 100%; padding: 10px; z-index: 0;"
     >
-      <l-draw-toolbar
-        position="topright"
+      <l-draw
+        v-if="mapObject"
+        :map-object="mapObject"
         @saveLayers="saveShapes"
         @addLayer="modifyShapes"
       />
@@ -19,9 +21,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapMutations } from 'vuex'
-import { CRS, GeoJSON } from 'leaflet'
+import { CRS, GeoJSON, Map } from 'leaflet'
 import { LMap, LImageOverlay } from 'vue2-leaflet'
-import LDrawToolbar from './LDrawToolbar.vue'
+import LDraw from './LDraw.vue'
 import { RepositoryFactory } from '@/api/repositoryFactory'
 import { IRoom, CreateIRoom } from '@/types'
 
@@ -31,10 +33,11 @@ export default Vue.extend({
   components: {
     LMap,
     LImageOverlay,
-    LDrawToolbar
+    LDraw
   },
   data () {
     return {
+      mapObject: (null as unknown) as Map,
       mapOptions: {
         crs: CRS.Simple,
         attributionControl: false,
@@ -54,24 +57,38 @@ export default Vue.extend({
         ]
       },
       floor: 2,
+      campus: 'eindhoven',
       buildingName: 'r1',
       rooms: [] as IRoom[]
     }
   },
   computed: {
-    saved () : Boolean {
+    saved (): Boolean {
       return this.$store.state.roomAdmin.saved
     }
   },
   created () {
     this.fetch()
   },
+  mounted () {
+    this.$nextTick(() => {
+      this.mapObject = (this.$refs.map as any).mapObject
+    })
+  },
   methods: {
     async fetch () {
-      const r = await RoomRepository.get()
+      const { data } = await RoomRepository.getRooms(
+        this.campus,
+        this.buildingName,
+        this.floor
+      )
+      const rooms: IRoom[] = data
+      console.log(rooms)
     },
     async saveShapes (_geoJSON: GeoJSON) {
-      if (this.saved) { return }
+      if (this.saved) {
+        return
+      }
 
       const payload = this.rooms
 
@@ -83,9 +100,16 @@ export default Vue.extend({
     },
     modifyShapes (feature: GeoJSON) {
       // Todo: Remove random number
-      const randNumber = Math.random().toString(36).substring(7)
+      const randNumber = Math.random()
+        .toString(36)
+        .substring(7)
 
-      const room = CreateIRoom(feature, randNumber, this.floor, this.buildingName)
+      const room = CreateIRoom(
+        feature,
+        randNumber,
+        this.floor,
+        this.buildingName
+      )
       this.rooms.push(room)
       this.setSaved(false)
     },

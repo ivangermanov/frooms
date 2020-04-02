@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import L from 'leaflet'
+import { GeoJSON, Control, Draw, Map } from 'leaflet'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw-src.css'
 
@@ -19,12 +19,19 @@ export default Vue.extend({
     position: {
       type: String,
       default: 'topright'
+    },
+    layers: {
+      type: GeoJSON,
+      required: true
+    },
+    mapObject: {
+      type: Map,
+      required: true
     }
   },
   data () {
     return {
-      mounted: false,
-      layers: L.geoJSON()
+      mounted: false
     }
   },
   beforeMount () {
@@ -35,10 +42,7 @@ export default Vue.extend({
   },
   methods: {
     attachToolbar () {
-      const map: L.Map = (this.$parent as any).mapObject
-
-      map.addLayer(this.layers)
-      const options: L.Control.DrawConstructorOptions | any = {
+      const options: Control.DrawConstructorOptions | any = {
         position: 'topright',
         draw: {
           polygon: {
@@ -64,14 +68,17 @@ export default Vue.extend({
         }
       }
 
-      const drawControl = new L.Control.Draw(options)
+      const drawControl = new Control.Draw(options)
+      const map = this.mapObject
       map.addControl(drawControl)
 
-      map.on(L.Draw.Event.CREATED, (e) => {
+      map.on(Draw.Event.CREATED, (e) => {
         const layer = e.layer
-        this.layers.addLayer(layer)
-
         this.$emit('addLayer', layer)
+      })
+      map.on(Draw.Event.EDITSTOP, (e) => {
+        const layer = e.layer
+        this.$emit('editLayer', layer)
       })
     },
     saveLayers () {
