@@ -124,14 +124,14 @@ namespace Froom.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Capacity")
+                    b.Property<int?>("Capacity")
                         .HasColumnType("int");
 
                     b.Property<int>("Floor")
                         .HasColumnType("int");
 
                     b.Property<string>("Number")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Points")
                         .HasColumnType("nvarchar(max)");
@@ -139,6 +139,10 @@ namespace Froom.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BuildingName");
+
+                    b.HasIndex("Number")
+                        .IsUnique()
+                        .HasFilter("[Number] IS NOT NULL");
 
                     b.ToTable("Rooms");
                 });

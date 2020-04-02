@@ -30,6 +30,7 @@ namespace Froom.Data.Database
 
             modelBuilder.Entity<Room>(options =>
             {
+                options.HasIndex(r => r.Number).IsUnique();
                 options.HasOne(r => r.Building)
                     .WithMany(b => b.Rooms)
                     .HasForeignKey(r => r.BuildingName)
