@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { GeoJSON, Control, Draw, Map } from 'leaflet'
+import { GeoJSON, Control, Draw, Map, Polyline } from 'leaflet'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw-src.css'
 
@@ -73,7 +73,7 @@ export default Vue.extend({
       map.addControl(drawControl)
 
       map.on(Draw.Event.CREATED, (e) => {
-        const layer = e.layer
+        const layer: Polyline = e.layer
         this.$emit('addLayer', layer)
       })
       map.on(Draw.Event.EDITSTOP, (e) => {
@@ -82,7 +82,7 @@ export default Vue.extend({
       })
     },
     saveLayers () {
-      this.$emit('saveLayers', this.layers)
+      this.$emit('saveLayers')
     }
   }
 })

@@ -5,7 +5,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapMutations } from 'vuex'
-import FloorMap from '@/components/FloorMap/FloorMap.vue'
+import FloorMap from '@/components/floor-map/FloorMap.vue'
 
 export default Vue.extend({
   components: {
