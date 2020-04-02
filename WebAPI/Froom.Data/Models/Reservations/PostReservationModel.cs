@@ -1,18 +1,12 @@
 ﻿using System;
 
-namespace Froom.Data.Entities
+namespace Froom.Data.Models.Reservations
 {
-    public class Reservation
+    public class PostReservationModel
     {
-        public int Id { get; set; }
-
         public int UserNumber { get; set; }
 
-        public User User { get; set; }
-
         public int RoomId { get; set; }
-
-        public Room Room { get; set; }
 
         public DateTime StartTime { get; set; }
 

@@ -28,7 +28,8 @@ namespace Froom.Data.Database
 
             modelBuilder.Entity<User>(options =>
             {
-                options.HasIndex(u => new { u.Id, u.Number });
+                options.HasIndex(u => u.Number)
+                    .IsUnique();
             });
 
             modelBuilder.Entity<Room>(options =>
@@ -60,7 +61,8 @@ namespace Froom.Data.Database
 
                 options.HasOne(r => r.User)
                     .WithMany(u => u.Reservations)
-                    .HasForeignKey(r => r.UserId)
+                    .HasForeignKey(r => r.UserNumber)
+                    .HasPrincipalKey(u => u.Number)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.NoAction);
 

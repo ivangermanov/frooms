@@ -99,8 +99,8 @@ namespace Froom.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Duration")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("Duration")
+                        .HasColumnType("time");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
@@ -108,8 +108,8 @@ namespace Froom.Data.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserNumber")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -117,7 +117,7 @@ namespace Froom.Data.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserNumber");
 
                     b.ToTable("Reservations");
                 });
@@ -171,7 +171,8 @@ namespace Froom.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id", "Number");
+                    b.HasIndex("Number")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -210,7 +211,8 @@ namespace Froom.Data.Migrations
 
                     b.HasOne("Froom.Data.Entities.User", "User")
                         .WithMany("Reservations")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserNumber")
+                        .HasPrincipalKey("Number")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });

@@ -1,7 +1,6 @@
-using Froom.Data.Dtos;
 using Froom.Data.Models.Rooms;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
 using WebAPI.Services.Interfaces;
 
@@ -20,16 +19,32 @@ namespace WebAPI.Controllers
 
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<RoomDto>), 200)]
-        public IActionResult GetRooms()
+        [Route("{campus}/{buildingName}/{floor}")]
+        public IActionResult GetRooms(string campus, string buildingName, int? floor)
         {
-            return Ok(_roomService.FilterRooms(null, null, null));
+            return Ok(_roomService.GetRooms(campus, buildingName, floor));
+        }
+
+        [HttpGet]
+        [Route("available/{campus}/{buildingName}/{floor}")]
+        public IActionResult GetAvailableRooms(string campus, string buildingName, int floor, DateTime fromDate, DateTime toDate)
+        {
+            return Ok(_roomService.GetAvailableRooms(campus, buildingName, floor, fromDate, toDate));
         }
 
         [HttpPost]
         public async Task<IActionResult> PostRooms(PostRoomModel model)
         {
             await _roomService.AddRoomAsync(model);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("addRange")]
+        public async Task<IActionResult> AddRange(PostRoomModel[] models)
+        {
+            await _roomService.AddRangeAsync(models);
 
             return Ok();
         }
