@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200325102027_AddRoomMapDetails.cs" />
     <Compile Remove="Migrations\20200325102027_AddRoomMapDetails.Designer.cs" />
+    <Compile Remove="Migrations\20200401182305_RemoveUnneededKeys.cs" />
+    <Compile Remove="Migrations\20200401182305_RemoveUnneededKeys.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

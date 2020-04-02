@@ -14,13 +14,11 @@ const baseUrl = `${baseDomain}/api`
 const globalAxios = axios.create({ baseURL: baseUrl })
 
 globalAxios.interceptors.response.use((response) => {
-  console.log(response.config)
   if (response.config.method !== 'get') {
     toastr.success('Your request was successfully processed!')
   }
   return response
 }, (error) => {
-  console.log(error.config)
   const config = error.config
   if (config.method !== 'get') {
     toastr.error('There was an error processing your request. Please try again.')

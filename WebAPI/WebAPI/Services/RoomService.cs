@@ -14,34 +14,14 @@ namespace WebAPI.Services
     /// <inheritdoc cref="IRoomService"/>
     public class RoomService : IRoomService
     {
-        IRoomRepository _roomRepository;
+        readonly IRoomRepository _roomRepository;
 
         public RoomService(IRoomRepository roomRepository)
         {
             _roomRepository = roomRepository;
         }
 
-        public async Task AddRangeAsync(PostRoomModel[] models)
-        {
-            if (models is null)
-                throw new ArgumentException("The collection of rooms is null.");
-
-            var newRooms = models
-                .Select(m => new Room
-                    {   
-                        Number = m.Number,
-                        Floor = m.Floor,
-                        BuildingName = m.BuildingName,
-                        Capacity = m.Capacity,
-                        Reservations = new List<Reservation>(),
-                        Points = m.Points,
-                    })
-                .ToArray();
-
-            await _roomRepository.AddRangeAsync(newRooms);
-        }
-
-        public async Task AddRoomAsync(PostRoomModel model)
+        public async Task AddRangeAsync(IEnumerable<PostRoomModel> model)
         {
             if (model is null)
                 throw new ArgumentException($"{nameof(PostRoomModel)} is null.");
@@ -50,8 +30,8 @@ namespace WebAPI.Services
             var config = new MapperConfiguration(cfg => cfg.CreateMap<PostRoomModel, Room>());
             var mapper = config.CreateMapper();
 
-            var room = mapper.Map<Room>(model);
-            await _roomRepository.AddAsync(room);
+            var rooms = mapper.Map<IEnumerable<Room>>(model);
+            await _roomRepository.AddAsync(rooms);
         }
 
         public IQueryable<RoomDto> GetAvailableRooms(string campus, string buildingName, int floor, DateTime fromDate, DateTime toDate)
@@ -74,12 +54,10 @@ namespace WebAPI.Services
 
         public IQueryable<RoomDto> GetRooms(string campus, string buildingName, int? floor)
         {
-            if (campus == null || buildingName == null)
-                throw new ArgumentNullException("The campus or the building name was null.");
-
-            IQueryable<Room> rooms = _roomRepository
-                                        .GetAll()
-                                        .Where(r => r.Building.Campus == campus && r.BuildingName == buildingName);
+            // TODO: Fix filtering
+            var rooms = _roomRepository.GetAll()
+                .Where(r => r.Building.Campus == (campus ?? string.Empty))
+                .Where(r => r.BuildingName == (buildingName ?? string.Empty));
 
             if (floor is null)
                 return rooms.Select(r => new RoomDto(r));

@@ -1,4 +1,4 @@
-﻿    using Froom.Data.Entities;
+﻿using Froom.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
@@ -26,22 +26,16 @@ namespace Froom.Data.Database
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>(options =>
-            {
-                options.HasIndex(u => u.Number)
-                    .IsUnique();
-            });
+            modelBuilder.Entity<User>(options => { options.HasKey(u => u.Number); });
 
             modelBuilder.Entity<Room>(options =>
             {
-                options.HasIndex(r => r.Id);
-
                 options.HasOne(r => r.Building)
                     .WithMany(b => b.Rooms)
                     .HasForeignKey(r => r.BuildingName)
                     .HasPrincipalKey(b => b.Name)
                     .IsRequired()
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 // This Converter will perform the conversion to and from Json to the desired type
                 options.Property(e => e.Points).HasConversion(
@@ -49,16 +43,8 @@ namespace Froom.Data.Database
                     v => JsonConvert.DeserializeObject<ICollection<Point>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
             });
 
-            modelBuilder.Entity<Building>(options =>
-            {
-                options.HasIndex(b => b.Name)
-                    .IsUnique();
-            });
-
             modelBuilder.Entity<Reservation>(options =>
             {
-                options.HasIndex(r => r.Id);
-
                 options.HasOne(r => r.User)
                     .WithMany(u => u.Reservations)
                     .HasForeignKey(r => r.UserNumber)
@@ -75,11 +61,9 @@ namespace Froom.Data.Database
 
             modelBuilder.Entity<Report>(options =>
             {
-                options.HasKey(r => r.Id);
-
                 options.HasOne(r => r.User)
                     .WithMany()
-                    .HasForeignKey(r => r.UserId)
+                    .HasForeignKey(r => r.Id)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.NoAction);
 
@@ -92,8 +76,6 @@ namespace Froom.Data.Database
 
             modelBuilder.Entity<Picture>(options =>
             {
-                options.HasKey(p => p.Id);
-
                 options.HasOne(p => p.Report)
                     .WithMany(r => r.Pictures)
                     .HasForeignKey(p => p.ReportId)
