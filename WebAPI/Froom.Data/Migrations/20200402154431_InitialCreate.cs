@@ -47,7 +47,7 @@ namespace Froom.Data.Migrations
                     Number = table.Column<string>(nullable: true),
                     Floor = table.Column<int>(nullable: false),
                     BuildingName = table.Column<string>(nullable: false),
-                    Capacity = table.Column<int>(nullable: false),
+                    Capacity = table.Column<int>(nullable: true),
                     Points = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -156,6 +156,13 @@ namespace Froom.Data.Migrations
                 name: "IX_Rooms_BuildingName",
                 table: "Rooms",
                 column: "BuildingName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rooms_Number",
+                table: "Rooms",
+                column: "Number",
+                unique: true,
+                filter: "[Number] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
