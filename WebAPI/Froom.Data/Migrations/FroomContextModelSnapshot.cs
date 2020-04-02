@@ -38,9 +38,6 @@ namespace Froom.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
-                        .IsUnique();
-
                     b.ToTable("Buildings");
                 });
 
@@ -67,9 +64,7 @@ namespace Froom.Data.Migrations
             modelBuilder.Entity("Froom.Data.Entities.Report", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -86,8 +81,6 @@ namespace Froom.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("RoomId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Reports");
                 });
@@ -112,8 +105,6 @@ namespace Froom.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Id");
 
                     b.HasIndex("RoomId");
 
@@ -149,30 +140,26 @@ namespace Froom.Data.Migrations
 
                     b.HasIndex("BuildingName");
 
-                    b.HasIndex("Id");
-
                     b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Number")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("Number")
-                        .IsUnique();
+                    b.HasKey("Number");
 
                     b.ToTable("Users");
                 });
@@ -188,15 +175,15 @@ namespace Froom.Data.Migrations
 
             modelBuilder.Entity("Froom.Data.Entities.Report", b =>
                 {
-                    b.HasOne("Froom.Data.Entities.Room", "Room")
+                    b.HasOne("Froom.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("RoomId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Froom.Data.Entities.User", "User")
+                    b.HasOne("Froom.Data.Entities.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
@@ -212,7 +199,6 @@ namespace Froom.Data.Migrations
                     b.HasOne("Froom.Data.Entities.User", "User")
                         .WithMany("Reservations")
                         .HasForeignKey("UserNumber")
-                        .HasPrincipalKey("Number")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
@@ -223,7 +209,7 @@ namespace Froom.Data.Migrations
                         .WithMany("Rooms")
                         .HasForeignKey("BuildingName")
                         .HasPrincipalKey("Name")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

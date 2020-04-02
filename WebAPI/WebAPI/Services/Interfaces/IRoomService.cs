@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Froom.Data.Dtos;
 using Froom.Data.Models.Rooms;
 using System;
@@ -9,16 +10,10 @@ namespace WebAPI.Services.Interfaces
     public interface IRoomService
     {
         /// <summary>
-        /// Adds a new room.
-        /// </summary>
-        /// <param name="model">The room to be added.</param>
-        public Task AddRoomAsync(PostRoomModel model);
-
-        /// <summary>
         /// Adds multiple new rooms.
         /// </summary>
         /// <param name="models">The rooms to be added.</param>
-        public Task AddRangeAsync(PostRoomModel[] models);
+        public Task AddRangeAsync(IEnumerable<PostRoomModel> models);
 
         /// <summary>
         /// Filters the rooms by campus, building and floor.

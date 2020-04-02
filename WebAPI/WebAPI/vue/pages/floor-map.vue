@@ -1,5 +1,5 @@
 <template>
-  <floor-map :modified="modified" @modified="modified = $event" />
+  <floor-map />
 </template>
 
 <script lang="ts">

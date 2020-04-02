@@ -23,9 +23,9 @@ namespace Froom.Data.Repositories
         }
 
 
-        public async Task AddAsync(Room room)
+        public async Task AddAsync(IEnumerable<Room> rooms)
         {
-            await _rooms.AddAsync(room);
+            await _rooms.AddRangeAsync(rooms);
             await _context.SaveChangesAsync();
         }
 

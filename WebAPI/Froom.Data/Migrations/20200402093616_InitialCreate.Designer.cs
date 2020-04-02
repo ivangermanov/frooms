@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Froom.Data.Migrations
 {
     [DbContext(typeof(FroomContext))]
-    [Migration("20200324170917_InitialCreate")]
+    [Migration("20200402093616_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,15 +31,14 @@ namespace Froom.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Campus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("Campus")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasIndex("Id");
+                    b.HasKey("Id");
 
                     b.ToTable("Buildings");
                 });
@@ -67,9 +66,7 @@ namespace Froom.Data.Migrations
             modelBuilder.Entity("Froom.Data.Entities.Report", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -87,8 +84,6 @@ namespace Froom.Data.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Reports");
                 });
 
@@ -99,8 +94,8 @@ namespace Froom.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Duration")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("Duration")
+                        .HasColumnType("time");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
@@ -108,16 +103,14 @@ namespace Froom.Data.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserNumber")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id");
-
                     b.HasIndex("RoomId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserNumber");
 
                     b.ToTable("Reservations");
                 });
@@ -129,8 +122,9 @@ namespace Froom.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BuildingId")
-                        .HasColumnType("int");
+                    b.Property<string>("BuildingName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
@@ -138,36 +132,36 @@ namespace Froom.Data.Migrations
                     b.Property<int>("Floor")
                         .HasColumnType("int");
 
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
+                    b.Property<string>("Number")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Points")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuildingId");
-
-                    b.HasIndex("Id");
+                    b.HasIndex("BuildingName");
 
                     b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Number")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id", "Number");
+                    b.HasKey("Number");
 
                     b.ToTable("Users");
                 });
@@ -183,15 +177,15 @@ namespace Froom.Data.Migrations
 
             modelBuilder.Entity("Froom.Data.Entities.Report", b =>
                 {
-                    b.HasOne("Froom.Data.Entities.Room", "Room")
+                    b.HasOne("Froom.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("RoomId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Froom.Data.Entities.User", "User")
+                    b.HasOne("Froom.Data.Entities.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
@@ -206,7 +200,7 @@ namespace Froom.Data.Migrations
 
                     b.HasOne("Froom.Data.Entities.User", "User")
                         .WithMany("Reservations")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserNumber")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
@@ -215,8 +209,9 @@ namespace Froom.Data.Migrations
                 {
                     b.HasOne("Froom.Data.Entities.Building", "Building")
                         .WithMany("Rooms")
-                        .HasForeignKey("BuildingId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasForeignKey("BuildingName")
+                        .HasPrincipalKey("Name")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

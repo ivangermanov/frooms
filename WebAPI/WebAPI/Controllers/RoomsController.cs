@@ -1,6 +1,7 @@
 using Froom.Data.Models.Rooms;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebAPI.Services.Interfaces;
 
@@ -33,9 +34,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostRooms(PostRoomModel model)
+        public async Task<IActionResult> PostRooms(IEnumerable<PostRoomModel> model)
         {
-            await _roomService.AddRoomAsync(model);
+            await _roomService.AddRangeAsync(model);
 
             return Ok();
         }
