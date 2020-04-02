@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Froom.Data", "Froom.Data\Froom.Data.csproj", "{959FE23C-08DE-4BC6-A7CC-0A26FB78BDD2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Froom.UnitTest", "Froom.UnitTest\Froom.UnitTest.csproj", "{4CA5FFFB-F0E4-4807-A859-DB75FE0322E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{959FE23C-08DE-4BC6-A7CC-0A26FB78BDD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{959FE23C-08DE-4BC6-A7CC-0A26FB78BDD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{959FE23C-08DE-4BC6-A7CC-0A26FB78BDD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CA5FFFB-F0E4-4807-A859-DB75FE0322E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CA5FFFB-F0E4-4807-A859-DB75FE0322E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CA5FFFB-F0E4-4807-A859-DB75FE0322E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CA5FFFB-F0E4-4807-A859-DB75FE0322E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
