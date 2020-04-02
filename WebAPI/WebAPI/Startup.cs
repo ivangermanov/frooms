@@ -21,6 +21,8 @@ namespace WebAPI
             Configuration = configuration;
         }
 
+        private readonly string AllowLocalHost = "_allowLocalHost";
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -32,6 +34,14 @@ namespace WebAPI
                     Configuration["ConnectionString:FontysDB"],
                     x => x.MigrationsAssembly("Froom.Data"));
             });
+
+#if DEBUG
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowLocalHost,
+                    builder => { builder.AllowAnyOrigin(); });
+            });
+#endif
 
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddTransient<IRoomService, RoomService>();
@@ -53,6 +63,10 @@ namespace WebAPI
 
             app.UseAuthorization();
 
+#if DEBUG
+            app.UseCors(AllowLocalHost);
+#endif
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -67,7 +81,7 @@ namespace WebAPI
 #if DEBUG
                 endpoints.MapToVueCliProxy(
                     "{*path}",
-                    new SpaOptions {SourcePath = "vue/"},
+                    new SpaOptions { SourcePath = "vue/" },
                     "dev",
                     regex: "Compiled successfully",
                     forceKill: true
