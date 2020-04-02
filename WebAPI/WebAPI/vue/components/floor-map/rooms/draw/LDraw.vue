@@ -23,11 +23,20 @@ export default Vue.extend({
     mapObject: {
       type: Map,
       required: true
+    },
+    fetchedLayers: {
+      type: Array,
+      required: true
     }
   },
   data () {
     return {
       layers: geoJSON()
+    }
+  },
+  watch: {
+    fetchedLayers (layers: GeoJSON.Feature[]) {
+      console.log(layers)
     }
   },
   beforeMount () {

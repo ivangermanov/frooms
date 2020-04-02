@@ -21,7 +21,7 @@ namespace WebAPI.Services.Interfaces
         /// <param name="campus">The name of the campus.</param>
         /// <param name="buildingName">The name of the building.</param>
         /// <param name="floor">The number of the floor. If null, the rooms for the whole building are returned.</param>
-        public IQueryable<RoomDto> GetRooms(string campus, string buildingName, int? floor);
+        public Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? buildingName, int? floor);
 
         /// <summary>
         /// Returns the rooms without reservations for a period of time.
@@ -32,6 +32,6 @@ namespace WebAPI.Services.Interfaces
         /// <param name="fromDate">The start time of the period.</param>
         /// <param name="toDate">The end time of the period.</param>
         /// <returns></returns>
-        public IQueryable<RoomDto> GetAvailableRooms(string campus, string buildingName, int floor, DateTime fromDate, DateTime toDate);
+        public Task<IEnumerable<RoomDto>> GetRooms(string campus, string buildingName, int floor, DateTime fromDate, DateTime toDate);
     }
 }
