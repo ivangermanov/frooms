@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Froom.Data.Database;
@@ -25,6 +26,12 @@ namespace Froom.Data.Repositories
         public async Task AddAsync(Room room)
         {
             await _rooms.AddAsync(room);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddRangeAsync(Room[] rooms)
+        {
+            await _rooms.AddRangeAsync(rooms);
             await _context.SaveChangesAsync();
         }
 

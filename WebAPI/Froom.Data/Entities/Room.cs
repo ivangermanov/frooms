@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Froom.Data.Entities
 {
@@ -19,6 +21,16 @@ namespace Froom.Data.Entities
         public ICollection<Reservation> Reservations { get; set; }
 
         public ICollection<Point> Points { get; set; }
+
+        public bool IsAvailable(DateTime fromDate, DateTime toDate)
+        {
+            if (this.Reservations is null)
+                return true;
+
+            return this.Reservations
+                .Where(r => r.StartTime.Add(r.Duration) <= fromDate && r.StartTime >= toDate)
+                .Any();
+        }
     }
 
     public class Point

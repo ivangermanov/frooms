@@ -1,98 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Froom.Data.Database;
-using Froom.Data.Entities;
+﻿﻿using Froom.Data.Models.Users;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Controllers
 {
     [Route("api/users")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
-        // TODO: Make one base controller so the context is not set in every controller
-        private readonly FroomContext _context;
+        IUserService _userService;
 
-        public UserController(FroomContext context)
+        public UsersController(IUserService userService)
         {
-            _context = context;
+            _userService = userService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-        {
-            // TODO: Return DTOs, not whole DB entity
-            return await _context.Users.ToListAsync();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(long id)
-        {
-            // TODO: Return DTOs, not whole DB entity
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null) return NotFound();
-
-            return user;
-        }
-
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        // TODO: Put parameter as DTO, not whole DB entity
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(Guid id, User user)
-        {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                    return NotFound();
-                throw;
-            }
-
-            return NoContent();
-        }
-
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        // TODO: Put user as DTO, not whole DB entity
-        public async Task<ActionResult<User>> PostUser(User user)
+        public IActionResult AddUser(PostUserModel model)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(long id)
-        {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null) return NotFound();
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return user;
-        }
-
-        private bool UserExists(Guid id)
-        {
-            return _context.Users.Any(e => e.Id == id);
+            return Ok(_userService.AddUserAsync(model));
         }
     }
 }
