@@ -37,3 +37,7 @@ export function CreateIRoom (
 
   return room
 }
+
+export function IRoomToGeoJSON (room: IRoom) {
+
+}
