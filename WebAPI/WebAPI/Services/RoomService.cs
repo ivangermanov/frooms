@@ -30,7 +30,7 @@ namespace WebAPI.Services
             var mapper = config.CreateMapper();
 
             var rooms = mapper.Map<IEnumerable<Room>>(model);
-            await _roomRepository.AddAsync(rooms);
+            await _roomRepository.AddRangeAsync(rooms);
         }
 
         public async Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? buildingName, int? floor)
