@@ -25,8 +25,9 @@ export default Vue.extend({
       required: true
     },
     fetchedLayers: {
-      type: Array,
-      required: true
+      type: Object,
+      required: true,
+      default: {} as { [key: string]: GeoJSON.Feature }
     }
   },
   data () {
@@ -35,8 +36,13 @@ export default Vue.extend({
     }
   },
   watch: {
-    fetchedLayers (layers: GeoJSON.Feature[]) {
+    fetchedLayers (layers: { [key: string]: GeoJSON.Feature }) {
       console.log(layers)
+      const values = Object.values(layers)
+      this.layers.clearLayers()
+      values.forEach((layer) => {
+        this.layers.addData(layer)
+      })
     }
   },
   beforeMount () {
