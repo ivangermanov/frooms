@@ -1,22 +1,21 @@
-using Froom.Data.Dtos;
-using Froom.Data.Entities;
-using Froom.Data.Models.Rooms;
-using Froom.Data.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Froom.Data.Dtos;
+using Froom.Data.Entities;
+using Froom.Data.Models.Rooms;
+using Froom.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Services
 {
-    /// <inheritdoc cref="IRoomService"/>
+    /// <inheritdoc cref="IRoomService" />
     public class RoomService : IRoomService
     {
-        readonly IRoomRepository _roomRepository;
+        private readonly IRoomRepository _roomRepository;
 
         public RoomService(IRoomRepository roomRepository)
         {
@@ -45,7 +44,8 @@ namespace WebAPI.Services
             return dtos;
         }
 
-        public async Task<IEnumerable<RoomDto>> GetRooms(string campus, string buildingName, int floor, DateTime fromDate, DateTime toDate)
+        public async Task<IEnumerable<RoomDto>> GetRooms(string campus, string buildingName, int floor,
+            DateTime fromDate, DateTime toDate)
         {
             if (campus == null || buildingName == null)
                 throw new ArgumentNullException("The campus or the building name was null.");
@@ -53,7 +53,7 @@ namespace WebAPI.Services
             if (fromDate > toDate)
                 throw new ArgumentException("The start DateTime cannot be after the end DateTime.");
 
-            IQueryable<RoomDto> rooms = _roomRepository.GetAll()
+            var rooms = _roomRepository.GetAll()
                 .Where(r => r.Building.Campus == campus &&
                             r.BuildingName == buildingName &&
                             r.Floor == floor &&
@@ -62,6 +62,5 @@ namespace WebAPI.Services
 
             return rooms;
         }
-
     }
 }

@@ -1,4 +1,4 @@
-﻿﻿using Froom.Data.Models.Users;
+using Froom.Data.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Services.Interfaces;
 
