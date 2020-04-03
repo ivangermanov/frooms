@@ -64,7 +64,7 @@ namespace Froom.Data.Database
             {
                 options.HasOne(r => r.User)
                     .WithMany()
-                    .HasForeignKey(r => r.Id)
+                    .HasForeignKey(r => r.UserNumber)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.NoAction);
 
