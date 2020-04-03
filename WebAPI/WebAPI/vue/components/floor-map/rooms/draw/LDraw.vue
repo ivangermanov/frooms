@@ -1,7 +1,7 @@
 <template>
   <l-draw-toolbar
     :map-object="mapObject"
-    :layers="layers"
+    :layers="allLayers"
     position="topright"
     @addLayer="addLayer"
     @saveLayers="saveLayers"
@@ -32,30 +32,31 @@ export default Vue.extend({
   },
   data () {
     return {
-      layers: geoJSON()
+      changedLayers: geoJSON(),
+      allLayers: geoJSON()
     }
   },
   watch: {
     fetchedLayers (layers: { [key: string]: GeoJSON.Feature }) {
       console.log(layers)
       const values = Object.values(layers)
-      this.layers.clearLayers()
+      this.allLayers.clearLayers()
       values.forEach((layer) => {
-        this.layers.addData(layer)
+        this.allLayers.addData(layer)
       })
     }
   },
   beforeMount () {
     const map = this.mapObject
-    map.addLayer(this.layers)
+    map.addLayer(this.allLayers)
   },
   methods: {
     addLayer (layer: Polyline) {
-      this.layers.addLayer(layer)
+      this.changedLayers.addLayer(layer)
       this.$emit('addLayer', layer)
     },
     saveLayers () {
-      this.$emit('saveLayers', this.layers)
+      this.$emit('saveLayers', this.changedLayers)
     }
   }
 })
