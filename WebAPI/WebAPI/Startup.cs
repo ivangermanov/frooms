@@ -28,7 +28,7 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<FroomContext>(options =>  
+            services.AddDbContext<FroomContext>(options =>
             {
                 options.UseSqlServer(
                     Configuration["ConnectionString:FontysDB"],
@@ -39,7 +39,7 @@ namespace WebAPI
             services.AddCors(options =>
             {
                 options.AddPolicy(AllowLocalHost,
-                    builder => { builder.AllowAnyOrigin(); });
+                    builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
             });
 #endif
 
