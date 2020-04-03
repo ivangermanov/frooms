@@ -39,10 +39,10 @@ export function CreateIRoom (
 }
 
 export function IRoomToGeoJSONFeature (room: IRoom): GeoJSON.Feature {
-  const coordinates: GeoJSON.Position[] = room.points.map(point => [point.x, point.y])
+  const coordinates: GeoJSON.Position[][] = [room.points.map(point => [point.x, point.y])]
 
-  const geometry: GeoJSON.LineString = {
-    type: 'LineString',
+  const geometry: GeoJSON.Polygon = {
+    type: 'Polygon',
     coordinates
   }
 
