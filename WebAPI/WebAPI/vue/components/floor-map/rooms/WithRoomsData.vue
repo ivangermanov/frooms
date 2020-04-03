@@ -13,20 +13,13 @@ export default Vue.extend({
       floor: 2,
       campus: 'eindhoven',
       buildingName: 'r1',
-      rooms: {} as {[key: string]: IRoom},
-      roomsArray: [] as IRoom[],
-      roomLayers: [] as GeoJSON.Feature[]
+      rooms: {} as { [key: string]: IRoom },
+      roomLayers: {} as { [key: string]: GeoJSON.Feature }
     }
   },
   computed: {
     saved (): Boolean {
       return this.$store.state.roomAdmin.saved
-    }
-  },
-  watch: {
-    rooms () {
-      this.roomsArray = Object.values(this.rooms)
-      this.roomLayers = this.roomsArray.map(room => IRoomToGeoJSONFeature(room))
     }
   },
   created () {
@@ -41,25 +34,28 @@ export default Vue.extend({
           this.floor
         )
         const rooms: IRoom[] = data
+        const newRooms = {} as { [key: string]: IRoom }
+        const newRoomLayers = {} as { [key: string]: GeoJSON.Feature }
+
         rooms.forEach((room) => {
-          this.rooms = {
-            ...this.rooms,
-            [room.number]: room
-          }
+          newRooms[room.number] = room
+          newRoomLayers[room.number] = IRoomToGeoJSONFeature(room)
         })
+        this.rooms = newRooms
+        this.roomLayers = newRoomLayers
       }
 
       fetch()
       setInterval(() => {
         fetch()
-      }, 10000)
+      }, 5000)
     },
     async saveShapes (_geoJSON: GeoJSON) {
       if (this.saved) {
         return
       }
 
-      const payload = this.roomsArray
+      const payload = Object.values(this.rooms)
 
       const success = await RoomRepository.postRooms(payload).catch(() => {})
 
@@ -72,9 +68,7 @@ export default Vue.extend({
     }),
     modifyShapes (shape: Polyline) {
       // TODO: Remove random number
-      const randNumber = Math.random()
-        .toString(36)
-        .substring(7)
+      const randNumber = Math.random().toString(36).substring(7)
 
       const room = CreateIRoom(
         shape,
