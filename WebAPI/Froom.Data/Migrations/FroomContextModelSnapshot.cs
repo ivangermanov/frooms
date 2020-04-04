@@ -38,7 +38,7 @@ namespace Froom.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Buildings");
+                    b.ToTable("Building");
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Picture", b =>
@@ -86,7 +86,7 @@ namespace Froom.Data.Migrations
 
                     b.HasIndex("UserNumber");
 
-                    b.ToTable("Reports");
+                    b.ToTable("Report");
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Reservation", b =>
@@ -114,7 +114,7 @@ namespace Froom.Data.Migrations
 
                     b.HasIndex("UserNumber");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservation");
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Room", b =>
@@ -148,15 +148,13 @@ namespace Froom.Data.Migrations
                         .IsUnique()
                         .HasFilter("[Number] IS NOT NULL");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Room");
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.User", b =>
                 {
                     b.Property<int>("Number")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -166,7 +164,7 @@ namespace Froom.Data.Migrations
 
                     b.HasKey("Number");
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Picture", b =>
