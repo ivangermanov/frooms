@@ -12,21 +12,19 @@ namespace Froom.Data.Database
     {
         public FroomContext(DbContextOptions<FroomContext> options) : base(options) { }
 
-        public DbSet<User> Users { get; set; }
-
-        public DbSet<Building> Buildings { get; set; }
-
-        public DbSet<Report> Reports { get; set; }
-
-        public DbSet<Reservation> Reservations { get; set; }
-
-        public DbSet<Room> Rooms { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>(options => { options.HasKey(u => u.Number); });
+            modelBuilder.Entity<User>(options => 
+            {
+                options.HasKey(u => u.Number);
+
+                // Turn of the automatic generation of PK.
+                // This way so we can create users with their Number from the FontysAPI.
+                options.Property(u => u.Number)
+                    .ValueGeneratedNever();
+            });
 
             modelBuilder.Entity<Room>(options =>
             {
@@ -49,7 +47,6 @@ namespace Froom.Data.Database
                 options.HasOne(r => r.User)
                     .WithMany(u => u.Reservations)
                     .HasForeignKey(r => r.UserNumber)
-                    .HasPrincipalKey(u => u.Number)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.NoAction);
 
