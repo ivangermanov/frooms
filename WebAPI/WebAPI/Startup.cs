@@ -16,12 +16,12 @@ namespace WebAPI
 {
     public class Startup
     {
+        private readonly string AllowLocalHost = "_allowLocalHost";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        private readonly string AllowLocalHost = "_allowLocalHost";
 
         public IConfiguration Configuration { get; }
 
@@ -35,13 +35,12 @@ namespace WebAPI
                     x => x.MigrationsAssembly("Froom.Data"));
             });
 
-#if DEBUG
+
             services.AddCors(options =>
             {
                 options.AddPolicy(AllowLocalHost,
                     builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
             });
-#endif
 
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddTransient<IRoomService, RoomService>();
@@ -55,17 +54,15 @@ namespace WebAPI
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
-            app.UseSpaStaticFiles();
-
             app.UseHttpsRedirection();
+
+            app.UseSpaStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-#if DEBUG
-            app.UseCors(AllowLocalHost);
-#endif
+            if (env.IsDevelopment()) app.UseCors(AllowLocalHost);
 
             app.UseEndpoints(endpoints =>
             {
@@ -78,15 +75,13 @@ namespace WebAPI
                 // if (System.Diagnostics.Debugger.IsAttached)
                 // or a preprocessor such as #if DEBUG
 
-#if DEBUG
                 endpoints.MapToVueCliProxy(
                     "{*path}",
-                    new SpaOptions { SourcePath = "vue/" },
-                    "dev",
+                    new SpaOptions {SourcePath = "vue/"},
+                    env.IsDevelopment() ? "dev" : null,
                     regex: "Compiled successfully",
                     forceKill: true
                 );
-#endif
             });
         }
     }

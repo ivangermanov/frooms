@@ -22,14 +22,14 @@ namespace WebAPI.Services
             _roomRepository = roomRepository;
         }
 
-        public async Task AddRangeAsync(IEnumerable<PostRoomModel> model)
+        public async Task UpdateRangeAsync(IEnumerable<PostRoomModel> model)
         {
             // TODO: Use Mapper properly
             var config = new MapperConfiguration(cfg => cfg.CreateMap<PostRoomModel, Room>());
             var mapper = config.CreateMapper();
 
             var rooms = mapper.Map<IEnumerable<Room>>(model);
-            await _roomRepository.AddRangeAsync(rooms);
+            await _roomRepository.UpdateRangeAsync(rooms);
         }
 
         public async Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? buildingName, int? floor)

@@ -18,6 +18,13 @@ namespace WebAPI.Controllers
             _roomService = roomService;
         }
 
+        // TODO: Remove, only for testing
+        [HttpGet]
+        [Route("user")]
+        public IActionResult GetUser()
+        {
+            return Ok(new { bla = "bla" });
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetRooms(string? campus, string? buildingName, int? floor)
@@ -37,16 +44,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> PostRooms(IEnumerable<PostRoomModel> model)
         {
-            await _roomService.AddRangeAsync(model);
-            return Ok();
-        }
-
-        [HttpPost]
-        [Route("addRange")]
-        public async Task<IActionResult> AddRange(PostRoomModel[] models)
-        {
-            await _roomService.AddRangeAsync(models);
-
+            await _roomService.UpdateRangeAsync(model);
             return Ok();
         }
     }
