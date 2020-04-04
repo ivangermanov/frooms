@@ -8,7 +8,7 @@ namespace Froom.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Buildings",
+                name: "Building",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -19,26 +19,25 @@ namespace Froom.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Buildings", x => x.Id);
-                    table.UniqueConstraint("AK_Buildings_Name", x => x.Name);
+                    table.PrimaryKey("PK_Building", x => x.Id);
+                    table.UniqueConstraint("AK_Building_Name", x => x.Name);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "User",
                 columns: table => new
                 {
-                    Number = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Number = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Role = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Number);
+                    table.PrimaryKey("PK_User", x => x.Number);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rooms",
+                name: "Room",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -51,17 +50,17 @@ namespace Froom.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rooms", x => x.Id);
+                    table.PrimaryKey("PK_Room", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rooms_Buildings_BuildingName",
+                        name: "FK_Room_Building_BuildingName",
                         column: x => x.BuildingName,
-                        principalTable: "Buildings",
+                        principalTable: "Building",
                         principalColumn: "Name",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reports",
+                name: "Report",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -73,21 +72,21 @@ namespace Froom.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reports", x => x.Id);
+                    table.PrimaryKey("PK_Report", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reports_Rooms_RoomId",
+                        name: "FK_Report_Room_RoomId",
                         column: x => x.RoomId,
-                        principalTable: "Rooms",
+                        principalTable: "Room",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Reports_Users_UserNumber",
+                        name: "FK_Report_User_UserNumber",
                         column: x => x.UserNumber,
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "Number");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reservations",
+                name: "Reservation",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -99,16 +98,16 @@ namespace Froom.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reservations", x => x.Id);
+                    table.PrimaryKey("PK_Reservation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reservations_Rooms_RoomId",
+                        name: "FK_Reservation_Room_RoomId",
                         column: x => x.RoomId,
-                        principalTable: "Rooms",
+                        principalTable: "Room",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Reservations_Users_UserNumber",
+                        name: "FK_Reservation_User_UserNumber",
                         column: x => x.UserNumber,
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "Number");
                 });
 
@@ -125,9 +124,9 @@ namespace Froom.Data.Migrations
                 {
                     table.PrimaryKey("PK_Picture", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Picture_Reports_ReportId",
+                        name: "FK_Picture_Report_ReportId",
                         column: x => x.ReportId,
-                        principalTable: "Reports",
+                        principalTable: "Report",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -138,33 +137,33 @@ namespace Froom.Data.Migrations
                 column: "ReportId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reports_RoomId",
-                table: "Reports",
+                name: "IX_Report_RoomId",
+                table: "Report",
                 column: "RoomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reports_UserNumber",
-                table: "Reports",
+                name: "IX_Report_UserNumber",
+                table: "Report",
                 column: "UserNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservations_RoomId",
-                table: "Reservations",
+                name: "IX_Reservation_RoomId",
+                table: "Reservation",
                 column: "RoomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservations_UserNumber",
-                table: "Reservations",
+                name: "IX_Reservation_UserNumber",
+                table: "Reservation",
                 column: "UserNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rooms_BuildingName",
-                table: "Rooms",
+                name: "IX_Room_BuildingName",
+                table: "Room",
                 column: "BuildingName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rooms_Number",
-                table: "Rooms",
+                name: "IX_Room_Number",
+                table: "Room",
                 column: "Number",
                 unique: true,
                 filter: "[Number] IS NOT NULL");
@@ -176,19 +175,19 @@ namespace Froom.Data.Migrations
                 name: "Picture");
 
             migrationBuilder.DropTable(
-                name: "Reservations");
+                name: "Reservation");
 
             migrationBuilder.DropTable(
-                name: "Reports");
+                name: "Report");
 
             migrationBuilder.DropTable(
-                name: "Rooms");
+                name: "Room");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "User");
 
             migrationBuilder.DropTable(
-                name: "Buildings");
+                name: "Building");
         }
     }
 }
