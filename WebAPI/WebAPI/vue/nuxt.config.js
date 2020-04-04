@@ -26,7 +26,7 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['toastr/toastr.scss'],
   /*
    ** Plugins to load before mounting the App
    */
@@ -36,6 +36,7 @@ export default {
    */
   buildModules: [
     '@nuxtjs/vuetify',
+    '@nuxtjs/dotenv',
     '@nuxtjs/moment',
     [
       '@nuxt/typescript-build',
@@ -53,7 +54,6 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv',
     'nuxt-leaflet',
     'portal-vue/nuxt'
   ],

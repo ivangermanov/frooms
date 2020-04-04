@@ -1,10 +1,10 @@
-﻿using Froom.Data.Models.Users;
+using Froom.Data.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
     public class UsersController : ControllerBase
     {

@@ -38,10 +38,7 @@ namespace Froom.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Buildings");
+                    b.ToTable("Building");
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Picture", b =>
@@ -80,16 +77,16 @@ namespace Froom.Data.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserNumber")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoomId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserNumber");
 
-                    b.ToTable("Reports");
+                    b.ToTable("Report");
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Reservation", b =>
@@ -113,13 +110,11 @@ namespace Froom.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id");
-
                     b.HasIndex("RoomId");
 
                     b.HasIndex("UserNumber");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservation");
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Room", b =>
@@ -133,14 +128,14 @@ namespace Froom.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Capacity")
+                    b.Property<int?>("Capacity")
                         .HasColumnType("int");
 
                     b.Property<int>("Floor")
                         .HasColumnType("int");
 
                     b.Property<string>("Number")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Points")
                         .HasColumnType("nvarchar(max)");
@@ -149,32 +144,27 @@ namespace Froom.Data.Migrations
 
                     b.HasIndex("BuildingName");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("Number")
+                        .IsUnique()
+                        .HasFilter("[Number] IS NOT NULL");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Room");
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("Number");
 
-                    b.HasIndex("Number")
-                        .IsUnique();
-
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Picture", b =>
@@ -196,7 +186,7 @@ namespace Froom.Data.Migrations
 
                     b.HasOne("Froom.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserNumber")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
@@ -212,7 +202,6 @@ namespace Froom.Data.Migrations
                     b.HasOne("Froom.Data.Entities.User", "User")
                         .WithMany("Reservations")
                         .HasForeignKey("UserNumber")
-                        .HasPrincipalKey("Number")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
@@ -223,7 +212,7 @@ namespace Froom.Data.Migrations
                         .WithMany("Rooms")
                         .HasForeignKey("BuildingName")
                         .HasPrincipalKey("Name")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

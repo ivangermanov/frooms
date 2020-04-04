@@ -1,4 +1,5 @@
-﻿using Froom.Data.Entities;
+﻿using System.Collections.Generic;
+using Froom.Data.Entities;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,16 +8,10 @@ namespace Froom.Data.Repositories.Interfaces
     public interface IRoomRepository
     {
         /// <summary>
-        /// Adds a room to the database context.
-        /// </summary>
-        /// <param name="room"> The room to be added.</param>
-        Task AddAsync(Room room);
-
-        /// <summary>
         /// Adds a collection of rooms to the database context.
         /// </summary>
         /// <param name="rooms"> The rooms  to be added.</param>
-        public Task AddRangeAsync(Room[] rooms);
+        public Task AddRangeAsync(IEnumerable<Room> rooms);
 
         /// <summary>
         /// Gets all rooms from the database context.

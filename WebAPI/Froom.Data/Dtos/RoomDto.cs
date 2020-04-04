@@ -9,7 +9,7 @@ namespace Froom.Data.Dtos
         public int Floor { get; set; }
         public string BuildingName { get; set; }
         public string CampusName { get; set; }
-        public int Capacity { get; set; }
+        public int? Capacity { get; set; }
         public ICollection<Point> Points { get; set; }
 
         public RoomDto(Room room)

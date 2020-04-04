@@ -21,17 +21,27 @@ namespace WebAPI
             Configuration = configuration;
         }
 
+        private readonly string AllowLocalHost = "_allowLocalHost";
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<FroomContext>(options =>  
+            services.AddDbContext<FroomContext>(options =>
             {
                 options.UseSqlServer(
                     Configuration["ConnectionString:FontysDB"],
                     x => x.MigrationsAssembly("Froom.Data"));
             });
+
+#if DEBUG
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowLocalHost,
+                    builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
+            });
+#endif
 
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddTransient<IRoomService, RoomService>();
@@ -43,10 +53,7 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseSpaStaticFiles();
 
@@ -55,6 +62,10 @@ namespace WebAPI
             app.UseRouting();
 
             app.UseAuthorization();
+
+#if DEBUG
+            app.UseCors(AllowLocalHost);
+#endif
 
             app.UseEndpoints(endpoints =>
             {
@@ -66,13 +77,16 @@ namespace WebAPI
                 // You could wrap this proxy in either
                 // if (System.Diagnostics.Debugger.IsAttached)
                 // or a preprocessor such as #if DEBUG
+
+#if DEBUG
                 endpoints.MapToVueCliProxy(
                     "{*path}",
-                    new SpaOptions { SourcePath = "vue" },
-                    npmScript: (System.Diagnostics.Debugger.IsAttached) ? "dev" : null,
+                    new SpaOptions { SourcePath = "vue/" },
+                    "dev",
                     regex: "Compiled successfully",
                     forceKill: true
                 );
+#endif
             });
         }
     }

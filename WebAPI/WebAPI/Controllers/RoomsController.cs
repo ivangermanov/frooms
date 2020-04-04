@@ -1,6 +1,7 @@
 using Froom.Data.Models.Rooms;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebAPI.Services.Interfaces;
 
@@ -10,7 +11,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class RoomsController : ControllerBase
     {
-        IRoomService _roomService;
+        readonly IRoomService _roomService;
 
         public RoomsController(IRoomService roomService)
         {
@@ -19,24 +20,24 @@ namespace WebAPI.Controllers
 
 
         [HttpGet]
-        [Route("{campus}/{buildingName}/{floor}")]
-        public IActionResult GetRooms(string campus, string buildingName, int? floor)
+        public async Task<IActionResult> GetRooms(string? campus, string? buildingName, int? floor)
         {
-            return Ok(_roomService.GetRooms(campus, buildingName, floor));
+            var rooms = await _roomService.GetRooms(campus, buildingName, floor);
+            return Ok(rooms);
         }
 
         [HttpGet]
         [Route("available/{campus}/{buildingName}/{floor}")]
-        public IActionResult GetAvailableRooms(string campus, string buildingName, int floor, DateTime fromDate, DateTime toDate)
+        public async Task<IActionResult> GetRooms(string campus, string buildingName, int floor, DateTime fromDate, DateTime toDate)
         {
-            return Ok(_roomService.GetAvailableRooms(campus, buildingName, floor, fromDate, toDate));
+            var rooms = await _roomService.GetRooms(campus, buildingName, floor, fromDate, toDate);
+            return Ok(rooms);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(PostRoomModel model)
+        public async Task<IActionResult> PostRooms(IEnumerable<PostRoomModel> model)
         {
-            await _roomService.AddRoomAsync(model);
-
+            await _roomService.AddRangeAsync(model);
             return Ok();
         }
 
