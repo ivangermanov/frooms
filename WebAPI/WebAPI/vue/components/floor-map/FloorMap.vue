@@ -1,5 +1,5 @@
 <template>
-  <no-ssr>
+  <client-only>
     <l-map
       ref="map"
       :options="mapOptions"
@@ -26,7 +26,7 @@
         :bounds="overlayOptions.bounds"
       />
     </l-map>
-  </no-ssr>
+  </client-only>
 </template>
 <script lang="ts">
 import Vue from 'vue'
