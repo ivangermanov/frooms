@@ -26,7 +26,7 @@
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <div class="d-flex">
-        <v-icon :dark="$vuetify.theme.dark" class="mr-2">
+        <v-icon class="mr-2">
           mdi-theme-light-dark
         </v-icon>
         <v-switch v-model="$vuetify.theme.dark" class="switch" />

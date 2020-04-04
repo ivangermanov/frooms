@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Froom.Data.Repositories
 {
-    /// <inheritdoc cref="IRoomRepository"/>
+    /// <inheritdoc cref="IRoomRepository" />
     public class RoomRepository : IRoomRepository
     {
         private readonly FroomContext _context;
@@ -22,14 +22,7 @@ namespace Froom.Data.Repositories
             _rooms = _context.Set<Room>();
         }
 
-
-        public async Task AddAsync(Room room)
-        {
-            await _rooms.AddAsync(room);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task AddRangeAsync(Room[] rooms)
+        public async Task AddRangeAsync(IEnumerable<Room> rooms)
         {
             await _rooms.AddRangeAsync(rooms);
             await _context.SaveChangesAsync();
@@ -45,9 +38,9 @@ namespace Froom.Data.Repositories
         public async Task<Room> GetByIdAsync(int id)
         {
             return await _rooms
-                .Include(u => u.Reservations)
-                .SingleOrDefaultAsync(r => r.Id == id) ??
-                throw new DoesNotExistException($"Room with ID: {id} does not exist.");
+                       .Include(u => u.Reservations)
+                       .SingleOrDefaultAsync(r => r.Id == id) ??
+                   throw new DoesNotExistException($"Room with ID: {id} does not exist.");
         }
 
         public async Task UpdateAsync(Room room)

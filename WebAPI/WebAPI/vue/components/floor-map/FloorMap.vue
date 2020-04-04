@@ -1,9 +1,26 @@
 <template>
   <no-ssr>
     <l-map
+      ref="map"
       :options="mapOptions"
       style="height: 100%; padding: 10px; z-index: 0;"
     >
+      <with-rooms-data v-if="mapObject">
+        <template
+          v-slot="{
+            roomLayers,
+            saveShapes,
+            modifyShapes
+          }"
+        >
+          <l-draw
+            :fetched-layers="roomLayers"
+            :map-object="mapObject"
+            @saveLayers="saveShapes"
+            @addLayer="modifyShapes"
+          />
+        </template>
+      </with-rooms-data>
       <l-image-overlay
         :url="overlayOptions.url"
         :bounds="overlayOptions.bounds"
@@ -13,17 +30,22 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import axios from 'axios'
-import { CRS } from 'leaflet'
+
+import { CRS, Map } from 'leaflet'
 import { LMap, LImageOverlay } from 'vue2-leaflet'
+import WithRoomsData from './rooms/WithRoomsData.vue'
+import LDraw from './rooms/draw/LDraw.vue'
 
 export default Vue.extend({
   components: {
     LMap,
-    LImageOverlay
+    LImageOverlay,
+    LDraw,
+    WithRoomsData
   },
   data () {
     return {
+      mapObject: (null as unknown) as Map,
       mapOptions: {
         crs: CRS.Simple,
         attributionControl: false,
@@ -44,19 +66,10 @@ export default Vue.extend({
       }
     }
   },
-  beforeMount () {
-    // eslint-disable-next-line no-console
-    console.log('Test')
-    axios
-      .get('/weatherforecast', {
-        headers: {
-          'Access-Control-Allow-Origin': '*'
-        }
-      })
-      .then((r) => {
-        // eslint-disable-next-line no-console
-        console.log(r)
-      })
+  mounted () {
+    this.$nextTick(() => {
+      this.mapObject = (this.$refs.map as any).mapObject
+    })
   }
 })
 </script>

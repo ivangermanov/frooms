@@ -8,105 +8,107 @@ namespace Froom.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Buildings",
+                name: "Building",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    Campus = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Campus = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Buildings", x => x.Id);
+                    table.PrimaryKey("PK_Building", x => x.Id);
+                    table.UniqueConstraint("AK_Building_Name", x => x.Name);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
                     Number = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Role = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Number);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rooms",
+                name: "Room",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Number = table.Column<int>(nullable: false),
+                    Number = table.Column<string>(nullable: true),
                     Floor = table.Column<int>(nullable: false),
-                    BuildingId = table.Column<int>(nullable: false),
-                    Capacity = table.Column<int>(nullable: false)
+                    BuildingName = table.Column<string>(nullable: false),
+                    Capacity = table.Column<int>(nullable: true),
+                    Points = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rooms", x => x.Id);
+                    table.PrimaryKey("PK_Room", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rooms_Buildings_BuildingId",
-                        column: x => x.BuildingId,
-                        principalTable: "Buildings",
-                        principalColumn: "Id");
+                        name: "FK_Room_Building_BuildingName",
+                        column: x => x.BuildingName,
+                        principalTable: "Building",
+                        principalColumn: "Name",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reports",
+                name: "Report",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<Guid>(nullable: false),
+                    UserNumber = table.Column<int>(nullable: false),
                     RoomId = table.Column<int>(nullable: false),
                     DateCreated = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reports", x => x.Id);
+                    table.PrimaryKey("PK_Report", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reports_Rooms_RoomId",
+                        name: "FK_Report_Room_RoomId",
                         column: x => x.RoomId,
-                        principalTable: "Rooms",
+                        principalTable: "Room",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Reports_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
+                        name: "FK_Report_User_UserNumber",
+                        column: x => x.UserNumber,
+                        principalTable: "User",
+                        principalColumn: "Number");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reservations",
+                name: "Reservation",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<Guid>(nullable: false),
+                    UserNumber = table.Column<int>(nullable: false),
                     RoomId = table.Column<int>(nullable: false),
                     StartTime = table.Column<DateTime>(nullable: false),
-                    Duration = table.Column<DateTime>(nullable: false)
+                    Duration = table.Column<TimeSpan>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reservations", x => x.Id);
+                    table.PrimaryKey("PK_Reservation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reservations_Rooms_RoomId",
+                        name: "FK_Reservation_Room_RoomId",
                         column: x => x.RoomId,
-                        principalTable: "Rooms",
+                        principalTable: "Room",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Reservations_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
+                        name: "FK_Reservation_User_UserNumber",
+                        column: x => x.UserNumber,
+                        principalTable: "User",
+                        principalColumn: "Number");
                 });
 
             migrationBuilder.CreateTable(
@@ -122,17 +124,12 @@ namespace Froom.Data.Migrations
                 {
                     table.PrimaryKey("PK_Picture", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Picture_Reports_ReportId",
+                        name: "FK_Picture_Report_ReportId",
                         column: x => x.ReportId,
-                        principalTable: "Reports",
+                        principalTable: "Report",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Buildings_Id",
-                table: "Buildings",
-                column: "Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Picture_ReportId",
@@ -140,44 +137,36 @@ namespace Froom.Data.Migrations
                 column: "ReportId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reports_RoomId",
-                table: "Reports",
+                name: "IX_Report_RoomId",
+                table: "Report",
                 column: "RoomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reports_UserId",
-                table: "Reports",
-                column: "UserId");
+                name: "IX_Report_UserNumber",
+                table: "Report",
+                column: "UserNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservations_Id",
-                table: "Reservations",
-                column: "Id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reservations_RoomId",
-                table: "Reservations",
+                name: "IX_Reservation_RoomId",
+                table: "Reservation",
                 column: "RoomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservations_UserId",
-                table: "Reservations",
-                column: "UserId");
+                name: "IX_Reservation_UserNumber",
+                table: "Reservation",
+                column: "UserNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rooms_BuildingId",
-                table: "Rooms",
-                column: "BuildingId");
+                name: "IX_Room_BuildingName",
+                table: "Room",
+                column: "BuildingName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rooms_Id",
-                table: "Rooms",
-                column: "Id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_Id_Number",
-                table: "Users",
-                columns: new[] { "Id", "Number" });
+                name: "IX_Room_Number",
+                table: "Room",
+                column: "Number",
+                unique: true,
+                filter: "[Number] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -186,19 +175,19 @@ namespace Froom.Data.Migrations
                 name: "Picture");
 
             migrationBuilder.DropTable(
-                name: "Reservations");
+                name: "Reservation");
 
             migrationBuilder.DropTable(
-                name: "Reports");
+                name: "Report");
 
             migrationBuilder.DropTable(
-                name: "Rooms");
+                name: "Room");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "User");
 
             migrationBuilder.DropTable(
-                name: "Buildings");
+                name: "Building");
         }
     }
 }
