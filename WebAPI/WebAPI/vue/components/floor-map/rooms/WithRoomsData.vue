@@ -1,7 +1,7 @@
 <script lang="ts">
 import Vue, { VNode } from 'vue'
 import { mapMutations } from 'vuex'
-import { GeoJSON, Polyline } from 'leaflet'
+import { GeoJSON } from 'leaflet'
 import { IRoom, CreateIRoom, IRoomToGeoJSONFeature } from '@/types'
 
 import { RepositoryFactory } from '@/api/repositoryFactory'
@@ -14,6 +14,7 @@ export default Vue.extend({
       campus: 'eindhoven',
       buildingName: 'r1',
       rooms: {} as { [key: string]: IRoom },
+      changedRooms: {} as { [key: string]: IRoom },
       roomLayers: {} as { [key: string]: GeoJSON.Feature }
     }
   },
@@ -50,12 +51,12 @@ export default Vue.extend({
         fetch()
       }, 5000)
     },
-    async saveShapes (_geoJSON: GeoJSON) {
+    async saveShapes () {
       if (this.saved) {
         return
       }
 
-      const payload = Object.values(this.rooms)
+      const payload = Object.values(this.changedRooms)
 
       const success = await RoomRepository.postRooms(payload).catch(() => {})
 
@@ -66,30 +67,20 @@ export default Vue.extend({
     ...mapMutations({
       setSaved: 'roomAdmin/setSaved'
     }),
-    modifyShapes (shape: Polyline) {
-      // TODO: Remove random number
-      const randNumber = Math.random().toString(36).substring(7)
+    changeShapes (shape: GeoJSON.Feature) {
+      const room = CreateIRoom(shape, this.floor, this.buildingName)
 
-      const room = CreateIRoom(
-        shape,
-        randNumber,
-        this.floor,
-        this.buildingName
-      )
-      this.rooms = {
-        ...this.rooms,
-        [room.number]: room
-      }
+      Vue.set(this.changedRooms, room.number, room)
       this.setSaved(false)
     }
   },
   render (): VNode {
-    const { roomLayers, saveShapes, modifyShapes } = this
+    const { roomLayers, saveShapes, changeShapes } = this
 
     return this.$scopedSlots.default!({
       roomLayers,
       saveShapes,
-      modifyShapes
+      changeShapes
     }) as any
   }
 })
