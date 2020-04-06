@@ -4,12 +4,16 @@
     :layers="allLayers"
     position="topright"
     @addLayer="addLayer"
-    @saveLayers="saveLayers"
+    @editStart="setEditMode(true)"
+    @editStop="setEditMode(false)"
+    @editLayers="() => {}"
   />
+  <!-- @saveLayers="saveLayers" -->
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapMutations } from 'vuex'
 import { Map, geoJSON, Polyline } from 'leaflet'
 import LDrawToolbar from './LDrawToolbar.vue'
 import 'leaflet-draw'
@@ -39,8 +43,8 @@ export default Vue.extend({
     fetchedLayers (layers: { [key: string]: GeoJSON.Feature }) {
       const allLayers = this.allLayers
 
-      allLayers.eachLayer((layer) => {
-        const geoJSON: GeoJSON.Feature = layer.toGeoJSON()
+      allLayers.eachLayer((layer: any) => {
+        const geoJSON: GeoJSON.Feature = (layer as any).toGeoJSON()
         const number = geoJSON.properties?.number
 
         if (number && layers[number]) {
@@ -63,7 +67,9 @@ export default Vue.extend({
   },
   methods: {
     addLayer (layer: Polyline) {
-      const randNumber = Math.random().toString(36).substring(7)
+      const randNumber = Math.random()
+        .toString(36)
+        .substring(7)
 
       const geoJSON = layer.toGeoJSON()
       // TODO: Remove random number
@@ -71,11 +77,14 @@ export default Vue.extend({
 
       this.allLayers.addData(geoJSON)
       this.$emit('addLayer', geoJSON)
+      this.saveLayers()
     },
     saveLayers () {
-      console.log(this.allLayers)
       this.$emit('saveLayers')
-    }
+    },
+    ...mapMutations({
+      setEditMode: 'roomAdmin/setEditMode'
+    })
   }
 })
 </script>

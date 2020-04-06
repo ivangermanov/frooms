@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <l-control v-if="mounted" position="topright" class="leaflet-bar">
     <a class="leaflet-draw-draw-circle" @click="saveLayers">
       <v-icon :dense="true" color="black" title="Save layers">
@@ -6,7 +6,7 @@
       </v-icon>
     </a>
   </l-control>
-</template>
+</template> -->
 
 <script lang="ts">
 import Vue from 'vue'
@@ -29,15 +29,15 @@ export default Vue.extend({
       required: true
     }
   },
-  data () {
-    return {
-      mounted: false
-    }
-  },
+  // data () {
+  //   return {
+  //     mounted: false
+  //   }
+  // },
   beforeMount () {
     this.$nextTick(() => {
       this.attachToolbar()
-      this.mounted = true
+      // this.mounted = true
     })
   },
   methods: {
@@ -76,14 +76,25 @@ export default Vue.extend({
         const layer: Polyline = e.layer
         this.$emit('addLayer', layer)
       })
+      map.on(Draw.Event.EDITSTART, () => {
+        this.$emit('editStart')
+      })
       map.on(Draw.Event.EDITSTOP, (e) => {
         const layer = e.layer
-        this.$emit('editLayer', layer)
+        this.$emit('editStop', layer)
       })
-    },
-    saveLayers () {
-      this.$emit('saveLayers')
+      map.on(Draw.Event.EDITED, (e) => {
+        console.log(e)
+        const layer = e.layer
+        this.$emit('editLayers', layer)
+      })
     }
+    // saveLayers () {
+    //   this.$emit('saveLayers')
+    // }
+  },
+  render (): any {
+    return null
   }
 })
 </script>
