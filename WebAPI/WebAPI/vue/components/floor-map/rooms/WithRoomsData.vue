@@ -21,6 +21,9 @@ export default Vue.extend({
   computed: {
     saved (): Boolean {
       return this.$store.state.roomAdmin.saved
+    },
+    editMode (): Boolean {
+      return this.$store.state.roomAdmin.editMode
     }
   },
   created () {
@@ -48,7 +51,9 @@ export default Vue.extend({
 
       fetch()
       setInterval(() => {
-        fetch()
+        if (!this.editMode) {
+          fetch()
+        }
       }, 5000)
     },
     async saveShapes () {
@@ -61,6 +66,7 @@ export default Vue.extend({
       const success = await RoomRepository.postRooms(payload).catch(() => {})
 
       if (success) {
+        this.changedRooms = {}
         this.setSaved(true)
       }
     },

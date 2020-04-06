@@ -1,4 +1,4 @@
-import { Polyline } from 'leaflet'
+import { Polyline, Polygon } from 'leaflet'
 import { IRoom } from './IRoom'
 import { EShape } from './EShape'
 import { IPoint } from './IPoint'
@@ -12,7 +12,7 @@ export function CreateIRoom (
   capacity: number = 0
 ): IRoom {
   const GeoJSONToIRoom = (feature: GeoJSON.Feature): IRoom => {
-    const coordinates = feature.geometry.coordinates.flat()
+    const coordinates = (feature.geometry as GeoJSON.Polygon).coordinates.flat()
     const points: IPoint[] = coordinates.map(coord => ({
       x: coord[0],
       y: coord[1]
