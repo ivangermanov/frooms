@@ -8,6 +8,12 @@ namespace Froom.Data.Repositories.Interfaces
     public interface IRoomRepository
     {
         /// <summary>
+        /// Adds a room to the database context.
+        /// </summary>
+        /// <param name="room"> The room  to be added.</param>
+        public Task AddAsync(Room room);
+
+        /// <summary>
         /// Adds a collection of rooms to the database context.
         /// </summary>
         /// <param name="rooms"> The rooms  to be added.</param>
