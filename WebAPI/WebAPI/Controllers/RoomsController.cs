@@ -44,6 +44,13 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> PostRooms(IEnumerable<PostRoomModel> model)
         {
+            await _roomService.AddRangeAsync(model);
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PutRooms(IEnumerable<PostRoomModel> model)
+        {
             await _roomService.UpdateRangeAsync(model);
             return Ok();
         }
