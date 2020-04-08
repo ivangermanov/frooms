@@ -50,6 +50,6 @@ namespace WebAPI.Services.Interfaces
         /// Deletes multiple rooms.
         /// </summary>
         /// <param name="model">The rooms to be deleted.</param>
-        public Task RemoveRangeAsync(IEnumerable<PostRoomModel> model);
+        public Task RemoveRangeAsync(IEnumerable<DeleteRoomModel> model);
     }
 }

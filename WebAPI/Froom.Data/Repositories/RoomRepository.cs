@@ -46,6 +46,11 @@ namespace Froom.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<Room> FindAsync(Room room)
+        {
+            return await _rooms.FindAsync(room.Number, room.Floor, room.BuildingName);
+        }
+
         public IQueryable<Room> GetAll()
         {
             return _rooms
@@ -55,6 +60,7 @@ namespace Froom.Data.Repositories
 
         public async Task<Room> GetByIdAsync(int id)
         {
+            // TODO: Maybe try filtering with FindAsync?
             return await _rooms
                        .Include(u => u.Reservations)
                        .SingleOrDefaultAsync(r => r.Id == id) ??
