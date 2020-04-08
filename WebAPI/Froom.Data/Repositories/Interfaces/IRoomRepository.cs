@@ -11,6 +11,12 @@ namespace Froom.Data.Repositories.Interfaces
         /// Adds a collection of rooms to the database context.
         /// </summary>
         /// <param name="rooms"> The rooms  to be added.</param>
+        public Task AddRangeAsync(IEnumerable<Room> rooms);
+
+        /// <summary>
+        /// Updates a collection of rooms to the database context.
+        /// </summary>
+        /// <param name="rooms"> The rooms  to be added.</param>
         public Task UpdateRangeAsync(IEnumerable<Room> rooms);
 
         /// <summary>
