@@ -40,6 +40,12 @@ namespace Froom.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task RemoveRangeAsync(IEnumerable<Room> rooms)
+        {
+            _rooms.RemoveRange(rooms);
+            await _context.SaveChangesAsync();
+        }
+
         public IQueryable<Room> GetAll()
         {
             return _rooms

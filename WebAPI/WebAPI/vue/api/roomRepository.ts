@@ -16,13 +16,13 @@ export default {
   getRoom (id: number | string) {
     return Repository.get(`${resource}/${id}`)
   },
-  postRoom (payload: IRoom) {
-    return Repository.post(`${resource}`, payload)
-  },
   postRooms (payload: IRoom[]) {
     return Repository.post(`${resource}`, payload)
   },
   putRooms (payload: IRoom[]) {
     return Repository.put(`${resource}`, payload)
+  },
+  deleteRooms (payload: IRoom[]) {
+    return Repository.delete(`${resource}`, { data: payload })
   }
 }

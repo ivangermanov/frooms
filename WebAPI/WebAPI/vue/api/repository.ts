@@ -7,8 +7,6 @@ if (process.env.NODE_ENV === 'development') {
   baseDomain = 'https://localhost:44338'
 }
 
-console.log(baseDomain)
-
 const baseUrl = `${baseDomain}/api`
 
 const globalAxios = axios.create({ baseURL: baseUrl })

@@ -54,5 +54,11 @@ namespace WebAPI.Controllers
             await _roomService.UpdateRangeAsync(model);
             return Ok();
         }
+
+        public async Task<IActionResult> DeleteRooms(IEnumerable<PostRoomModel> model)
+        {
+            await _roomService.RemoveRangeAsync(model);
+            return Ok();
+        }
     }
 }
