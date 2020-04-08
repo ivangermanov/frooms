@@ -1,22 +1,21 @@
-﻿using Froom.Data.Entities;
+﻿using System.Collections.Generic;
+using Froom.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Froom.Data.Database
 {
     public class FroomContext : DbContext
     {
-        public FroomContext(DbContextOptions<FroomContext> options) : base(options) { }
+        public FroomContext(DbContextOptions<FroomContext> options) : base(options)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>(options => 
+            modelBuilder.Entity<User>(options =>
             {
                 options.HasKey(u => u.Number);
 
@@ -28,7 +27,17 @@ namespace Froom.Data.Database
 
             modelBuilder.Entity<Room>(options =>
             {
-                options.HasIndex(r => r.Number).IsUnique();
+                options.HasKey(r =>
+                    new
+                    {
+                        r.Number,
+                        r.Floor,
+                        r.BuildingName
+                    });
+                options.Property(r => r.Id).ValueGeneratedOnAdd();
+                options.HasAlternateKey(r => r.Id);
+                
+
                 options.HasOne(r => r.Building)
                     .WithMany(b => b.Rooms)
                     .HasForeignKey(r => r.BuildingName)
@@ -38,8 +47,10 @@ namespace Froom.Data.Database
 
                 // This Converter will perform the conversion to and from Json to the desired type
                 options.Property(e => e.Points).HasConversion(
-                    v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                    v => JsonConvert.DeserializeObject<ICollection<Point>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
+                    v => JsonConvert.SerializeObject(v,
+                        new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}),
+                    v => JsonConvert.DeserializeObject<ICollection<Point>>(v,
+                        new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
             });
 
             modelBuilder.Entity<Reservation>(options =>
@@ -53,6 +64,7 @@ namespace Froom.Data.Database
                 options.HasOne(r => r.Room)
                     .WithMany(u => u.Reservations)
                     .HasForeignKey(r => r.RoomId)
+                    .HasPrincipalKey(r => r.Id)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.NoAction);
             });
@@ -68,6 +80,7 @@ namespace Froom.Data.Database
                 options.HasOne(r => r.Room)
                     .WithMany()
                     .HasForeignKey(r => r.RoomId)
+                    .HasPrincipalKey(r => r.Id)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.NoAction);
             });
@@ -81,6 +94,5 @@ namespace Froom.Data.Database
                     .OnDelete(DeleteBehavior.Cascade);
             });
         }
-
     }
 }

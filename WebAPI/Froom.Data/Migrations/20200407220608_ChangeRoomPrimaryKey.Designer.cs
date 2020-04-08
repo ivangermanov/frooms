@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Froom.Data.Migrations
 {
     [DbContext(typeof(FroomContext))]
-    [Migration("20200404084528_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200407220608_ChangeRoomPrimaryKey")]
+    partial class ChangeRoomPrimaryKey
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -121,34 +121,29 @@ namespace Froom.Data.Migrations
 
             modelBuilder.Entity("Froom.Data.Entities.Room", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Number")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Floor")
+                        .HasColumnType("int");
 
                     b.Property<string>("BuildingName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<int>("Floor")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Number")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Points")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Number", "Floor", "BuildingName");
 
                     b.HasIndex("BuildingName");
-
-                    b.HasIndex("Number")
-                        .IsUnique()
-                        .HasFilter("[Number] IS NOT NULL");
 
                     b.ToTable("Room");
                 });
@@ -183,6 +178,7 @@ namespace Froom.Data.Migrations
                     b.HasOne("Froom.Data.Entities.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
+                        .HasPrincipalKey("Id")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -198,6 +194,7 @@ namespace Froom.Data.Migrations
                     b.HasOne("Froom.Data.Entities.Room", "Room")
                         .WithMany("Reservations")
                         .HasForeignKey("RoomId")
+                        .HasPrincipalKey("Id")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
