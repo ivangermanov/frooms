@@ -1,6 +1,12 @@
 <script lang="ts">
 import Vue from 'vue'
-import { GeoJSON, Control, Draw, Map, Polyline, LayerGroup, LeafletEvent } from 'leaflet'
+import {
+  GeoJSON,
+  Control,
+  Draw,
+  Map,
+  Polyline
+} from 'leaflet'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw-src.css'
 
@@ -63,13 +69,22 @@ export default Vue.extend({
       map.on(Draw.Event.EDITSTART, () => {
         this.$emit('editStart')
       })
-      map.on(Draw.Event.EDITSTOP, (e) => {
-        const layer = e.layer
-        this.$emit('editStop', layer)
+      map.on(Draw.Event.EDITSTOP, () => {
+        this.$emit('editStop')
       })
       map.on(Draw.Event.EDITED, (e) => {
         const layers = (e as any).layers
         this.$emit('editLayers', layers)
+      })
+      map.on(Draw.Event.DELETESTART, () => {
+        this.$emit('deleteStart')
+      })
+      map.on(Draw.Event.DELETESTOP, () => {
+        this.$emit('deleteStop')
+      })
+      map.on(Draw.Event.DELETED, (e) => {
+        const layers = (e as any).layers
+        this.$emit('deleteLayers', layers)
       })
     }
   },
