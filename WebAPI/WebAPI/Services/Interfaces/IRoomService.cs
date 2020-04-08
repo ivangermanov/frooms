@@ -10,6 +10,12 @@ namespace WebAPI.Services.Interfaces
     public interface IRoomService
     {
         /// <summary>
+        /// Adds one new room.
+        /// </summary>
+        /// <param name="model">The rooms to be added.</param>
+        public Task AddAsync(PostRoomModel model);
+
+        /// <summary>
         /// Adds multiple new rooms.
         /// </summary>
         /// <param name="models">The rooms to be added.</param>

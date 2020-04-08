@@ -22,6 +22,15 @@ namespace WebAPI.Services
             _roomRepository = roomRepository;
         }
 
+        public async Task AddAsync(PostRoomModel model)
+        {
+            // TODO: Use Mapper properly
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<PostRoomModel, Room>());
+            var mapper = config.CreateMapper();
+
+            var room = mapper.Map<Room>(model);
+            await _roomRepository.AddAsync(room);
+        }
 
         public async Task AddRangeAsync(IEnumerable<PostRoomModel> model)
         {
