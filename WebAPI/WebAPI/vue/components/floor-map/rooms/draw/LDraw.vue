@@ -6,15 +6,14 @@
     @addLayer="addLayer"
     @editStart="setEditMode(true)"
     @editStop="setEditMode(false)"
-    @editLayers="() => {}"
+    @editLayers="editLayers"
   />
-  <!-- @saveLayers="saveLayers" -->
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { mapMutations } from 'vuex'
-import { Map, geoJSON, Polyline } from 'leaflet'
+import { Map, geoJSON, GeoJSON, Polyline } from 'leaflet'
 import LDrawToolbar from './LDrawToolbar.vue'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw-src.css'
@@ -77,10 +76,9 @@ export default Vue.extend({
 
       this.allLayers.addData(geoJSON)
       this.$emit('addLayer', geoJSON)
-      this.saveLayers()
     },
-    saveLayers () {
-      this.$emit('saveLayers')
+    editLayers (layers: GeoJSON) {
+      this.$emit('editLayers', layers)
     },
     ...mapMutations({
       setEditMode: 'roomAdmin/setEditMode'

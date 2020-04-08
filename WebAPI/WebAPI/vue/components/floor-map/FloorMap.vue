@@ -9,15 +9,15 @@
         <template
           v-slot="{
             roomLayers,
-            saveShapes,
-            changeShapes
+            postShape,
+            putShapes
           }"
         >
           <l-draw
             :fetched-layers="roomLayers"
             :map-object="mapObject"
-            @saveLayers="saveShapes"
-            @addLayer="changeShapes"
+            @addLayer="postShape"
+            @editLayers="putShapes"
           />
         </template>
       </with-rooms-data>
