@@ -42,13 +42,6 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostRoom(PostRoomModel model)
-        {
-            await _roomService.AddAsync(model);
-            return Ok();
-        }
-
-        [HttpPost]
         public async Task<IActionResult> PostRooms(IEnumerable<PostRoomModel> model)
         {
             await _roomService.AddRangeAsync(model);

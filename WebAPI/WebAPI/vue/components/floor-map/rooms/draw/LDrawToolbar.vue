@@ -1,16 +1,6 @@
-<!-- <template>
-  <l-control v-if="mounted" position="topright" class="leaflet-bar">
-    <a class="leaflet-draw-draw-circle" @click="saveLayers">
-      <v-icon :dense="true" color="black" title="Save layers">
-        mdi-check
-      </v-icon>
-    </a>
-  </l-control>
-</template> -->
-
 <script lang="ts">
 import Vue from 'vue'
-import { GeoJSON, Control, Draw, Map, Polyline } from 'leaflet'
+import { GeoJSON, Control, Draw, Map, Polyline, LayerGroup, LeafletEvent } from 'leaflet'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw-src.css'
 
@@ -29,15 +19,9 @@ export default Vue.extend({
       required: true
     }
   },
-  // data () {
-  //   return {
-  //     mounted: false
-  //   }
-  // },
   beforeMount () {
     this.$nextTick(() => {
       this.attachToolbar()
-      // this.mounted = true
     })
   },
   methods: {
@@ -84,14 +68,10 @@ export default Vue.extend({
         this.$emit('editStop', layer)
       })
       map.on(Draw.Event.EDITED, (e) => {
-        console.log(e)
-        const layer = e.layer
-        this.$emit('editLayers', layer)
+        const layers = (e as any).layers
+        this.$emit('editLayers', layers)
       })
     }
-    // saveLayers () {
-    //   this.$emit('saveLayers')
-    // }
   },
   render (): any {
     return null

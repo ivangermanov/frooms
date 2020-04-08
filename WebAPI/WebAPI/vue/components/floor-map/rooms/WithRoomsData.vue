@@ -14,14 +14,10 @@ export default Vue.extend({
       campus: 'eindhoven',
       buildingName: 'r1',
       rooms: {} as { [key: string]: IRoom },
-      changedRooms: {} as { [key: string]: IRoom },
       roomLayers: {} as { [key: string]: GeoJSON.Feature }
     }
   },
   computed: {
-    saved (): Boolean {
-      return this.$store.state.roomAdmin.saved
-    },
     editMode (): Boolean {
       return this.$store.state.roomAdmin.editMode
     }
@@ -60,37 +56,36 @@ export default Vue.extend({
         this.fetch()
       }, 5000)
     },
-    async saveShapes () {
-      if (this.saved) {
-        return
-      }
+    async postShape (shape: GeoJSON.Feature) {
+      const payload = [CreateIRoom(shape, this.floor, this.buildingName)]
 
-      const payload = Object.values(this.changedRooms)
+      await RoomRepository.postRooms(payload).catch(() => {})
+    },
+    async putShapes (shapes: GeoJSON) {
+      const payload: IRoom[] = []
+      shapes.eachLayer((layer: any) => {
+        const shape = layer.toGeoJSON()
+        const room = CreateIRoom(shape, this.floor, this.buildingName)
+        payload.push(room)
+      })
 
-      const success = await RoomRepository.postRooms(payload).catch(() => {})
+      const success = await RoomRepository.putRooms(payload).catch(() => {})
 
       if (success) {
-        this.changedRooms = {}
         this.setSaved(true)
       }
     },
     ...mapMutations({
       setSaved: 'roomAdmin/setSaved'
-    }),
-    changeShapes (shape: GeoJSON.Feature) {
-      const room = CreateIRoom(shape, this.floor, this.buildingName)
-
-      Vue.set(this.changedRooms, room.number, room)
-      this.setSaved(false)
-    }
+    })
   },
   render (): VNode {
-    const { roomLayers, saveShapes, changeShapes } = this
+    const { roomLayers, postShape, putShapes } = this
 
     return this.$scopedSlots.default!({
       roomLayers,
-      saveShapes,
-      changeShapes
+      postShape,
+      putShapes
     }) as any
   }
 })
