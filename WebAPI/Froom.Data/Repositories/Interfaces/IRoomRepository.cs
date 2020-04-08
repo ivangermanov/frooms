@@ -2,6 +2,7 @@
 using Froom.Data.Entities;
 using System.Linq;
 using System.Threading.Tasks;
+using Froom.Data.Models.Rooms;
 
 namespace Froom.Data.Repositories.Interfaces
 {
@@ -34,24 +35,30 @@ namespace Froom.Data.Repositories.Interfaces
         /// <summary>
         /// Gets all rooms from the database context.
         /// </summary>
-        IQueryable<Room> GetAll();
+        public IQueryable<Room> GetAll();
 
         /// <summary>
         /// Gets a room by id from the database context.
         /// </summary>
         /// <param name="id"> The id of the room.</param>
-        Task<Room> GetByIdAsync(int id);
+        public Task<Room> GetByIdAsync(int id);
+
+        /// <summary>
+        /// Gets a room by primary key from the database context.
+        /// </summary>
+        /// <param name="room"> The room model.</param>
+        public Task<Room> FindAsync(Room room);
 
         /// <summary>
         /// Updates information about a room.
         /// </summary>
         /// <param name="room"> The room to be updated.</param>
-        Task UpdateAsync(Room room);
+        public Task UpdateAsync(Room room);
 
         /// <summary>
         /// Updates information about a room.
         /// </summary>
         /// <param name="room"> The room to be updated.</param>
-        Task RemoveAsync(Room room);
+        public Task RemoveAsync(Room room);
     }
 }

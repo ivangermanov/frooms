@@ -1,10 +1,11 @@
-﻿using Froom.Data.Entities;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace Froom.Data.Models.Rooms
 {
-    public class PostRoomModel
+    public class DeleteRoomModel
     {
         [Required]
         public string Number { get; set; }
@@ -12,8 +13,5 @@ namespace Froom.Data.Models.Rooms
         public int Floor { get; set; }
         [Required]
         public string BuildingName { get; set; }
-        public int? Capacity { get; set; }
-        [Required]
-        public ICollection<Point> Points { get; set; }
     }
 }

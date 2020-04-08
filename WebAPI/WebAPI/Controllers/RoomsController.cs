@@ -55,7 +55,8 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        public async Task<IActionResult> DeleteRooms(IEnumerable<PostRoomModel> model)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteRooms(IEnumerable<DeleteRoomModel> model)
         {
             await _roomService.RemoveRangeAsync(model);
             return Ok();

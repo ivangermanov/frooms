@@ -83,14 +83,20 @@ namespace WebAPI.Services
             await _roomRepository.UpdateRangeAsync(rooms);
         }
 
-        public async Task RemoveRangeAsync(IEnumerable<PostRoomModel> model)
+        public async Task RemoveRangeAsync(IEnumerable<DeleteRoomModel> model)
         {
             // TODO: Use Mapper properly
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<PostRoomModel, Room>());
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<DeleteRoomModel, Room>());
             var mapper = config.CreateMapper();
 
             var rooms = mapper.Map<IEnumerable<Room>>(model);
-            await _roomRepository.RemoveRangeAsync(rooms);
+
+            var dbRooms = new List<Room>(rooms.Count());
+
+            foreach (var room in rooms)
+                dbRooms.Add(await _roomRepository.FindAsync(room));
+
+            await _roomRepository.RemoveRangeAsync(dbRooms);
         }
     }
 }
