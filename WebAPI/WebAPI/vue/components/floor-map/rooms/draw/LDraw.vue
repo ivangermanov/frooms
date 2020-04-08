@@ -6,7 +6,10 @@
     @addLayer="addLayer"
     @editStart="setEditMode(true)"
     @editStop="setEditMode(false)"
+    @deleteStart="setDeleteMode(true)"
+    @deleteStop="setDeleteMode(false)"
     @editLayers="editLayers"
+    @deleteLayers="deleteLayers"
   />
 </template>
 
@@ -80,8 +83,12 @@ export default Vue.extend({
     editLayers (layers: GeoJSON) {
       this.$emit('editLayers', layers)
     },
+    deleteLayers (layers: GeoJSON) {
+      this.$emit('deleteLayers', layers)
+    },
     ...mapMutations({
-      setEditMode: 'roomAdmin/setEditMode'
+      setEditMode: 'roomAdmin/setEditMode',
+      setDeleteMode: 'roomAdmin/setDeleteMode'
     })
   }
 })

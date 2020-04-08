@@ -10,7 +10,8 @@
           v-slot="{
             roomLayers,
             postShape,
-            putShapes
+            putShapes,
+            deleteShapes
           }"
         >
           <l-draw
@@ -18,6 +19,7 @@
             :map-object="mapObject"
             @addLayer="postShape"
             @editLayers="putShapes"
+            @deleteLayers="deleteShapes"
           />
         </template>
       </with-rooms-data>
