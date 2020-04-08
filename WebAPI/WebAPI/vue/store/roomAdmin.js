@@ -1,9 +1,13 @@
 export const state = () => ({
-  saved: true
+  editMode: false,
+  deleteMode: false
 })
 
 export const mutations = {
-  setSaved (state, flag) {
-    state.saved = flag
+  setEditMode (state, flag) {
+    state.editMode = flag
+  },
+  setDeleteMode (state, flag) {
+    state.deleteMode = flag
   }
 }

@@ -1,16 +1,12 @@
-<template>
-  <l-control v-if="mounted" position="topright" class="leaflet-bar">
-    <a class="leaflet-draw-draw-circle" @click="saveLayers">
-      <v-icon :dense="true" color="black" title="Save layers">
-        mdi-check
-      </v-icon>
-    </a>
-  </l-control>
-</template>
-
 <script lang="ts">
 import Vue from 'vue'
-import { GeoJSON, Control, Draw, Map, Polyline } from 'leaflet'
+import {
+  GeoJSON,
+  Control,
+  Draw,
+  Map,
+  Polyline
+} from 'leaflet'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw-src.css'
 
@@ -29,15 +25,9 @@ export default Vue.extend({
       required: true
     }
   },
-  data () {
-    return {
-      mounted: false
-    }
-  },
   beforeMount () {
     this.$nextTick(() => {
       this.attachToolbar()
-      this.mounted = true
     })
   },
   methods: {
@@ -76,14 +66,30 @@ export default Vue.extend({
         const layer: Polyline = e.layer
         this.$emit('addLayer', layer)
       })
-      map.on(Draw.Event.EDITSTOP, (e) => {
-        const layer = e.layer
-        this.$emit('editLayer', layer)
+      map.on(Draw.Event.EDITSTART, () => {
+        this.$emit('editStart')
       })
-    },
-    saveLayers () {
-      this.$emit('saveLayers')
+      map.on(Draw.Event.EDITSTOP, () => {
+        this.$emit('editStop')
+      })
+      map.on(Draw.Event.EDITED, (e) => {
+        const layers = (e as any).layers
+        this.$emit('editLayers', layers)
+      })
+      map.on(Draw.Event.DELETESTART, () => {
+        this.$emit('deleteStart')
+      })
+      map.on(Draw.Event.DELETESTOP, () => {
+        this.$emit('deleteStop')
+      })
+      map.on(Draw.Event.DELETED, (e) => {
+        const layers = (e as any).layers
+        this.$emit('deleteLayers', layers)
+      })
     }
+  },
+  render (): any {
+    return null
   }
 })
 </script>

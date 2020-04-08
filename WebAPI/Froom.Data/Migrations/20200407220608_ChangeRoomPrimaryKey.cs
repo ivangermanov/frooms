@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Froom.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class ChangeRoomPrimaryKey : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,17 +40,18 @@ namespace Froom.Data.Migrations
                 name: "Room",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Number = table.Column<string>(nullable: true),
+                    Number = table.Column<string>(nullable: false),
                     Floor = table.Column<int>(nullable: false),
                     BuildingName = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Capacity = table.Column<int>(nullable: true),
                     Points = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Room", x => x.Id);
+                    table.PrimaryKey("PK_Room", x => new { x.Number, x.Floor, x.BuildingName });
+                    table.UniqueConstraint("AK_Room_Id", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Room_Building_BuildingName",
                         column: x => x.BuildingName,
@@ -160,13 +161,6 @@ namespace Froom.Data.Migrations
                 name: "IX_Room_BuildingName",
                 table: "Room",
                 column: "BuildingName");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Room_Number",
-                table: "Room",
-                column: "Number",
-                unique: true,
-                filter: "[Number] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

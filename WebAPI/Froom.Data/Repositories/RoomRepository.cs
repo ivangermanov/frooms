@@ -22,10 +22,33 @@ namespace Froom.Data.Repositories
             _rooms = _context.Set<Room>();
         }
 
+        public async Task AddAsync(Room room)
+        {
+            await _rooms.AddAsync(room);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task AddRangeAsync(IEnumerable<Room> rooms)
         {
             await _rooms.AddRangeAsync(rooms);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateRangeAsync(IEnumerable<Room> rooms)
+        {
+            _rooms.UpdateRange(rooms);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveRangeAsync(IEnumerable<Room> rooms)
+        {
+            _rooms.RemoveRange(rooms);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Room> FindAsync(Room room)
+        {
+            return await _rooms.FindAsync(room.Number, room.Floor, room.BuildingName);
         }
 
         public IQueryable<Room> GetAll()
@@ -37,6 +60,7 @@ namespace Froom.Data.Repositories
 
         public async Task<Room> GetByIdAsync(int id)
         {
+            // TODO: Maybe try filtering with FindAsync?
             return await _rooms
                        .Include(u => u.Reservations)
                        .SingleOrDefaultAsync(r => r.Id == id) ??

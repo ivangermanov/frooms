@@ -1,5 +1,5 @@
 <template>
-  <no-ssr>
+  <client-only>
     <l-map
       ref="map"
       :options="mapOptions"
@@ -9,15 +9,17 @@
         <template
           v-slot="{
             roomLayers,
-            saveShapes,
-            modifyShapes
+            postShape,
+            putShapes,
+            deleteShapes
           }"
         >
           <l-draw
             :fetched-layers="roomLayers"
             :map-object="mapObject"
-            @saveLayers="saveShapes"
-            @addLayer="modifyShapes"
+            @addLayer="postShape"
+            @editLayers="putShapes"
+            @deleteLayers="deleteShapes"
           />
         </template>
       </with-rooms-data>
@@ -26,7 +28,7 @@
         :bounds="overlayOptions.bounds"
       />
     </l-map>
-  </no-ssr>
+  </client-only>
 </template>
 <script lang="ts">
 import Vue from 'vue'
