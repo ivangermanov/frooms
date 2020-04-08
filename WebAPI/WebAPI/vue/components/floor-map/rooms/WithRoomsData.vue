@@ -26,34 +26,38 @@ export default Vue.extend({
       return this.$store.state.roomAdmin.editMode
     }
   },
+  watch: {
+    editMode (val) {
+      if (!val) {
+        this.fetch()
+      }
+    }
+  },
   created () {
     this.fetch()
   },
   methods: {
-    fetch () {
-      const fetch = async () => {
-        const { data } = await RoomRepository.getRooms(
-          this.campus,
-          this.buildingName,
-          this.floor
-        )
-        const rooms: IRoom[] = data
-        const newRooms = {} as { [key: string]: IRoom }
-        const newRoomLayers = {} as { [key: string]: GeoJSON.Feature }
+    async fetch () {
+      if (this.editMode) { return }
 
-        rooms.forEach((room) => {
-          newRooms[room.number] = room
-          newRoomLayers[room.number] = IRoomToGeoJSONFeature(room)
-        })
-        this.rooms = newRooms
-        this.roomLayers = newRoomLayers
-      }
+      const { data } = await RoomRepository.getRooms(
+        this.campus,
+        this.buildingName,
+        this.floor
+      )
+      const rooms: IRoom[] = data
+      const newRooms = {} as { [key: string]: IRoom }
+      const newRoomLayers = {} as { [key: string]: GeoJSON.Feature }
 
-      fetch()
-      setInterval(() => {
-        if (!this.editMode) {
-          fetch()
-        }
+      rooms.forEach((room) => {
+        newRooms[room.number] = room
+        newRoomLayers[room.number] = IRoomToGeoJSONFeature(room)
+      })
+      this.rooms = newRooms
+      this.roomLayers = newRoomLayers
+
+      setTimeout(() => {
+        this.fetch()
       }, 5000)
     },
     async saveShapes () {
