@@ -77,7 +77,7 @@ namespace WebAPI
 
                 endpoints.MapToVueCliProxy(
                     "{*path}",
-                    new SpaOptions {SourcePath = "vue/"},
+                    new SpaOptions { SourcePath = "vue/" },
                     env.IsDevelopment() ? "dev" : null,
                     regex: "Compiled successfully",
                     forceKill: true
