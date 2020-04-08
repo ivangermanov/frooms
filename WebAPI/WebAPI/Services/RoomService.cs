@@ -22,6 +22,37 @@ namespace WebAPI.Services
             _roomRepository = roomRepository;
         }
 
+        public async Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? buildingName, int? floor)
+        {
+            var rooms = _roomRepository.GetAll()
+                .Where(r => string.IsNullOrEmpty(campus) || r.Building.Campus.Equals(campus))
+                .Where(r => string.IsNullOrEmpty(buildingName) || r.BuildingName.Equals(buildingName))
+                .Where(r => !floor.HasValue || r.Floor == floor);
+
+            var dtos = await rooms.Select(r => new RoomDto(r)).ToListAsync();
+
+            return dtos;
+        }
+
+        public async Task<IEnumerable<RoomDto>> GetRooms(string campus, string buildingName, int floor,
+            DateTime fromDate, DateTime toDate)
+        {
+            if (campus == null || buildingName == null)
+                throw new ArgumentNullException("The campus or the building name was null.");
+
+            if (fromDate > toDate)
+                throw new ArgumentException("The start DateTime cannot be after the end DateTime.");
+
+            var rooms = _roomRepository.GetAll()
+                .Where(r => r.Building.Campus == campus &&
+                            r.BuildingName == buildingName &&
+                            r.Floor == floor &&
+                            r.IsAvailable(fromDate, toDate))
+                .Select(r => new RoomDto(r));
+
+            return rooms;
+        }
+
         public async Task AddAsync(PostRoomModel model)
         {
             // TODO: Use Mapper properly
@@ -52,35 +83,14 @@ namespace WebAPI.Services
             await _roomRepository.UpdateRangeAsync(rooms);
         }
 
-        public async Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? buildingName, int? floor)
+        public async Task RemoveRangeAsync(IEnumerable<PostRoomModel> model)
         {
-            var rooms = _roomRepository.GetAll()
-                .Where(r => string.IsNullOrEmpty(campus) || r.Building.Campus.Equals(campus))
-                .Where(r => string.IsNullOrEmpty(buildingName) || r.BuildingName.Equals(buildingName))
-                .Where(r => !floor.HasValue || r.Floor == floor);
+            // TODO: Use Mapper properly
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<PostRoomModel, Room>());
+            var mapper = config.CreateMapper();
 
-            var dtos = await rooms.Select(r => new RoomDto(r)).ToListAsync();
-
-            return dtos;
-        }
-
-        public async Task<IEnumerable<RoomDto>> GetRooms(string campus, string buildingName, int floor,
-            DateTime fromDate, DateTime toDate)
-        {
-            if (campus == null || buildingName == null)
-                throw new ArgumentNullException("The campus or the building name was null.");
-
-            if (fromDate > toDate)
-                throw new ArgumentException("The start DateTime cannot be after the end DateTime.");
-
-            var rooms = _roomRepository.GetAll()
-                .Where(r => r.Building.Campus == campus &&
-                            r.BuildingName == buildingName &&
-                            r.Floor == floor &&
-                            r.IsAvailable(fromDate, toDate))
-                .Select(r => new RoomDto(r));
-
-            return rooms;
+            var rooms = mapper.Map<IEnumerable<Room>>(model);
+            await _roomRepository.RemoveRangeAsync(rooms);
         }
     }
 }

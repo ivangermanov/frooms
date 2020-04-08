@@ -10,7 +10,7 @@ namespace Froom.Data.Repositories.Interfaces
         /// <summary>
         /// Adds a room to the database context.
         /// </summary>
-        /// <param name="room"> The room  to be added.</param>
+        /// <param name="room"> The room to be added.</param>
         public Task AddAsync(Room room);
 
         /// <summary>
@@ -24,6 +24,12 @@ namespace Froom.Data.Repositories.Interfaces
         /// </summary>
         /// <param name="rooms"> The rooms  to be added.</param>
         public Task UpdateRangeAsync(IEnumerable<Room> rooms);
+
+        /// <summary>
+        /// Removes a collection of rooms from the database context.
+        /// </summary>
+        /// <param name="rooms"> The rooms  to be deleted.</param>
+        public Task RemoveRangeAsync(IEnumerable<Room> rooms);
 
         /// <summary>
         /// Gets all rooms from the database context.
