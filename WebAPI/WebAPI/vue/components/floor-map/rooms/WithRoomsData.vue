@@ -1,7 +1,7 @@
 <script lang="ts">
 import Vue, { VNode } from 'vue'
 import { mapMutations } from 'vuex'
-import { GeoJSON, Polyline } from 'leaflet'
+import { GeoJSON } from 'leaflet'
 import { IRoom, CreateIRoom, IRoomToGeoJSONFeature } from '@/types'
 
 import { RepositoryFactory } from '@/api/repositoryFactory'
@@ -18,78 +18,96 @@ export default Vue.extend({
     }
   },
   computed: {
-    saved (): Boolean {
-      return this.$store.state.roomAdmin.saved
+    editMode (): Boolean {
+      return this.$store.state.roomAdmin.editMode
+    },
+    deleteMode (): Boolean {
+      return this.$store.state.roomAdmin.deleteMode
+    }
+  },
+  watch: {
+    editMode (val) {
+      if (!val) {
+        this.fetch()
+      }
     }
   },
   created () {
     this.fetch()
   },
   methods: {
-    fetch () {
-      const fetch = async () => {
-        const { data } = await RoomRepository.getRooms(
-          this.campus,
-          this.buildingName,
-          this.floor
-        )
-        const rooms: IRoom[] = data
-        const newRooms = {} as { [key: string]: IRoom }
-        const newRoomLayers = {} as { [key: string]: GeoJSON.Feature }
+    async fetch () {
+      if (this.editMode || this.deleteMode) { return }
 
-        rooms.forEach((room) => {
-          newRooms[room.number] = room
-          newRoomLayers[room.number] = IRoomToGeoJSONFeature(room)
-        })
-        this.rooms = newRooms
-        this.roomLayers = newRoomLayers
-      }
+      const { data } = await RoomRepository.getRooms(
+        this.campus,
+        this.buildingName,
+        this.floor
+      )
+      const rooms: IRoom[] = data
+      const newRooms = {} as { [key: string]: IRoom }
+      const newRoomLayers = {} as { [key: string]: GeoJSON.Feature }
 
-      fetch()
-      setInterval(() => {
-        fetch()
+      rooms.forEach((room) => {
+        newRooms[room.number] = room
+        newRoomLayers[room.number] = IRoomToGeoJSONFeature(room)
+      })
+      this.rooms = newRooms
+      this.roomLayers = newRoomLayers
+
+      setTimeout(() => {
+        this.fetch()
       }, 5000)
     },
-    async saveShapes (_geoJSON: GeoJSON) {
-      if (this.saved) {
-        return
-      }
-
-      const payload = Object.values(this.rooms)
+    async postShape (shape: GeoJSON.Feature) {
+      const payload = [CreateIRoom(shape, this.floor, this.buildingName)]
 
       const success = await RoomRepository.postRooms(payload).catch(() => {})
 
       if (success) {
-        this.setSaved(true)
+
+      }
+    },
+    async putShapes (shapes: GeoJSON) {
+      const payload: IRoom[] = []
+      shapes.eachLayer((layer: any) => {
+        const shape = layer.toGeoJSON()
+        const room = CreateIRoom(shape, this.floor, this.buildingName)
+        payload.push(room)
+      })
+
+      const success = await RoomRepository.putRooms(payload).catch(() => {})
+
+      if (success) {
+
+      }
+    },
+    async deleteShapes (shapes: GeoJSON) {
+      const payload: IRoom[] = []
+      shapes.eachLayer((layer: any) => {
+        const shape = layer.toGeoJSON()
+        const room = CreateIRoom(shape, this.floor, this.buildingName)
+        payload.push(room)
+      })
+
+      const success = await RoomRepository.deleteRooms(payload).catch(() => {})
+
+      if (success) {
+
       }
     },
     ...mapMutations({
       setSaved: 'roomAdmin/setSaved'
-    }),
-    modifyShapes (shape: Polyline) {
-      // TODO: Remove random number
-      const randNumber = Math.random().toString(36).substring(7)
-
-      const room = CreateIRoom(
-        shape,
-        randNumber,
-        this.floor,
-        this.buildingName
-      )
-      this.rooms = {
-        ...this.rooms,
-        [room.number]: room
-      }
-      this.setSaved(false)
-    }
+    })
   },
   render (): VNode {
-    const { roomLayers, saveShapes, modifyShapes } = this
+    const { roomLayers, postShape, putShapes, deleteShapes } = this
 
     return this.$scopedSlots.default!({
       roomLayers,
-      saveShapes,
-      modifyShapes
+      postShape,
+      putShapes,
+      deleteShapes
     }) as any
   }
 })

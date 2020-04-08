@@ -4,13 +4,19 @@
     :layers="allLayers"
     position="topright"
     @addLayer="addLayer"
-    @saveLayers="saveLayers"
+    @editStart="setEditMode(true)"
+    @editStop="setEditMode(false)"
+    @deleteStart="setDeleteMode(true)"
+    @deleteStop="setDeleteMode(false)"
+    @editLayers="editLayers"
+    @deleteLayers="deleteLayers"
   />
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { Map, geoJSON, Polyline } from 'leaflet'
+import { mapMutations } from 'vuex'
+import { Map, geoJSON, GeoJSON, Polyline } from 'leaflet'
 import LDrawToolbar from './LDrawToolbar.vue'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw-src.css'
@@ -32,17 +38,28 @@ export default Vue.extend({
   },
   data () {
     return {
-      changedLayers: geoJSON(),
       allLayers: geoJSON()
     }
   },
   watch: {
     fetchedLayers (layers: { [key: string]: GeoJSON.Feature }) {
-      console.log(layers)
+      const allLayers = this.allLayers
+
+      allLayers.eachLayer((layer: any) => {
+        const geoJSON: GeoJSON.Feature = (layer as any).toGeoJSON()
+        const number = geoJSON.properties?.number
+
+        if (number && layers[number]) {
+          allLayers.removeLayer(layer)
+          Object.assign(geoJSON, layers[number])
+          allLayers.addData(geoJSON)
+          delete layers[number]
+        }
+      })
+
       const values = Object.values(layers)
-      this.allLayers.clearLayers()
       values.forEach((layer) => {
-        this.allLayers.addData(layer)
+        allLayers.addData(layer)
       })
     }
   },
@@ -52,12 +69,27 @@ export default Vue.extend({
   },
   methods: {
     addLayer (layer: Polyline) {
-      this.changedLayers.addLayer(layer)
-      this.$emit('addLayer', layer)
+      const randNumber = Math.random()
+        .toString(36)
+        .substring(7)
+
+      const geoJSON = layer.toGeoJSON()
+      // TODO: Remove random number
+      geoJSON.properties.number = randNumber
+
+      this.allLayers.addData(geoJSON)
+      this.$emit('addLayer', geoJSON)
     },
-    saveLayers () {
-      this.$emit('saveLayers', this.changedLayers)
-    }
+    editLayers (layers: GeoJSON) {
+      this.$emit('editLayers', layers)
+    },
+    deleteLayers (layers: GeoJSON) {
+      this.$emit('deleteLayers', layers)
+    },
+    ...mapMutations({
+      setEditMode: 'roomAdmin/setEditMode',
+      setDeleteMode: 'roomAdmin/setDeleteMode'
+    })
   }
 })
 </script>

@@ -9,6 +9,18 @@
     <Compile Remove="Migrations\20200325102027_AddRoomMapDetails.Designer.cs" />
     <Compile Remove="Migrations\20200401182305_RemoveUnneededKeys.cs" />
     <Compile Remove="Migrations\20200401182305_RemoveUnneededKeys.Designer.cs" />
+    <Compile Remove="Migrations\20200407212837_RoomIndex.cs" />
+    <Compile Remove="Migrations\20200407212837_RoomIndex.Designer.cs" />
+    <Compile Remove="Migrations\20200407213745_RoomAlternateKey.cs" />
+    <Compile Remove="Migrations\20200407213745_RoomAlternateKey.Designer.cs" />
+    <Compile Remove="Migrations\20200407214710_ChangeRoomPrimaryKey.cs" />
+    <Compile Remove="Migrations\20200407214710_ChangeRoomPrimaryKey.Designer.cs" />
+    <Compile Remove="Migrations\20200407215200_ChangeRoomPrimaryKey.cs" />
+    <Compile Remove="Migrations\20200407215200_ChangeRoomPrimaryKey.Designer.cs" />
+    <Compile Remove="Migrations\20200407215741_ChangeRoomPrimaryKey.cs" />
+    <Compile Remove="Migrations\20200407215741_ChangeRoomPrimaryKey.Designer.cs" />
+    <Compile Remove="Migrations\20200407220155_ChangeRoomPrimaryKey.cs" />
+    <Compile Remove="Migrations\20200407220155_ChangeRoomPrimaryKey.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
