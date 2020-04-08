@@ -14,11 +14,14 @@ export default Vue.extend({
   computed: {
     saved () : Boolean {
       return this.$store.state.roomAdmin.saved
+    },
+    editMode () : Boolean {
+      return this.$store.state.roomAdmin.editMode
     }
   },
   beforeRouteLeave (_to, _from, next) {
     let answer = true
-    if (!this.saved) {
+    if (!this.saved || this.editMode) {
       answer = window.confirm(
         'Your unsaved changes will be lost! Do you really want to leave?'
       )
