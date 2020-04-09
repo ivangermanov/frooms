@@ -10,11 +10,9 @@ namespace Froom.Data.Dtos
 
         public UserRole Role { get; set; }
 
-        public UserDto(User user)
-        {
-            Number = user.Number;
-            Name = user.Name;
-            Role = user.Role;
-        }
+        /// <summary>
+        /// Used only by IMapper. Initializes a new instance of UserDto.
+        /// </summary>
+        public UserDto() { }
     }
 }
