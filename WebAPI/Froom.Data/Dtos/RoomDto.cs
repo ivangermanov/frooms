@@ -12,14 +12,9 @@ namespace Froom.Data.Dtos
         public int? Capacity { get; set; }
         public ICollection<Point> Points { get; set; }
 
-        public RoomDto(Room room)
-        {
-            Number = room.Number;
-            Floor = room.Floor;
-            BuildingName = room.BuildingName;
-            CampusName = room.Building.Campus;
-            Capacity = room.Capacity;
-            Points = room.Points;
-        }
+        /// <summary>
+        /// Used only by IMapper. Initializes a new instance of RoomDto.
+        /// </summary>
+        public RoomDto() { }
     }
 }
