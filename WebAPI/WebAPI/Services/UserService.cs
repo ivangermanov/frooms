@@ -1,7 +1,7 @@
-﻿using Froom.Data.Entities;
+﻿using AutoMapper;
+using Froom.Data.Entities;
 using Froom.Data.Models.Users;
 using Froom.Data.Repositories.Interfaces;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebAPI.Services.Interfaces;
 
@@ -10,22 +10,18 @@ namespace WebAPI.Services
     /// <inheritdoc cref="IUserService"/>
     public class UserService : IUserService
     {
-        IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task AddUserAsync(PostUserModel model)
         {
-            var user = new User()
-            {
-                Name = model.Name,
-                Role = model.Role,
-                Number = model.Number,
-                Reservations = new List<Reservation>()
-            };
+            var user = _mapper.Map<User>(model);
 
             await _userRepository.AddAsync(user);
         }
