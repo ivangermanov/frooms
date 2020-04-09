@@ -1,8 +1,12 @@
-using Froom.Data.Models.Rooms;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Froom.Data.Models.Rooms;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Controllers
@@ -11,7 +15,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class RoomsController : ControllerBase
     {
-        readonly IRoomService _roomService;
+        private readonly IRoomService _roomService;
 
         public RoomsController(IRoomService roomService)
         {
@@ -20,10 +24,13 @@ namespace WebAPI.Controllers
 
         // TODO: Remove, only for testing
         [HttpGet]
+        [Authorize(Roles = "student")]
         [Route("user")]
-        public IActionResult GetUser()
+        public async Task<IActionResult> GetUser()
         {
-            return Ok(new { bla = "bla" });
+            var client = new HttpClient();
+            var result = await client.GetStringAsync("https://api.fhict.nl/location/mapimage/EHV/R1/2e");
+            return Ok(result);
         }
 
         [HttpGet]
@@ -35,7 +42,8 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Route("available/{campus}/{buildingName}/{floor}")]
-        public async Task<IActionResult> GetRooms(string campus, string buildingName, int floor, DateTime fromDate, DateTime toDate)
+        public async Task<IActionResult> GetRooms(string campus, string buildingName, int floor, DateTime fromDate,
+            DateTime toDate)
         {
             var rooms = await _roomService.GetRooms(campus, buildingName, floor, fromDate, toDate);
             return Ok(rooms);
