@@ -1,5 +1,4 @@
-﻿using Froom.Data.Entities;
-using System;
+﻿using System;
 
 namespace Froom.Data.Dtos
 {
@@ -13,12 +12,9 @@ namespace Froom.Data.Dtos
 
         public TimeSpan Duration { get; set; }
 
-        public ReservationDto(Reservation reservation)
-        {
-            User = new UserDto(reservation.User);
-            Room = new RoomDto(reservation.Room);
-            StartTime = reservation.StartTime;
-            Duration = reservation.Duration;
-        }
+        /// <summary>
+        /// Used only by IMapper. Initializes a new instance of ReservationDto.
+        /// </summary>
+        public ReservationDto() { }
     }
 }
