@@ -2,14 +2,18 @@ using AutoMapper;
 using Froom.Data.Database;
 using Froom.Data.Repositories;
 using Froom.Data.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VueCliMiddleware;
+using WebAPI.Helpers;
 using WebAPI.Services;
 using WebAPI.Services.Interfaces;
 using System;
@@ -25,7 +29,7 @@ namespace WebAPI
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -37,6 +41,39 @@ namespace WebAPI
                     x => x.MigrationsAssembly("Froom.Data"));
             });
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            }).AddCookie(options =>
+            {
+                options.LoginPath = "/login";
+                options.LogoutPath = "/logout";
+            }).AddOpenIdConnect(options =>
+            {
+                options.ClientId = AppSettings.ClientId;
+                options.ClientSecret = AppSettings.ClientSecret;
+                options.Authority = Constants.AuthorizeEndpoint;
+
+                // Configure the scope
+                options.Scope.Clear();
+                options.Scope.Add("openid");
+                options.Scope.Add("fhict");
+                options.Scope.Add("fhict_personal");
+                options.Scope.Add("profile");
+                options.Scope.Add("email");
+                options.Scope.Add("roles");
+
+                options.CallbackPath = "/signin-oidc";
+
+                options.SaveTokens = true;
+
+                options.ResponseType = "code";
+                options.ResponseMode = "query";
+
+                options.GetClaimsFromUserInfoEndpoint = true;
+                options.UsePkce = false;
+            });
 
             services.AddCors(options =>
             {
@@ -68,7 +105,11 @@ namespace WebAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
+
+            app.UseCookiePolicy();
 
             if (env.IsDevelopment()) app.UseCors(AllowLocalHost);
 
@@ -85,7 +126,7 @@ namespace WebAPI
 
                 endpoints.MapToVueCliProxy(
                     "{*path}",
-                    new SpaOptions { SourcePath = "vue/" },
+                    new SpaOptions {SourcePath = "vue/"},
                     env.IsDevelopment() ? "dev" : null,
                     regex: "Compiled successfully",
                     forceKill: true
