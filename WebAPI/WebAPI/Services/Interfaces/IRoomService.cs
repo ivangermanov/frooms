@@ -1,8 +1,7 @@
-using System.Collections.Generic;
 using Froom.Data.Dtos;
 using Froom.Data.Models.Rooms;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace WebAPI.Services.Interfaces
@@ -26,7 +25,7 @@ namespace WebAPI.Services.Interfaces
         /// <param name="fromDate">The start time of the period.</param>
         /// <param name="toDate">The end time of the period.</param>
         /// <returns></returns>
-        public Task<IEnumerable<RoomDto>> GetRooms(string campus, string buildingName, int floor, DateTime fromDate, DateTime toDate);
+        public Task<IEnumerable<RoomDto>> GetAvailableRooms(string campus, string buildingName, int floor, DateTime fromDate, DateTime toDate);
 
         /// <summary>
         /// Adds one new room.

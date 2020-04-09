@@ -16,10 +16,12 @@ namespace WebAPI.Services
     public class RoomService : IRoomService
     {
         private readonly IRoomRepository _roomRepository;
+        private readonly IMapper _mapper;
 
-        public RoomService(IRoomRepository roomRepository)
+        public RoomService(IRoomRepository roomRepository, IMapper mapper)
         {
             _roomRepository = roomRepository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? buildingName, int? floor)
@@ -29,12 +31,10 @@ namespace WebAPI.Services
                 .Where(r => string.IsNullOrEmpty(buildingName) || r.BuildingName.Equals(buildingName))
                 .Where(r => !floor.HasValue || r.Floor == floor);
 
-            var dtos = await rooms.Select(r => new RoomDto(r)).ToListAsync();
-
-            return dtos;
+            return await _mapper.ProjectTo<RoomDto>(rooms).ToListAsync();
         }
 
-        public async Task<IEnumerable<RoomDto>> GetRooms(string campus, string buildingName, int floor,
+        public async Task<IEnumerable<RoomDto>> GetAvailableRooms(string campus, string buildingName, int floor,
             DateTime fromDate, DateTime toDate)
         {
             if (campus == null || buildingName == null)
@@ -47,49 +47,32 @@ namespace WebAPI.Services
                 .Where(r => r.Building.Campus == campus &&
                             r.BuildingName == buildingName &&
                             r.Floor == floor &&
-                            r.IsAvailable(fromDate, toDate))
-                .Select(r => new RoomDto(r));
+                            r.IsAvailable(fromDate, toDate));
 
-            return rooms;
+            return await _mapper.ProjectTo<RoomDto>(rooms).ToListAsync();
         }
 
         public async Task AddAsync(PostRoomModel model)
         {
-            // TODO: Use Mapper properly
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<PostRoomModel, Room>());
-            var mapper = config.CreateMapper();
-
-            var room = mapper.Map<Room>(model);
+            var room = _mapper.Map<Room>(model);
             await _roomRepository.AddAsync(room);
         }
 
         public async Task AddRangeAsync(IEnumerable<PostRoomModel> model)
         {
-            // TODO: Use Mapper properly
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<PostRoomModel, Room>());
-            var mapper = config.CreateMapper();
-
-            var rooms = mapper.Map<IEnumerable<Room>>(model);
+            var rooms = _mapper.Map<IEnumerable<Room>>(model);
             await _roomRepository.AddRangeAsync(rooms);
         }
 
         public async Task UpdateRangeAsync(IEnumerable<PostRoomModel> model)
         {
-            // TODO: Use Mapper properly
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<PostRoomModel, Room>());
-            var mapper = config.CreateMapper();
-
-            var rooms = mapper.Map<IEnumerable<Room>>(model);
+            var rooms = _mapper.Map<IEnumerable<Room>>(model);
             await _roomRepository.UpdateRangeAsync(rooms);
         }
 
         public async Task RemoveRangeAsync(IEnumerable<DeleteRoomModel> model)
         {
-            // TODO: Use Mapper properly
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<DeleteRoomModel, Room>());
-            var mapper = config.CreateMapper();
-
-            var rooms = mapper.Map<IEnumerable<Room>>(model);
+            var rooms = _mapper.Map<IEnumerable<Room>>(model);
 
             var dbRooms = new List<Room>(rooms.Count());
 

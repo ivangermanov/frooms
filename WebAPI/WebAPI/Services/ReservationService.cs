@@ -1,8 +1,11 @@
-﻿using Froom.Data.Dtos;
+﻿using AutoMapper;
+using Froom.Data.Dtos;
 using Froom.Data.Entities;
 using Froom.Data.Models.Reservations;
 using Froom.Data.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Services.Interfaces;
@@ -12,11 +15,13 @@ namespace WebAPI.Services
     /// <inheritdoc cref="IReservationService"/>
     public class ReservationService : IReservationService
     {
-        IReservationRepository _reservationRepository;
+        private readonly IReservationRepository _reservationRepository;
+        private readonly IMapper _mapper;
 
-        public ReservationService(IReservationRepository reservationRepository)
+        public ReservationService(IReservationRepository reservationRepository, IMapper mapper)
         {
             _reservationRepository = reservationRepository;
+            _mapper = mapper;
         }
 
         public async Task AddReservationAsync(PostReservationModel model)
@@ -24,29 +29,25 @@ namespace WebAPI.Services
             if (model is null)
                 throw new ArgumentException($"{nameof(PostReservationModel)} is null.");
 
-            var newReservation = new Reservation()
-            {
-                UserNumber = model.UserNumber,
-                RoomId = model.RoomId,
-                StartTime = model.StartTime,
-                Duration = model.Duration
-            };
+            var reservation = _mapper.Map<Reservation>(model);
 
-            await _reservationRepository.AddAsync(newReservation);
+            await _reservationRepository.AddAsync(reservation);
         }
 
-        public IQueryable<ReservationDto> GetReservationsForRoom(int roomId)
+        public async Task<IEnumerable<ReservationDto>> GetReservationsForRoom(int roomId)
         {
-            return _reservationRepository.GetAll()
-                .Where(r => r.RoomId == roomId)
-                .Select(r => new ReservationDto(r));
+            var reservations = _reservationRepository.GetAll()
+                .Where(r => r.RoomId == roomId);
+
+            return await _mapper.ProjectTo<ReservationDto>(reservations).ToListAsync();
         }
 
-        public IQueryable<ReservationDto> GetReservationsForUser(int userNumber)
+        public async Task<IEnumerable<ReservationDto>> GetReservationsForUser(int userNumber)
         {
-            return _reservationRepository.GetAll()
-                .Where(r => r.UserNumber == userNumber)
-                .Select(r => new ReservationDto(r));
+            var reservations = _reservationRepository.GetAll()
+                .Where(r => r.UserNumber == userNumber);
+
+            return await _mapper.ProjectTo<ReservationDto>(reservations).ToListAsync();
         }
     }
 }
