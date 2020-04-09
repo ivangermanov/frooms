@@ -1,3 +1,4 @@
+using AutoMapper;
 using Froom.Data.Database;
 using Froom.Data.Repositories;
 using Froom.Data.Repositories.Interfaces;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using VueCliMiddleware;
 using WebAPI.Services;
 using WebAPI.Services.Interfaces;
+using System;
 
 namespace WebAPI
 {
@@ -45,7 +47,13 @@ namespace WebAPI
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddTransient<IRoomService, RoomService>();
 
-            services.AddControllers();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+
             services.AddSpaStaticFiles(opt => opt.RootPath = "vue/dist");
         }
 
