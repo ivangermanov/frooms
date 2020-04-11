@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Froom.Data.Migrations
 {
-    public partial class ChangeRoomPrimaryKey : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,7 +41,7 @@ namespace Froom.Data.Migrations
                 columns: table => new
                 {
                     Number = table.Column<string>(nullable: false),
-                    Floor = table.Column<int>(nullable: false),
+                    Floor = table.Column<string>(nullable: false),
                     BuildingName = table.Column<string>(nullable: false),
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
