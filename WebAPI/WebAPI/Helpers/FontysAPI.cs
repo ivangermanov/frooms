@@ -13,6 +13,7 @@ using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Helpers
 {
+    // TODO: Figure out some way to not set client Bearer token on each call
     public class FontysAPI
     {
         private static readonly HttpClient Client = new HttpClient();
@@ -84,7 +85,22 @@ namespace WebAPI.Helpers
 
         public async Task<string> GetLocationMapImage(string campus, string building, string floor)
         {
+            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
+
+            Client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", accessToken);
+
             return await Client.GetStringAsync($"{FontysAPIEndpoints.location}/mapimage/{campus}/{building}/{floor}");
+        }
+
+        public async Task<string> GetLocationFloorStatistics()
+        {
+            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
+
+            Client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", accessToken);
+
+            return await Client.GetStringAsync($"{FontysAPIEndpoints.location}/floor-statistics");
         }
         #endregion
 
