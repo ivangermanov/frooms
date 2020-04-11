@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Froom.Data.Migrations
 {
     [DbContext(typeof(FroomContext))]
-    [Migration("20200407220608_ChangeRoomPrimaryKey")]
-    partial class ChangeRoomPrimaryKey
+    [Migration("20200411211538_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -124,8 +124,8 @@ namespace Froom.Data.Migrations
                     b.Property<string>("Number")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Floor")
-                        .HasColumnType("int");
+                    b.Property<string>("Floor")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BuildingName")
                         .HasColumnType("nvarchar(450)");

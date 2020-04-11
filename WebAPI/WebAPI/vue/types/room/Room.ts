@@ -4,8 +4,8 @@ import { IPoint } from './IPoint'
 
 export class Room implements IRoom {
   number: string = '';
-  floor: number = -1;
   buildingName: string = '';
+  floor: string = '';
   points: IPoint[] = [];
   shape: EShape = EShape.POLYGON;
   capacity?: number;

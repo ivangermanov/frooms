@@ -63,7 +63,7 @@ namespace Froom.UnitTest.Helpers
             var room1 = new Room()
             {
                 Number = "40",
-                Floor = 2,
+                Floor = "2",
                 Capacity = 40,
                 Reservations = new List<Reservation>(),
                 BuildingName = _createdBuilding1.Entity.Name,
