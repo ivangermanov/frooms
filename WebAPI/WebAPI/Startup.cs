@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using Froom.Data.Database;
 using Froom.Data.Repositories;
@@ -6,17 +7,16 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using VueCliMiddleware;
 using WebAPI.Helpers;
 using WebAPI.Services;
 using WebAPI.Services.Interfaces;
-using System;
 
 namespace WebAPI
 {
@@ -53,7 +53,7 @@ namespace WebAPI
             {
                 options.ClientId = AppSettings.ClientId;
                 options.ClientSecret = AppSettings.ClientSecret;
-                options.Authority = Constants.AuthorizeEndpoint;
+                options.Authority = OpenIDConstants.AuthorizeEndpoint;
 
                 // Configure the scope
                 options.Scope.Clear();
@@ -75,6 +75,7 @@ namespace WebAPI
                 options.GetClaimsFromUserInfoEndpoint = true;
                 options.UsePkce = false;
             });
+            services.AddHttpContextAccessor();
 
             services.AddCors(options =>
             {
@@ -84,12 +85,13 @@ namespace WebAPI
 
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddTransient<IRoomService, RoomService>();
+            services.AddTransient<FontysAPI>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 {
-                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 
             services.AddSpaStaticFiles(opt => opt.RootPath = "vue/dist");
