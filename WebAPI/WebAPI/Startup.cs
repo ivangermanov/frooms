@@ -60,6 +60,7 @@ namespace WebAPI
                 options.Scope.Add("openid");
                 options.Scope.Add("fhict");
                 options.Scope.Add("fhict_personal");
+                options.Scope.Add("fhict_location");
                 options.Scope.Add("profile");
                 options.Scope.Add("email");
                 options.Scope.Add("roles");
