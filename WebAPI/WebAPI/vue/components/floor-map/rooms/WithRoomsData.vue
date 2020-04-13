@@ -10,7 +10,7 @@ const RoomRepository = RepositoryFactory.room
 export default Vue.extend({
   data () {
     return {
-      campus: 'EHV',
+      buildingCampus: 'EHV',
       buildingName: 'R1',
       floor: '2e',
       rooms: {} as { [key: string]: IRoom },
@@ -40,8 +40,9 @@ export default Vue.extend({
       if (this.editMode || this.deleteMode) { return }
 
       const { data } = await RoomRepository.getRooms(
-        this.campus,
+        this.buildingCampus,
         this.buildingName,
+        this.buildingCampus,
         this.floor
       )
       const rooms: IRoom[] = data
@@ -60,7 +61,7 @@ export default Vue.extend({
       }, 5000)
     },
     async postShape (shape: GeoJSON.Feature) {
-      const payload = [CreateIRoom(shape, this.buildingName, this.floor)]
+      const payload = [CreateIRoom(shape, this.floor, this.buildingName, this.buildingCampus)]
 
       const success = await RoomRepository.postRooms(payload).catch(() => {})
 
@@ -72,7 +73,7 @@ export default Vue.extend({
       const payload: IRoom[] = []
       shapes.eachLayer((layer: any) => {
         const shape = layer.toGeoJSON()
-        const room = CreateIRoom(shape, this.buildingName, this.floor)
+        const room = CreateIRoom(shape, this.floor, this.buildingName, this.buildingCampus)
         payload.push(room)
       })
 
@@ -86,7 +87,7 @@ export default Vue.extend({
       const payload: IRoom[] = []
       shapes.eachLayer((layer: any) => {
         const shape = layer.toGeoJSON()
-        const room = CreateIRoom(shape, this.floor, this.buildingName)
+        const room = CreateIRoom(shape, this.floor, this.buildingName, this.buildingCampus)
         payload.push(room)
       })
 

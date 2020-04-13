@@ -13,5 +13,7 @@ namespace Froom.Data.Models.Rooms
         public string Floor { get; set; }
         [Required]
         public string BuildingName { get; set; }
+        [Required]
+        public string BuildingCampus { get; set; }
     }
 }

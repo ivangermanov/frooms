@@ -5,6 +5,7 @@ import { IPoint } from './IPoint'
 export class Room implements IRoom {
   number: string = '';
   buildingName: string = '';
+  buildingCampus: string = '';
   floor: string = '';
   points: IPoint[] = [];
   shape: EShape = EShape.POLYGON;
