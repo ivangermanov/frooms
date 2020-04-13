@@ -269,6 +269,10 @@ paket-files/
 __pycache__/
 *.pyc
 
+# AppSetting that desclose passwords
+appsettings.Development.json
+appsettings.json
+
 # Cake - Uncomment if you are using it
 # tools/
 
