@@ -18,7 +18,6 @@ namespace WebAPI.Controllers
 
         #region Buildings
         [HttpGet]
-        [Authorize]
         [Route("buildings")]
         public async Task<IActionResult> GetBuildings()
         {
@@ -29,7 +28,6 @@ namespace WebAPI.Controllers
 
         #region Location
         [HttpGet]
-        [Authorize]
         [Route("location/mapimage/{campus}/{building}/{floor}")]
         public async Task<IActionResult> GetLocationMapImage(string campus, string building, string floor)
         {
@@ -38,7 +36,6 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("location/floor-statistics")]
         public async Task<IActionResult> GetLocationFloorStatistics()
         {
