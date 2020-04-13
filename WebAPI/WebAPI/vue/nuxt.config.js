@@ -26,7 +26,7 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['toastr/toastr.scss'],
+  css: ['toastr/toastr.scss', '~/css/main.css'],
   /*
    ** Plugins to load before mounting the App
    */

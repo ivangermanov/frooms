@@ -4,6 +4,6 @@ const resource = '/auth'
 
 export default {
   getUserInfo () {
-    return Repository.get(`${resource}`)
+    return Repository.post(`${resource}`)
   }
 }
