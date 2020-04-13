@@ -4,7 +4,7 @@ import toastr from 'toastr'
 let baseDomain = ''
 
 if (process.env.NODE_ENV === 'development') {
-  baseDomain = 'https://localhost:44338'
+  baseDomain = 'https://localhost:44323'
 }
 
 const baseUrl = `${baseDomain}/api`
