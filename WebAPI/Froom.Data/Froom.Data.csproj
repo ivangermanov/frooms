@@ -25,6 +25,12 @@
     <Compile Remove="Migrations\20200407220608_ChangeRoomPrimaryKey.Designer.cs" />
     <Compile Remove="Migrations\20200411211212_MakeFloorString.cs" />
     <Compile Remove="Migrations\20200411211212_MakeFloorString.Designer.cs" />
+    <Compile Remove="Migrations\20200411211538_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200411211538_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200413203322_AddKeyBuildingCampus.cs" />
+    <Compile Remove="Migrations\20200413203322_AddKeyBuildingCampus.Designer.cs" />
+    <Compile Remove="Migrations\20200413203909_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200413203909_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

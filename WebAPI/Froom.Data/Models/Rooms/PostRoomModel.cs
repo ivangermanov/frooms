@@ -12,6 +12,9 @@ namespace Froom.Data.Models.Rooms
         public string Floor { get; set; }
         [Required]
         public string BuildingName { get; set; }
+        [Required]
+        public string BuildingCampus { get; set; }
+
         public int? Capacity { get; set; }
         [Required]
         public ICollection<Point> Points { get; set; }

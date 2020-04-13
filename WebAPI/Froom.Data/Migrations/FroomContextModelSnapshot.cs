@@ -30,7 +30,8 @@ namespace Froom.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Campus")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -128,6 +129,9 @@ namespace Froom.Data.Migrations
                     b.Property<string>("BuildingName")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("BuildingCampus")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("Capacity")
                         .HasColumnType("int");
 
@@ -139,9 +143,9 @@ namespace Froom.Data.Migrations
                     b.Property<string>("Points")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Number", "Floor", "BuildingName");
+                    b.HasKey("Number", "Floor", "BuildingName", "BuildingCampus");
 
-                    b.HasIndex("BuildingName");
+                    b.HasIndex("BuildingName", "BuildingCampus");
 
                     b.ToTable("Room");
                 });
@@ -207,8 +211,8 @@ namespace Froom.Data.Migrations
                 {
                     b.HasOne("Froom.Data.Entities.Building", "Building")
                         .WithMany("Rooms")
-                        .HasForeignKey("BuildingName")
-                        .HasPrincipalKey("Name")
+                        .HasForeignKey("BuildingName", "BuildingCampus")
+                        .HasPrincipalKey("Name", "Campus")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

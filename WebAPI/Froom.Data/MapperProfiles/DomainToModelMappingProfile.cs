@@ -19,6 +19,7 @@ namespace Froom.Data.MapperProfiles
         private void ConfigureMappings()
         {
             CreateMap<PostRoomModel, Room>();
+            CreateMap<DeleteRoomModel, Room>();
             CreateMap<PostReservationModel, Reservation>();
             CreateMap<PostUserModel, User>();
         }

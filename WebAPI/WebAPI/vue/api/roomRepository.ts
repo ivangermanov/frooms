@@ -4,11 +4,12 @@ import { IRoom } from '@/types/index'
 const resource = '/rooms'
 
 export default {
-  getRooms (campus: string, buildingName: string, floor?: string) {
+  getRooms (campus: string, buildingName: string, buildingCampus: string, floor?: string) {
     return Repository.get(`${resource}`, {
       params: {
         campus,
         buildingName,
+        buildingCampus,
         floor
       }
     })

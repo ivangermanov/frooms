@@ -6,8 +6,9 @@ import { Room } from './Room'
 
 export function CreateIRoom (
   feature: GeoJSON.Feature,
-  buildingName: string,
   floor: string,
+  buildingName: string,
+  buildingCampus: string,
   shape: EShape = EShape.POLYGON,
   capacity: number = 0
 ): IRoom {
@@ -28,6 +29,7 @@ export function CreateIRoom (
 
   const room = GeoJSONToIRoom(feature)
   room.buildingName = buildingName
+  room.buildingCampus = buildingCampus
   room.floor = floor
   room.capacity = capacity
 

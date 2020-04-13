@@ -14,6 +14,8 @@ namespace Froom.Data.Entities
 
         public string BuildingName { get; set; }
 
+        public string BuildingCampus { get; set; }
+
         public Building Building { get; set; }
 
         public int? Capacity { get; set; }
