@@ -20,12 +20,12 @@
     "@nuxtjs/pwa": "^3.0.0-beta.20",
     "@types/leaflet-draw": "^1.0.2",
     "@types/toastr": "^2.1.37",
-    "portal-vue": "^2.1.7",
     "leaflet": "^1.6.0",
     "leaflet-draw": "^1.0.4",
     "lodash": "^4.17.15",
     "nuxt": "^2.12.2",
     "nuxt-leaflet": "0.0.21",
+    "portal-vue": "^2.1.7",
     "toastr": "^2.1.4",
     "vue2-leaflet": "^2.5.2"
   },
