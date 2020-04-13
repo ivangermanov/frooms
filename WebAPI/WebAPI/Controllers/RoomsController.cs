@@ -42,7 +42,6 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetRooms(string? campus, string? buildingName, string? floor)
         {
             var rooms = await _roomService.GetRooms(campus, buildingName, floor);
@@ -50,7 +49,6 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("available/{campus}/{buildingName}/{floor}")]
         public async Task<IActionResult> GetRooms(string campus, string buildingName, string floor, DateTime fromDate,
             DateTime toDate)

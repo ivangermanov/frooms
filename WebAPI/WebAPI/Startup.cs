@@ -3,6 +3,7 @@ using AutoMapper;
 using Froom.Data.Database;
 using Froom.Data.Repositories;
 using Froom.Data.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -41,6 +42,12 @@ namespace WebAPI
                     x => x.MigrationsAssembly("Froom.Data"));
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowLocalHost,
+                    builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
+            });
+
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -75,13 +82,8 @@ namespace WebAPI
                 options.GetClaimsFromUserInfoEndpoint = true;
                 options.UsePkce = false;
             });
-            services.AddHttpContextAccessor();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(AllowLocalHost,
-                    builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
-            });
+            services.AddHttpContextAccessor();
 
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddTransient<IRoomService, RoomService>();
@@ -104,9 +106,11 @@ namespace WebAPI
 
             app.UseHttpsRedirection();
 
-            app.UseSpaStaticFiles();
-
             app.UseRouting();
+
+            if (env.IsDevelopment()) app.UseCors(AllowLocalHost);
+
+            app.UseSpaStaticFiles();
 
             app.UseAuthentication();
 
@@ -114,12 +118,18 @@ namespace WebAPI
 
             app.UseCookiePolicy();
 
-            if (env.IsDevelopment()) app.UseCors(AllowLocalHost);
+            // TODO: Find better way to route to login page before going in SPA
+            app.Use(async (context, next) =>
+            {
+                if (!context.User.Identity.IsAuthenticated)
+                    await context.ChallengeAsync();
+                else
+                    await next();
+            });
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
-
+                endpoints.MapControllers(); //.RequireAuthorization();
                 // NOTE: VueCliProxy is meant for developement and hot module reload
                 // NOTE: SSR has not been tested
                 // Production systems should only need the UseSpaStaticFiles() (above)

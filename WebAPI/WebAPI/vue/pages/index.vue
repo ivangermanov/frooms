@@ -21,9 +21,20 @@
   </v-layout>
 </template>
 
-<script>
-export default {
-  components: {
+<script lang="ts">
+import Vue from 'vue'
+import { RepositoryFactory } from '@/api/repositoryFactory'
+const AuthRepository = RepositoryFactory.auth
+
+export default Vue.extend({
+  created () {
+    this.getUserData()
+  },
+  methods: {
+    async getUserData () {
+      const { data } = await AuthRepository.getUserInfo()
+      console.log(data)
+    }
   }
-}
+})
 </script>
