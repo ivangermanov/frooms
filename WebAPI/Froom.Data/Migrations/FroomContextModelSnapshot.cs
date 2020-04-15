@@ -15,7 +15,7 @@ namespace Froom.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -29,8 +29,8 @@ namespace Froom.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Campus")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CampusId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -38,7 +38,28 @@ namespace Froom.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CampusId");
+
                     b.ToTable("Building");
+                });
+
+            modelBuilder.Entity("Froom.Data.Entities.Campus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
+
+                    b.ToTable("Campus");
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Picture", b =>
@@ -160,6 +181,15 @@ namespace Froom.Data.Migrations
                     b.HasKey("Number");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("Froom.Data.Entities.Building", b =>
+                {
+                    b.HasOne("Froom.Data.Entities.Campus", "Campus")
+                        .WithMany("Buildings")
+                        .HasForeignKey("CampusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Picture", b =>
