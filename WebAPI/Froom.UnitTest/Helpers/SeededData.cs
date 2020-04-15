@@ -12,6 +12,8 @@ namespace Froom.UnitTest.Helpers
     {
         public static User NormalUser { get; set; }
 
+        public static Campus Campus1 { get; set; }
+
         public static Building Building1 { get; set; }
 
         /// <summary>

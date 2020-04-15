@@ -27,7 +27,7 @@ namespace WebAPI.Services
         public async Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? buildingName, int? floor)
         {
             var rooms = _roomRepository.GetAll()
-                .Where(r => string.IsNullOrEmpty(campus) || r.Building.Campus.Equals(campus))
+                .Where(r => string.IsNullOrEmpty(campus) || r.Building.Campus.Name.Equals(campus))
                 .Where(r => string.IsNullOrEmpty(buildingName) || r.BuildingName.Equals(buildingName))
                 .Where(r => !floor.HasValue || r.Floor == floor);
 
@@ -44,7 +44,7 @@ namespace WebAPI.Services
                 throw new ArgumentException("The start DateTime cannot be after the end DateTime.");
 
             var rooms = _roomRepository.GetAll()
-                .Where(r => r.Building.Campus == campus &&
+                .Where(r => r.Building.Campus.Name == campus &&
                             r.BuildingName == buildingName &&
                             r.Floor == floor &&
                             r.IsAvailable(fromDate, toDate));
