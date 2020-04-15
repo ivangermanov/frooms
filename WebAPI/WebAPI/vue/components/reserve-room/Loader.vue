@@ -22,7 +22,7 @@ export default {
     text: {
       type: String,
       required: false,
-      default: 'Loading data...'
+      default: 'Please wait a moment...'
     }
   }
 }

@@ -22,6 +22,11 @@ namespace Froom.Data.MapperProfiles
             CreateMap<Reservation, ReservationDto>();
 
             CreateMap<User, UserDto>();
+
+            CreateMap<Campus, CampusDto>();
+
+            CreateMap<Building, BuildingDto>();
+
         }
     }
 }
