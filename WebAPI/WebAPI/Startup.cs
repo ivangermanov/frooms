@@ -17,6 +17,8 @@ using WebAPI.Helpers;
 using WebAPI.Services;
 using WebAPI.Services.Interfaces;
 using System;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI
 {
@@ -91,6 +93,11 @@ namespace WebAPI
                 {
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
+
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
+            });
 
             services.AddSpaStaticFiles(opt => opt.RootPath = "vue/dist");
         }
