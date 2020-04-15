@@ -1,16 +1,16 @@
 <template>
   <div>
     <portal to="modals">
-      <room-filter />
+      <reserve-modal />
     </portal>
   </div>
 </template>
 
 <script>
-import RoomFilter from '~/components/RoomFilter.vue'
+import ReserveModal from '~/components/reserve-room/ReserveModal.vue'
 
 export default {
-  components: { RoomFilter }
+  components: { ReserveModal }
 }
 </script>
 

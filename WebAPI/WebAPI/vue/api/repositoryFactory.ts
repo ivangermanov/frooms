@@ -1,7 +1,9 @@
 import roomRepository from './roomRepository'
+import campusRepository from './campusRepository'
 
 const repositories = {
-  room: roomRepository
+  room: roomRepository,
+  campus: campusRepository
   // Other repositories
 }
 
