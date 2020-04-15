@@ -16,6 +16,12 @@ export default Vue.extend({
   },
   mounted () {
     const basemaps = [
+      L.imageOverlay('https://i.ibb.co/f0nYv9G/bg.png', [
+        [0, 0],
+        [1416, 512]
+      ], {
+        alt: 'BG'
+      }),
       L.imageOverlay('https://i.ibb.co/yP7k1X2/1e.png', [
         [0, 0],
         [1416, 512]
@@ -39,7 +45,8 @@ export default Vue.extend({
         [1416, 512]
       ], {
         alt: '4e'
-      })]
+      })
+    ]
 
     const map = this.mapObject
     map.addControl(L.control.basemaps({

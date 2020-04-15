@@ -24,9 +24,7 @@ L.Control.Basemaps = L.Control.extend({
       if (i === 0) {
         this.basemap = d
         this._map.addLayer(d)
-        basemapClass += ' active'
-      } else if (i === 1) {
-        basemapClass += ' alt'
+        basemapClass += ' active alt'
       }
 
       if (d._url) {
@@ -77,49 +75,42 @@ L.Control.Basemaps = L.Control.extend({
                 return
               }
             }
+            map.removeLayer(this.basemap)
+            map.addLayer(d)
+            d.bringToBack()
+            map.fire('baselayerchange', d)
+            this.basemap = d
 
-            // if different, remove previous basemap, and add new one
-            if (d !== this.basemap) {
-              map.removeLayer(this.basemap)
-              map.addLayer(d)
-              d.bringToBack()
-              map.fire('baselayerchange', d)
-              this.basemap = d
+            L.DomUtil.removeClass(container.getElementsByClassName('basemap active alt')[0], 'active')
+            L.DomUtil.removeClass(container.getElementsByClassName('basemap alt')[0], 'alt')
 
-              L.DomUtil.removeClass(container.getElementsByClassName('basemap active')[0], 'active')
-              L.DomUtil.addClass(basemapNode, 'active')
+            const altIdx = i % this.options.basemaps.length
+            L.DomUtil.addClass(container.getElementsByClassName('basemap')[altIdx], 'active alt')
 
-              const altIdx = (i + 1) % this.options.basemaps.length
-              L.DomUtil.removeClass(container.getElementsByClassName('basemap alt')[0], 'alt')
-              L.DomUtil.addClass(container.getElementsByClassName('basemap')[altIdx], 'alt')
-
-              L.DomUtil.addClass(container, 'closed')
-            }
+            L.DomUtil.addClass(container, 'closed')
           },
           this
         )
       }
     }, this)
 
-    if (this.options.basemaps.length > 2 && !L.Browser.mobile) {
-      L.DomEvent.on(
-        container,
-        'mouseenter',
-        function () {
-          L.DomUtil.removeClass(container, 'closed')
-        },
-        this
-      )
+    L.DomEvent.on(
+      container,
+      'mouseenter',
+      function () {
+        L.DomUtil.removeClass(container, 'closed')
+      },
+      this
+    )
 
-      L.DomEvent.on(
-        container,
-        'mouseleave',
-        function () {
-          L.DomUtil.addClass(container, 'closed')
-        },
-        this
-      )
-    }
+    L.DomEvent.on(
+      container,
+      'mouseleave',
+      function () {
+        L.DomUtil.addClass(container, 'closed')
+      },
+      this
+    )
 
     this._container = container
     return this._container
