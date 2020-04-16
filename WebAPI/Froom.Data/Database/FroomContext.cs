@@ -49,7 +49,7 @@ namespace Froom.Data.Database
                     .HasPrincipalKey(b =>
                     new {
                         b.Name,
-                        b.Campus
+                        b.CampusName
                     })
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade);

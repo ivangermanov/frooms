@@ -10,6 +10,8 @@ namespace Froom.Data.Entities
 
         public int CampusId { get; set; }
 
+        public string CampusName { get; set; }
+
         public Campus Campus { get; set; }
 
         public string Address { get; set; }

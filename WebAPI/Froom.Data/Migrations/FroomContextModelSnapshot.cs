@@ -29,7 +29,10 @@ namespace Froom.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Campus")
+                    b.Property<int>("CampusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CampusName")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -39,7 +42,28 @@ namespace Froom.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CampusId");
+
                     b.ToTable("Building");
+                });
+
+            modelBuilder.Entity("Froom.Data.Entities.Campus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
+
+                    b.ToTable("Campus");
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Picture", b =>
@@ -166,6 +190,15 @@ namespace Froom.Data.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("Froom.Data.Entities.Building", b =>
+                {
+                    b.HasOne("Froom.Data.Entities.Campus", "Campus")
+                        .WithMany("Buildings")
+                        .HasForeignKey("CampusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Froom.Data.Entities.Picture", b =>
                 {
                     b.HasOne("Froom.Data.Entities.Report", "Report")
@@ -212,7 +245,7 @@ namespace Froom.Data.Migrations
                     b.HasOne("Froom.Data.Entities.Building", "Building")
                         .WithMany("Rooms")
                         .HasForeignKey("BuildingName", "BuildingCampus")
-                        .HasPrincipalKey("Name", "Campus")
+                        .HasPrincipalKey("Name", "CampusName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
