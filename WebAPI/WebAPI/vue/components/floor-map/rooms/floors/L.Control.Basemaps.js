@@ -114,6 +114,11 @@ L.Control.Basemaps = L.Control.extend({
 
     this._container = container
     return this._container
+  },
+  onRemove (map) {
+    this.options.basemaps.forEach(function (d) {
+      map.removeLayer(d)
+    })
   }
 })
 

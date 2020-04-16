@@ -54,11 +54,7 @@ export default Vue.extend({
         attributionControl: false,
         zoom: 2,
         minZoom: 2,
-        maxZoom: 4,
-        maxBounds: [
-          [0, 0],
-          [1416, 512]
-        ]
+        maxZoom: 4
       }
     }
   },
