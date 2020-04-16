@@ -15,10 +15,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{userNumber}")]
-        public IActionResult GetReservationsForUser(int userNumber)
+        [Route("{userId}")]
+        public IActionResult GetReservationsForUser(string userId)
         {
-            return Ok(_reservationService.GetReservationsForUser(userNumber));
+            return Ok(_reservationService.GetReservationsForUser(userId));
         }
 
         [HttpGet]

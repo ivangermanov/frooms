@@ -1,4 +1,6 @@
-﻿using Froom.Data.Models.Users;
+﻿using Froom.Data.Dtos;
+using Froom.Data.Models.Users;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace WebAPI.Services.Interfaces
@@ -9,5 +11,10 @@ namespace WebAPI.Services.Interfaces
         /// Adds a user.
         /// </summary>
         public Task AddUserAsync(PostUserModel model);
+        /// <summary>
+        /// Gets a user based on specified number or name.
+        /// If nothing is pecified returns all users.
+        /// </summary>
+        public Task<IEnumerable<UserDto>> GetUserAsync(string? id, string? name);
     }
 }

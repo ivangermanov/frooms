@@ -19,6 +19,9 @@ using WebAPI.Services.Interfaces;
 using System;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using System.Collections.Generic;
+using Froom.Data.Entities;
 
 namespace WebAPI
 {
@@ -39,7 +42,7 @@ namespace WebAPI
             services.AddDbContext<FroomContext>(options =>
             {
                 options.UseSqlServer(
-                    Configuration["ConnectionString:FontysDB"],
+                    Configuration["ConnectionString:JaneDB"],
                     x => x.MigrationsAssembly("Froom.Data"));
             });
 
@@ -76,6 +79,31 @@ namespace WebAPI
 
                 options.GetClaimsFromUserInfoEndpoint = true;
                 options.UsePkce = false;
+                //Adding admin claim
+                options.Events = new OpenIdConnectEvents
+                {
+                    OnTokenValidated = async ctx =>
+                    {
+                        //Get user's id from claims that came from Fontys
+                        string id = ctx.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                        //Get EF context
+                        var db = ctx.HttpContext.RequestServices.GetRequiredService<FroomContext>();
+                        //Check is user is an admin
+                        var isAdmin = await db.User.AnyAsync(e => e.Id == id && e.Role == UserRole.ADMIN);
+                        if (isAdmin)
+                        {
+                            //Add claim if they are
+                            var claims = new List<Claim>
+                            {
+                                new Claim(ClaimTypes.Role, "admin")
+                            };
+                            var appIdentity = new ClaimsIdentity(claims);
+
+                            ctx.Principal.AddIdentity(appIdentity);
+                        }
+                    }
+                };
             });
 
             services.AddCors(options =>

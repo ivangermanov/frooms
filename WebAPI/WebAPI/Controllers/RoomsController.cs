@@ -28,12 +28,14 @@ namespace WebAPI.Controllers
         [Route("user")]
         public async Task<IActionResult> GetUser()
         {
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             var client = new HttpClient();
             var result = await client.GetStringAsync("https://api.fhict.nl/location/mapimage/EHV/R1/2e");
             return Ok(result);
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetRooms(string? campus, string? buildingName, int? floor)
         {
             var rooms = await _roomService.GetRooms(campus, buildingName, floor);
