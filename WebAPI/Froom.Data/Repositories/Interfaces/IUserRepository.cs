@@ -22,7 +22,7 @@ namespace Froom.Data.Repositories.Interfaces
         /// Gets a user by id from the database context.
         /// </summary>
         /// <param name="id"> The id of the user.</param>
-        Task<User> GetByNumberAsync(int userNumber);
+        Task<User> GetByNumberAsync(string Id);
 
         /// <summary>
         /// Updates information about a user.
