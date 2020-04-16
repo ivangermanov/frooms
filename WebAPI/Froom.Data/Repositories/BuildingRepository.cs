@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Froom.Data.Repositories
 {
     /// <inheritdoc cref="IBuildingRepository"/>
-    class BuildingRepository : IBuildingRepository
+    public class BuildingRepository : IBuildingRepository
     {
         private readonly FroomContext _context;
         private readonly DbSet<Building> _buildings;
@@ -41,11 +41,11 @@ namespace Froom.Data.Repositories
                 throw new DoesNotExistException($"Building with ID: {id} does not exist.");
         }
 
-        public IQueryable<Building> GetForCampusAsync(string campus)
+        public IQueryable<Building> GetForCampusAsync(string campusName)
         {
             return _buildings
                 .Include(u => u.Rooms)
-                .Where(r => r.Campus == campus);
+                .Where(r => r.Campus.Name == campusName);
         }
 
         public async Task RemoveAsync(Building building)

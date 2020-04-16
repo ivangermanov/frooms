@@ -91,6 +91,10 @@ namespace WebAPI
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddTransient<IRoomService, RoomService>();
             services.AddTransient<FontysAPI>();
+            services.AddScoped<ICampusRepository, CampusRepository>();
+            services.AddTransient<ICampusService, CampusService>();
+            services.AddScoped<IBuildingRepository, BuildingRepository>();
+            services.AddTransient<IBuildingService, BuildingService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers()
