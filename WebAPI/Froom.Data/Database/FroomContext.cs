@@ -102,6 +102,21 @@ namespace Froom.Data.Database
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade);
             });
+
+            modelBuilder.Entity<Building>(options =>
+            {
+                options.HasOne(b => b.Campus)
+                    .WithMany(c => c.Buildings)
+                    .HasForeignKey(b => b.CampusId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<Campus>(options =>
+            {
+                options.HasIndex(c => c.Name)
+                    .IsUnique();
+            });
         }
     }
 }
