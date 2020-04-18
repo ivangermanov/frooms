@@ -64,14 +64,12 @@ export default Vue.extend({
       image.onload = () => {
         const topLeft = map.layerPointToLatLng([0, 0])
         const bottomRight = map.layerPointToLatLng([image.naturalWidth, image.naturalHeight])
-        // console.log(topLeft, bottomRight)
         const bounds = latLngBounds(topLeft, bottomRight)
 
         const options = {
           alt: floor.floor,
           order: floor.order
         }
-        // console.log(floor.floor, bounds[0], bounds[1])
         const basemap = imageOverlay(floor.url, bounds, options)
         baseMaps.splice(sortedIndexBy(baseMaps, basemap, 'options.order'), 0, basemap)
         this.reloadOverlays()

@@ -76,7 +76,6 @@ L.Control.Basemaps = L.Control.extend({
               }
             }
             map.removeLayer(this.basemap)
-            console.log(d)
             map.setMaxBounds(d._bounds)
             map.addLayer(d)
             d.bringToBack()
