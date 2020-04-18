@@ -77,11 +77,7 @@ export default Vue.extend({
         payload.push(room)
       })
 
-      const success = await RoomRepository.putRooms(payload).catch(() => {})
-
-      if (success) {
-
-      }
+      await RoomRepository.putRooms(payload).catch(() => {})
     },
     async deleteShapes (shapes: GeoJSON) {
       const payload: IRoom[] = []
@@ -91,11 +87,7 @@ export default Vue.extend({
         payload.push(room)
       })
 
-      const success = await RoomRepository.deleteRooms(payload).catch(() => {})
-
-      if (success) {
-
-      }
+      await RoomRepository.deleteRooms(payload).catch(() => {})
     },
     ...mapMutations({
       setSaved: 'roomAdmin/setSaved'

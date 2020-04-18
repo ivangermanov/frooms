@@ -74,7 +74,6 @@ export default Vue.extend({
         // console.log(floor.floor, bounds[0], bounds[1])
         const basemap = imageOverlay(floor.url, bounds, options)
         baseMaps.splice(sortedIndexBy(baseMaps, basemap, 'options.order'), 0, basemap)
-        map.setMaxBounds(bounds)
         this.reloadOverlays()
       }
       image.src = floor.url
