@@ -24,17 +24,17 @@ namespace WebAPI.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? buildingName, int? floor)
+        public async Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? buildingName, string? floor)
         {
             var rooms = _roomRepository.GetAll()
                 .Where(r => string.IsNullOrEmpty(campus) || r.Building.Campus.Name.Equals(campus))
                 .Where(r => string.IsNullOrEmpty(buildingName) || r.BuildingName.Equals(buildingName))
-                .Where(r => !floor.HasValue || r.Floor == floor);
+                .Where(r => string.IsNullOrEmpty(floor) || r.Floor == floor);
 
             return await _mapper.ProjectTo<RoomDto>(rooms).ToListAsync();
         }
 
-        public async Task<IEnumerable<RoomDto>> GetAvailableRooms(string campus, string buildingName, int floor,
+        public async Task<IEnumerable<RoomDto>> GetAvailableRooms(string campus, string buildingName, string floor,
             DateTime fromDate, DateTime toDate)
         {
             if (campus == null || buildingName == null)

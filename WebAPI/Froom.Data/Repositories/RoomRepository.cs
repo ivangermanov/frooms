@@ -48,7 +48,7 @@ namespace Froom.Data.Repositories
 
         public async Task<Room> FindAsync(Room room)
         {
-            return await _rooms.FindAsync(room.Number, room.Floor, room.BuildingName);
+            return await _rooms.FindAsync(room.Number, room.Floor, room.BuildingName, room.BuildingCampus);
         }
 
         public IQueryable<Room> GetAll()

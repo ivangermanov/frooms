@@ -21,6 +21,16 @@
     <Compile Remove="Migrations\20200407215741_ChangeRoomPrimaryKey.Designer.cs" />
     <Compile Remove="Migrations\20200407220155_ChangeRoomPrimaryKey.cs" />
     <Compile Remove="Migrations\20200407220155_ChangeRoomPrimaryKey.Designer.cs" />
+    <Compile Remove="Migrations\20200407220608_ChangeRoomPrimaryKey.cs" />
+    <Compile Remove="Migrations\20200407220608_ChangeRoomPrimaryKey.Designer.cs" />
+    <Compile Remove="Migrations\20200411211212_MakeFloorString.cs" />
+    <Compile Remove="Migrations\20200411211212_MakeFloorString.Designer.cs" />
+    <Compile Remove="Migrations\20200411211538_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200411211538_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200413203322_AddKeyBuildingCampus.cs" />
+    <Compile Remove="Migrations\20200413203322_AddKeyBuildingCampus.Designer.cs" />
+    <Compile Remove="Migrations\20200413203909_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200413203909_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,10 +42,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

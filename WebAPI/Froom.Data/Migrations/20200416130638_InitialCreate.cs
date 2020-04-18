@@ -41,12 +41,13 @@ namespace Froom.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false),
                     CampusId = table.Column<int>(nullable: false),
+                    CampusName = table.Column<string>(nullable: false),
                     Address = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Building", x => x.Id);
-                    table.UniqueConstraint("AK_Building_Name", x => x.Name);
+                    table.UniqueConstraint("AK_Building_Name_CampusName", x => new { x.Name, x.CampusName });
                     table.ForeignKey(
                         name: "FK_Building_Campus_CampusId",
                         column: x => x.CampusId,
@@ -60,8 +61,9 @@ namespace Froom.Data.Migrations
                 columns: table => new
                 {
                     Number = table.Column<string>(nullable: false),
-                    Floor = table.Column<int>(nullable: false),
+                    Floor = table.Column<string>(nullable: false),
                     BuildingName = table.Column<string>(nullable: false),
+                    BuildingCampus = table.Column<string>(nullable: false),
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Capacity = table.Column<int>(nullable: true),
@@ -69,13 +71,13 @@ namespace Froom.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Room", x => new { x.Number, x.Floor, x.BuildingName });
+                    table.PrimaryKey("PK_Room", x => new { x.Number, x.Floor, x.BuildingName, x.BuildingCampus });
                     table.UniqueConstraint("AK_Room_Id", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Room_Building_BuildingName",
-                        column: x => x.BuildingName,
+                        name: "FK_Room_Building_BuildingName_BuildingCampus",
+                        columns: x => new { x.BuildingName, x.BuildingCampus },
                         principalTable: "Building",
-                        principalColumn: "Name",
+                        principalColumns: new[] { "Name", "CampusName" },
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -189,9 +191,9 @@ namespace Froom.Data.Migrations
                 column: "UserNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Room_BuildingName",
+                name: "IX_Room_BuildingName_BuildingCampus",
                 table: "Room",
-                column: "BuildingName");
+                columns: new[] { "BuildingName", "BuildingCampus" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
