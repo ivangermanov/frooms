@@ -24,6 +24,7 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
+        // TODO: Just return campus names
         [HttpGet]
         public async Task<IActionResult> GetCampuses()
         {

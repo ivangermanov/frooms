@@ -10,6 +10,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/buildings")]
     [ApiController]
+    // TODO: Change to Buildings
     public class BuildingController : ControllerBase
     {
         readonly IBuildingService _buildingService;
@@ -27,6 +28,7 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
+        // TODO: Change to GetBuildings and keep optional parameter
         [HttpGet]
         public async Task<IActionResult> GetBuildingsForCampus(string campusName)
         {
