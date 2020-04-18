@@ -10,9 +10,9 @@ const RoomRepository = RepositoryFactory.room
 export default Vue.extend({
   data () {
     return {
-      floor: 2,
-      campus: 'eindhoven',
-      buildingName: 'r1',
+      buildingCampus: 'EHV',
+      buildingName: 'R1',
+      floor: '2e',
       rooms: {} as { [key: string]: IRoom },
       roomLayers: {} as { [key: string]: GeoJSON.Feature }
     }
@@ -40,8 +40,9 @@ export default Vue.extend({
       if (this.editMode || this.deleteMode) { return }
 
       const { data } = await RoomRepository.getRooms(
-        this.campus,
+        this.buildingCampus,
         this.buildingName,
+        this.buildingCampus,
         this.floor
       )
       const rooms: IRoom[] = data
@@ -60,7 +61,7 @@ export default Vue.extend({
       }, 5000)
     },
     async postShape (shape: GeoJSON.Feature) {
-      const payload = [CreateIRoom(shape, this.floor, this.buildingName)]
+      const payload = [CreateIRoom(shape, this.floor, this.buildingName, this.buildingCampus)]
 
       const success = await RoomRepository.postRooms(payload).catch(() => {})
 
@@ -72,29 +73,21 @@ export default Vue.extend({
       const payload: IRoom[] = []
       shapes.eachLayer((layer: any) => {
         const shape = layer.toGeoJSON()
-        const room = CreateIRoom(shape, this.floor, this.buildingName)
+        const room = CreateIRoom(shape, this.floor, this.buildingName, this.buildingCampus)
         payload.push(room)
       })
 
-      const success = await RoomRepository.putRooms(payload).catch(() => {})
-
-      if (success) {
-
-      }
+      await RoomRepository.putRooms(payload).catch(() => {})
     },
     async deleteShapes (shapes: GeoJSON) {
       const payload: IRoom[] = []
       shapes.eachLayer((layer: any) => {
         const shape = layer.toGeoJSON()
-        const room = CreateIRoom(shape, this.floor, this.buildingName)
+        const room = CreateIRoom(shape, this.floor, this.buildingName, this.buildingCampus)
         payload.push(room)
       })
 
-      const success = await RoomRepository.deleteRooms(payload).catch(() => {})
-
-      if (success) {
-
-      }
+      await RoomRepository.deleteRooms(payload).catch(() => {})
     },
     ...mapMutations({
       setSaved: 'roomAdmin/setSaved'

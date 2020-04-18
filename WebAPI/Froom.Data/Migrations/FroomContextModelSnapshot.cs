@@ -32,6 +32,10 @@ namespace Froom.Data.Migrations
                     b.Property<int>("CampusId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CampusName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -143,10 +147,13 @@ namespace Froom.Data.Migrations
                     b.Property<string>("Number")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Floor")
-                        .HasColumnType("int");
+                    b.Property<string>("Floor")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BuildingName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BuildingCampus")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("Capacity")
@@ -160,9 +167,9 @@ namespace Froom.Data.Migrations
                     b.Property<string>("Points")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Number", "Floor", "BuildingName");
+                    b.HasKey("Number", "Floor", "BuildingName", "BuildingCampus");
 
-                    b.HasIndex("BuildingName");
+                    b.HasIndex("BuildingName", "BuildingCampus");
 
                     b.ToTable("Room");
                 });
@@ -237,8 +244,8 @@ namespace Froom.Data.Migrations
                 {
                     b.HasOne("Froom.Data.Entities.Building", "Building")
                         .WithMany("Rooms")
-                        .HasForeignKey("BuildingName")
-                        .HasPrincipalKey("Name")
+                        .HasForeignKey("BuildingName", "BuildingCampus")
+                        .HasPrincipalKey("Name", "CampusName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

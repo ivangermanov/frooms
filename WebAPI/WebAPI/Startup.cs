@@ -1,22 +1,23 @@
+using System;
 using AutoMapper;
 using Froom.Data.Database;
 using Froom.Data.Repositories;
 using Froom.Data.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using VueCliMiddleware;
 using WebAPI.Helpers;
 using WebAPI.Services;
 using WebAPI.Services.Interfaces;
-using System;
 
 namespace WebAPI
 {
@@ -41,6 +42,15 @@ namespace WebAPI
                     x => x.MigrationsAssembly("Froom.Data"));
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowLocalHost,
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                    });
+            });
+
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -53,7 +63,7 @@ namespace WebAPI
             {
                 options.ClientId = AppSettings.ClientId;
                 options.ClientSecret = AppSettings.ClientSecret;
-                options.Authority = Constants.AuthorizeEndpoint;
+                options.Authority = OpenIDConstants.AuthorizeEndpoint;
 
                 // Configure the scope
                 options.Scope.Clear();
@@ -76,14 +86,11 @@ namespace WebAPI
                 options.UsePkce = false;
             });
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(AllowLocalHost,
-                    builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
-            });
+            services.AddHttpContextAccessor();
 
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddTransient<IRoomService, RoomService>();
+            services.AddTransient<FontysAPI>();
             services.AddScoped<ICampusRepository, CampusRepository>();
             services.AddTransient<ICampusService, CampusService>();
             services.AddScoped<IBuildingRepository, BuildingRepository>();
@@ -93,7 +100,7 @@ namespace WebAPI
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 {
-                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 
             services.AddSpaStaticFiles(opt => opt.RootPath = "vue/dist");
@@ -106,9 +113,11 @@ namespace WebAPI
 
             app.UseHttpsRedirection();
 
-            app.UseSpaStaticFiles();
-
             app.UseRouting();
+
+            if (env.IsDevelopment()) app.UseCors(AllowLocalHost);
+
+            app.UseSpaStaticFiles();
 
             app.UseAuthentication();
 
@@ -116,12 +125,18 @@ namespace WebAPI
 
             app.UseCookiePolicy();
 
-            if (env.IsDevelopment()) app.UseCors(AllowLocalHost);
+            // TODO: Find better way to route to login page before going in SPA
+            app.Use(async (context, next) =>
+            {
+                if (!context.User.Identity.IsAuthenticated)
+                    await context.ChallengeAsync();
+                else
+                    await next();
+            });
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
-
+                endpoints.MapControllers(); //.RequireAuthorization();
                 // NOTE: VueCliProxy is meant for developement and hot module reload
                 // NOTE: SSR has not been tested
                 // Production systems should only need the UseSpaStaticFiles() (above)
