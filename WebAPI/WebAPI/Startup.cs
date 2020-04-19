@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +18,6 @@ using VueCliMiddleware;
 using WebAPI.Helpers;
 using WebAPI.Services;
 using WebAPI.Services.Interfaces;
-using System;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -45,7 +43,7 @@ namespace WebAPI
             services.AddDbContext<FroomContext>(options =>
             {
                 options.UseSqlServer(
-                    Configuration["ConnectionString:JaneDB"],
+                    Configuration["ConnectionString:FontysDB"],
                     x => x.MigrationsAssembly("Froom.Data"));
             });
 
@@ -134,11 +132,6 @@ namespace WebAPI
                 {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
-
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
-            });
 
             services.AddSpaStaticFiles(opt => opt.RootPath = "vue/dist");
         }
