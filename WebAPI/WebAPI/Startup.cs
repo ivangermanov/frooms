@@ -16,11 +16,11 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using VueCliMiddleware;
 using WebAPI.Helpers;
+using System.Security.Claims;
 using WebAPI.Services;
 using WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 using System.Collections.Generic;
 using Froom.Data.Entities;
 
@@ -95,7 +95,7 @@ namespace WebAPI
                     OnTokenValidated = async ctx =>
                     {
                         //Get user's id from claims that came from Fontys
-                        string id = ctx.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+                        Guid id = new Guid(ctx.Principal.FindFirstValue(ClaimTypes.NameIdentifier));
 
                         //Get EF context
                         var db = ctx.HttpContext.RequestServices.GetRequiredService<FroomContext>();

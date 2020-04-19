@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
 
         // TODO: Remove, only for testing
         [HttpGet]
-        [Authorize(Roles = "student")]
+        [Authorize(Roles = "admin")]
         [Route("user")]
         public async Task<IActionResult> GetUser()
         {
