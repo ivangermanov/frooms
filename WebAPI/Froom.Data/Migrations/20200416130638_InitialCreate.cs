@@ -3,24 +3,21 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Froom.Data.Migrations
 {
-    public partial class ChangeRoomPrimaryKey : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Building",
+                name: "Campus",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: false),
-                    Campus = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Building", x => x.Id);
-                    table.UniqueConstraint("AK_Building_Name", x => x.Name);
+                    table.PrimaryKey("PK_Campus", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -37,12 +34,36 @@ namespace Froom.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Building",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: false),
+                    CampusId = table.Column<int>(nullable: false),
+                    CampusName = table.Column<string>(nullable: false),
+                    Address = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Building", x => x.Id);
+                    table.UniqueConstraint("AK_Building_Name_CampusName", x => new { x.Name, x.CampusName });
+                    table.ForeignKey(
+                        name: "FK_Building_Campus_CampusId",
+                        column: x => x.CampusId,
+                        principalTable: "Campus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Room",
                 columns: table => new
                 {
                     Number = table.Column<string>(nullable: false),
-                    Floor = table.Column<int>(nullable: false),
+                    Floor = table.Column<string>(nullable: false),
                     BuildingName = table.Column<string>(nullable: false),
+                    BuildingCampus = table.Column<string>(nullable: false),
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Capacity = table.Column<int>(nullable: true),
@@ -50,13 +71,13 @@ namespace Froom.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Room", x => new { x.Number, x.Floor, x.BuildingName });
+                    table.PrimaryKey("PK_Room", x => new { x.Number, x.Floor, x.BuildingName, x.BuildingCampus });
                     table.UniqueConstraint("AK_Room_Id", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Room_Building_BuildingName",
-                        column: x => x.BuildingName,
+                        name: "FK_Room_Building_BuildingName_BuildingCampus",
+                        columns: x => new { x.BuildingName, x.BuildingCampus },
                         principalTable: "Building",
-                        principalColumn: "Name",
+                        principalColumns: new[] { "Name", "CampusName" },
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -133,6 +154,18 @@ namespace Froom.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Building_CampusId",
+                table: "Building",
+                column: "CampusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Campus_Name",
+                table: "Campus",
+                column: "Name",
+                unique: true,
+                filter: "[Name] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Picture_ReportId",
                 table: "Picture",
                 column: "ReportId");
@@ -158,9 +191,9 @@ namespace Froom.Data.Migrations
                 column: "UserNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Room_BuildingName",
+                name: "IX_Room_BuildingName_BuildingCampus",
                 table: "Room",
-                column: "BuildingName");
+                columns: new[] { "BuildingName", "BuildingCampus" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -182,6 +215,9 @@ namespace Froom.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Building");
+
+            migrationBuilder.DropTable(
+                name: "Campus");
         }
     }
 }

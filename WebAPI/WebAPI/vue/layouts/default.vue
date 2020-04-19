@@ -18,19 +18,39 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :dense="true" fixed app>
+    <v-app-bar dense app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
       </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <div class="d-flex">
-        <v-icon class="mr-2">
-          mdi-theme-light-dark
-        </v-icon>
-        <v-switch v-model="$vuetify.theme.dark" class="switch" />
+      <div class="d-flex mr-4">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <span class="d-flex" v-on="on">
+              <v-icon class="pr-2">
+                mdi-theme-light-dark
+              </v-icon>
+              <v-switch v-model="$vuetify.theme.dark" class="switch pr-4" :hint="`Dark mode`" />
+            </span>
+          </template>
+          <span>Dark mode</span>
+        </v-tooltip>
       </div>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <span class="d-flex" v-on="on">
+            <v-icon>mdi-logout</v-icon>
+            <a href="/api/logout">
+              <v-btn>
+                Logout
+              </v-btn>
+            </a>
+          </span>
+        </template>
+        <span>Logout</span>
+      </v-tooltip>
     </v-app-bar>
     <v-content>
       <nuxt />
@@ -39,8 +59,10 @@
   </v-app>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
   data () {
     return {
       drawer: false,
@@ -65,7 +87,7 @@ export default {
       title: 'Froom'
     }
   }
-}
+})
 </script>
 <style scoped>
   .switch {

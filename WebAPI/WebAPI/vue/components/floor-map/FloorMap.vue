@@ -14,19 +14,18 @@
             deleteShapes
           }"
         >
-          <l-draw
-            :fetched-layers="roomLayers"
-            :map-object="mapObject"
-            @addLayer="postShape"
-            @editLayers="putShapes"
-            @deleteLayers="deleteShapes"
-          />
+          <div>
+            <l-draw
+              :map-object="mapObject"
+              :fetched-layers="roomLayers"
+              @addLayer="postShape"
+              @editLayers="putShapes"
+              @deleteLayers="deleteShapes"
+            />
+            <l-floors :map-object="mapObject" />
+          </div>
         </template>
       </with-rooms-data>
-      <l-image-overlay
-        :url="overlayOptions.url"
-        :bounds="overlayOptions.bounds"
-      />
     </l-map>
   </client-only>
 </template>
@@ -34,15 +33,17 @@
 import Vue from 'vue'
 
 import { CRS, Map } from 'leaflet'
-import { LMap, LImageOverlay } from 'vue2-leaflet'
+import { LMap } from 'vue2-leaflet'
+
 import WithRoomsData from './rooms/WithRoomsData.vue'
 import LDraw from './rooms/draw/LDraw.vue'
+import LFloors from './rooms/floors/LFloors.vue'
 
 export default Vue.extend({
   components: {
     LMap,
-    LImageOverlay,
     LDraw,
+    LFloors,
     WithRoomsData
   },
   data () {
@@ -53,18 +54,7 @@ export default Vue.extend({
         attributionControl: false,
         zoom: 2,
         minZoom: 2,
-        maxZoom: 4,
-        maxBounds: [
-          [0, 0],
-          [1416, 512]
-        ]
-      },
-      overlayOptions: {
-        url: 'https://i.ibb.co/bQYTGBR/floor.png',
-        bounds: [
-          [0, 0],
-          [1416, 512]
-        ]
+        maxZoom: 4
       }
     }
   },

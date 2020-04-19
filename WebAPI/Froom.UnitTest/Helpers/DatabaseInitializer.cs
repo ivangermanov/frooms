@@ -16,6 +16,8 @@ namespace Froom.UnitTest.Helpers
     {
         private static EntityEntry<User> _createdNormalUser;
 
+        private static EntityEntry<Campus> _createdCampus1;
+
         private static EntityEntry<Building> _createdBuilding1;
 
         private static EntityEntry<Room> _createdRoom1;
@@ -27,6 +29,7 @@ namespace Froom.UnitTest.Helpers
             await CreateRooms(database);
 
             SeededData.NormalUser = _createdNormalUser.Entity;
+            SeededData.Campus1 = _createdCampus1.Entity;
             SeededData.Building1 = _createdBuilding1.Entity;
             SeededData.Room1 = _createdRoom1.Entity;
         }
@@ -44,12 +47,24 @@ namespace Froom.UnitTest.Helpers
             await database.SaveChangesAsync();
         }
 
+        public static async Task CreateCampuses(DbContext database)
+        {
+            var campus1 = new Campus()
+            {
+                Name = "Fontys Rachelsmolen"
+            };
+
+            _createdCampus1 = database.Set<Campus>().Add(campus1);
+            await database.SaveChangesAsync();
+        }
+
         public static async Task CreateBuildings(DbContext database)
         {
+
             var building1 = new Building()
             {
                 Name = "R1",
-                Campus = "Fontys Rachelsmolen",
+                CampusId = _createdBuilding1.Entity.Id,
                 Address = "Eindhoven, The Netherlands",
                 Rooms = new List<Room>()
             };
@@ -63,7 +78,7 @@ namespace Froom.UnitTest.Helpers
             var room1 = new Room()
             {
                 Number = "40",
-                Floor = 2,
+                Floor = "2",
                 Capacity = 40,
                 Reservations = new List<Reservation>(),
                 BuildingName = _createdBuilding1.Entity.Name,
