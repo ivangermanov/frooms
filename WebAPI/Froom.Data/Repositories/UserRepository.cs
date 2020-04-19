@@ -32,7 +32,7 @@ namespace Froom.Data.Repositories
             return _users.Include(u => u.Reservations);
         }
 
-        public async Task<User> GetByNumberAsync(string Id)
+        public async Task<User> GetByIdAsync(Guid Id)
         {
             return await _users
                 .Include(u => u.Reservations)
