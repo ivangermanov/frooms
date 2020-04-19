@@ -35,8 +35,8 @@ namespace Froom.UnitTest.Helpers
         {
             var normalUser = new User()
             {
-                Id = "386835",
-                Name = "TestUser",
+                Id = new Guid("05847a38-8ea2-4232-966e-512d4159c554"),
+                Name = "Yevheniia Buzykina",
                 Role = UserRole.NORMAL
             };
 

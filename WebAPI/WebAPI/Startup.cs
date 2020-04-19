@@ -14,12 +14,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VueCliMiddleware;
 using WebAPI.Helpers;
+using System.Security.Claims;
 using WebAPI.Services;
 using WebAPI.Services.Interfaces;
 using System;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 using System.Collections.Generic;
 using Froom.Data.Entities;
 
@@ -85,7 +85,7 @@ namespace WebAPI
                     OnTokenValidated = async ctx =>
                     {
                         //Get user's id from claims that came from Fontys
-                        string id = ctx.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+                        Guid id = new Guid(ctx.Principal.FindFirstValue(ClaimTypes.NameIdentifier));
 
                         //Get EF context
                         var db = ctx.HttpContext.RequestServices.GetRequiredService<FroomContext>();
@@ -121,11 +121,6 @@ namespace WebAPI
                 {
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
-
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
-            });
 
             services.AddSpaStaticFiles(opt => opt.RootPath = "vue/dist");
         }
