@@ -32,7 +32,8 @@ namespace Froom.Data.Database
                     {
                         r.Number,
                         r.Floor,
-                        r.BuildingName
+                        r.BuildingName,
+                        r.BuildingCampus
                     });
                 options.Property(r => r.Id).ValueGeneratedOnAdd();
                 options.HasAlternateKey(r => r.Id);
@@ -40,8 +41,16 @@ namespace Froom.Data.Database
 
                 options.HasOne(r => r.Building)
                     .WithMany(b => b.Rooms)
-                    .HasForeignKey(r => r.BuildingName)
-                    .HasPrincipalKey(b => b.Name)
+                    .HasForeignKey(r =>
+                    new {
+                        r.BuildingName,
+                        r.BuildingCampus
+                    })
+                    .HasPrincipalKey(b =>
+                    new {
+                        b.Name,
+                        b.CampusName
+                    })
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade);
 
@@ -92,6 +101,21 @@ namespace Froom.Data.Database
                     .HasForeignKey(p => p.ReportId)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<Building>(options =>
+            {
+                options.HasOne(b => b.Campus)
+                    .WithMany(c => c.Buildings)
+                    .HasForeignKey(b => b.CampusId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<Campus>(options =>
+            {
+                options.HasIndex(c => c.Name)
+                    .IsUnique();
             });
         }
         public DbSet<User> User { get; set; }

@@ -3,8 +3,9 @@ import { IPoint } from './IPoint'
 
 export interface IRoom {
   number: string;
-  floor: number;
   buildingName: string;
+  buildingCampus: string,
+  floor: string;
   points: IPoint[];
   shape: EShape;
   capacity?: number;

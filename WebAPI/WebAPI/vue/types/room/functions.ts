@@ -1,4 +1,4 @@
-import { Polyline, Polygon } from 'leaflet'
+import { GeoJSON } from 'leaflet'
 import { IRoom } from './IRoom'
 import { EShape } from './EShape'
 import { IPoint } from './IPoint'
@@ -6,8 +6,9 @@ import { Room } from './Room'
 
 export function CreateIRoom (
   feature: GeoJSON.Feature,
-  floor: number,
+  floor: string,
   buildingName: string,
+  buildingCampus: string,
   shape: EShape = EShape.POLYGON,
   capacity: number = 0
 ): IRoom {
@@ -27,8 +28,9 @@ export function CreateIRoom (
   }
 
   const room = GeoJSONToIRoom(feature)
-  room.floor = floor
   room.buildingName = buildingName
+  room.buildingCampus = buildingCampus
+  room.floor = floor
   room.capacity = capacity
 
   return room

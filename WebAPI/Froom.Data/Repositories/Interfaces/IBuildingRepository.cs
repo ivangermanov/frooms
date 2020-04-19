@@ -26,8 +26,8 @@ namespace Froom.Data.Repositories.Interfaces
         /// <summary>
         /// Gets all reservations for a specific user.
         /// </summary>
-        /// <param name="campus"> The campus to get the building for.</param>
-        IQueryable<Building> GetForCampusAsync(string campus);
+        /// <param name="campus"> The campus name to get the building for.</param>
+        IQueryable<Building> GetForCampusAsync(string campusName);
 
         /// <summary>
         /// Updates information about a building.

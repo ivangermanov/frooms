@@ -10,8 +10,10 @@ namespace Froom.Data.Models.Rooms
         [Required]
         public string Number { get; set; }
         [Required]
-        public int Floor { get; set; }
+        public string Floor { get; set; }
         [Required]
         public string BuildingName { get; set; }
+        [Required]
+        public string BuildingCampus { get; set; }
     }
 }
