@@ -4,7 +4,6 @@ using Froom.Data.Entities;
 using Froom.Data.Models.Buildings;
 using Froom.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,10 +30,10 @@ namespace WebAPI.Services
             await _buildingRepository.AddAsync(building);
         }
 
-        public async Task<IEnumerable<BuildingDto>> GetBuildingsForCampus(string campusName)
+        public async Task<IEnumerable<BuildingDto>> GetBuildings(string? campusName)
         {
             var buildings = _buildingRepository.GetAll()
-                    .Where(b => b.Campus.Name == campusName);
+                .Where(b => string.IsNullOrEmpty(campusName) || b.Campus.Name.Equals(campusName));
 
             return await _mapper.ProjectTo<BuildingDto>(buildings).ToListAsync();
         }
