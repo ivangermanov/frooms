@@ -1,5 +1,6 @@
 ﻿using Froom.Data.Dtos;
 using Froom.Data.Models.Reservations;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -24,6 +25,6 @@ namespace WebAPI.Services.Interfaces
         /// </summary>
         /// <param name="userId">The unique number of the user.</param>
         /// <returns></returns>
-        public Task<IEnumerable<ReservationDto>> GetReservationsForUser(int userNumber);
+        public Task<IEnumerable<ReservationDto>> GetReservationsForUser(Guid userId);
     }
 }
