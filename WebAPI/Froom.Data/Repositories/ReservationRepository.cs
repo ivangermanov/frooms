@@ -43,7 +43,7 @@ namespace Froom.Data.Repositories
                 throw new DoesNotExistException($"Reservation with ID: {id} does not exist");
         }
 
-        public IQueryable<Reservation> GetForUser(string Id)
+        public IQueryable<Reservation> GetForUser(Guid Id)
         {
             return _reservations
                 .Include(r => r.User)

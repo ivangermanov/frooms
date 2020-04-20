@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Controllers
@@ -16,7 +17,7 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Route("{userId}")]
-        public IActionResult GetReservationsForUser(string userId)
+        public IActionResult GetReservationsForUser(Guid userId)
         {
             return Ok(_reservationService.GetReservationsForUser(userId));
         }
