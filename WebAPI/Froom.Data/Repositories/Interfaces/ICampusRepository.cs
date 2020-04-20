@@ -13,7 +13,7 @@ namespace Froom.Data.Repositories.Interfaces
         Task AddAsync(Campus campus);
 
         /// <summary>
-        /// Gets all campus from the database context.
+        /// Gets all campuses from the database context.
         /// </summary>
         IQueryable<Campus> GetAll();
 
@@ -21,13 +21,13 @@ namespace Froom.Data.Repositories.Interfaces
         /// Gets a campus by id from the database context.
         /// </summary>
         /// <param name="id"> The id of the campus.</param>
-        Task<Campus> GetAsync(int id);
+        Task<Campus> GetByIdAsync(int id);
 
         /// <summary>
         /// Gets a campus by id from the database context.
         /// </summary>
-        /// <param name="id"> The name of the campus.</param>
-        Task<Campus> GetAsync(string name);
+        /// <param name="name"> The name of the campus.</param>
+        Task<Campus> GetByName(string name);
 
         /// <summary>
         /// Updates information about a campus.
