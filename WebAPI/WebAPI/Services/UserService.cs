@@ -4,6 +4,7 @@ using Froom.Data.Entities;
 using Froom.Data.Models.Users;
 using Froom.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,10 +31,10 @@ namespace WebAPI.Services
             await _userRepository.AddAsync(user);
         }
 
-        public async Task<IEnumerable<UserDto>> GetUserAsync(string? id, string? name)
+        public async Task<IEnumerable<UserDto>> GetUserAsync(Guid? id, string? name)
         {
             var users = _userRepository.GetAll()
-                .Where(e => string.IsNullOrEmpty(id) || e.Id.Equals(id))
+                .Where(e => id == null || e.Id.Equals(id))
                 .Where(e => string.IsNullOrEmpty(name) || e.Name.Equals(name));
 
             return await _mapper.ProjectTo<UserDto>(users).ToListAsync();
