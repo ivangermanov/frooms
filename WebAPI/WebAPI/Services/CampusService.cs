@@ -4,13 +4,13 @@ using Froom.Data.Entities;
 using Froom.Data.Models.Campuses;
 using Froom.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Services
 {
+    /// <inheritdoc cref="ICampusService"/>
     public class CampusService : ICampusService
     {
         private readonly ICampusRepository _campusRepository;
@@ -38,14 +38,14 @@ namespace WebAPI.Services
 
         public async Task RemoveCampus(string name)
         {
-            var campus = await _campusRepository.GetAsync(name);
+            var campus = await _campusRepository.GetByName(name);
 
             await _campusRepository.RemoveAsync(campus);
         }
 
         public async Task RemoveCampus(int id)
         {
-            var campus = await _campusRepository.GetAsync(id);
+            var campus = await _campusRepository.GetByIdAsync(id);
 
             await _campusRepository.RemoveAsync(campus);
         }
