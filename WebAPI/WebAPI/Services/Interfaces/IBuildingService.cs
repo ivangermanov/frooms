@@ -16,7 +16,7 @@ namespace WebAPI.Services.Interfaces
         /// <summary>
         /// Get all the buildings for a campus.
         /// </summary>
-        public Task<IEnumerable<BuildingDto>> GetBuildingsForCampus(string campusName);
+        public Task<IEnumerable<BuildingDto>> GetBuildings(string? campusName);
 
         /// <summary>
         /// Remove a building by id.
