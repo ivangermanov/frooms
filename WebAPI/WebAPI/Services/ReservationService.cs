@@ -42,10 +42,10 @@ namespace WebAPI.Services
             return await _mapper.ProjectTo<ReservationDto>(reservations).ToListAsync();
         }
 
-        public async Task<IEnumerable<ReservationDto>> GetReservationsForUser(int userNumber)
+        public async Task<IEnumerable<ReservationDto>> GetReservationsForUser(Guid userId)
         {
             var reservations = _reservationRepository.GetAll()
-                .Where(r => r.UserNumber == userNumber);
+                .Where(r => r.UserId == userId);
 
             return await _mapper.ProjectTo<ReservationDto>(reservations).ToListAsync();
         }
