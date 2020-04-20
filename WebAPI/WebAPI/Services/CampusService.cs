@@ -36,6 +36,11 @@ namespace WebAPI.Services
             return await _mapper.ProjectTo<CampusDto>(campuses).ToListAsync();
         }
 
+        public async Task<IEnumerable<string>> GetCampusNames()
+        {
+            return await _campusRepository.GetNames().ToListAsync();
+        }
+
         public async Task RemoveCampus(string name)
         {
             var campus = await _campusRepository.GetByName(name);

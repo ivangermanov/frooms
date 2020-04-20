@@ -29,7 +29,8 @@ namespace Froom.Data.Repositories
 
         public IQueryable<Campus> GetAll()
         {
-            return _campuses;
+            return _campuses
+                .Include(c => c.Buildings);
         }
 
         public async Task<Campus> GetByIdAsync(int id)
@@ -46,6 +47,11 @@ namespace Froom.Data.Repositories
                 .Include(c => c.Buildings)
                 .SingleOrDefaultAsync(c => c.Name == name) ??
                 throw new DoesNotExistException($"Campus with name: {name} does not exist.");
+        }
+
+        public IQueryable<string> GetNames()
+        {
+            return _campuses.Select(c => c.Name);
         }
 
         public async Task RemoveAsync(Campus campus)

@@ -24,11 +24,17 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        // TODO: Just return campus names
         [HttpGet]
         public async Task<IActionResult> GetCampuses()
         {
             return Ok(await _campusService.GetCampuses());
+        }
+
+        [HttpGet]
+        [Route("names")]
+        public async Task<IActionResult> GetCampusNames()
+        {
+            return Ok(await _campusService.GetCampusNames());
         }
 
         [HttpDelete]

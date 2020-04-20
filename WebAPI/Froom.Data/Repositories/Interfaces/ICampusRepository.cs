@@ -14,8 +14,14 @@ namespace Froom.Data.Repositories.Interfaces
 
         /// <summary>
         /// Gets all campuses from the database context.
+        /// Includes the buildings.
         /// </summary>
         IQueryable<Campus> GetAll();
+
+        /// <summary>
+        /// Gets the names of all campuses from the database context.
+        /// </summary>
+        IQueryable<string> GetNames();
 
         /// <summary>
         /// Gets a campus by id from the database context.
