@@ -17,7 +17,13 @@ namespace Froom.Data.MapperProfiles
         private void ConfigureMappings()
         {
             CreateMap<Room, RoomDto>()
-                .ForMember(dto => dto.BuildingCampus, conf => conf.MapFrom(r => r.Building.Campus));
+                .ForMember(dto => dto.CampusName, conf => conf.MapFrom(r => r.Details.Building.CampusName))
+                .ForMember(dto => dto.BuildingName, conf => conf.MapFrom(r => r.Details.BuildingName))
+                .ForMember(dto => dto.FloorNumber, conf => conf.MapFrom(r => r.Details.FloorNumber));
+
+            CreateMap<BuildingContents, BuildingContentsDto>()
+                .ForMember(dto => dto.FloorOrder, conf => conf.MapFrom(f => f.Floor.Order));
+
             CreateMap<Reservation, ReservationDto>();
             CreateMap<User, UserDto>();
             CreateMap<Campus, CampusDto>();

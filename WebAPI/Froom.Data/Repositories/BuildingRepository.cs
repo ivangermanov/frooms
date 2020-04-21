@@ -30,21 +30,33 @@ namespace Froom.Data.Repositories
         public IQueryable<Building> GetAll()
         {
             return _buildings
-                .Include(b => b.Rooms);
+                .Include(b => b.Contents)
+                .ThenInclude(f => f.Rooms);
         }
 
         public async Task<Building> GetByIdAsync(int id)
         {
             return await _buildings
-                .Include(u => u.Rooms)
+                .Include(b => b.Contents)
+                .ThenInclude(c => c.Rooms)
                 .SingleOrDefaultAsync(r => r.Id == id) ??
                 throw new DoesNotExistException($"Building with ID: {id} does not exist.");
+        }
+
+        public async Task<Building> GetByNameAsync(string name)
+        {
+            return await _buildings
+                .Include(b => b.Contents)
+                .ThenInclude(c => c.Rooms)
+                .SingleOrDefaultAsync(r => r.Name == name) ??
+                throw new DoesNotExistException($"Building with name: {name} does not exist.");
         }
 
         public IQueryable<Building> GetForCampusAsync(string campusName)
         {
             return _buildings
-                .Include(u => u.Rooms)
+                .Include(b => b.Contents)
+                .ThenInclude(c => c.Rooms)
                 .Where(r => r.Campus.Name == campusName);
         }
 
