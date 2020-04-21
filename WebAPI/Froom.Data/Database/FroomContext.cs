@@ -17,11 +17,11 @@ namespace Froom.Data.Database
 
             modelBuilder.Entity<User>(options =>
             {
-                options.HasKey(u => u.Number);
+                options.HasKey(u => u.Id);
 
                 // Turn of the automatic generation of PK.
                 // This way so we can create users with their Number from the FontysAPI.
-                options.Property(u => u.Number)
+                options.Property(u => u.Id)
                     .ValueGeneratedNever();
             });
 
@@ -107,7 +107,7 @@ namespace Froom.Data.Database
             {
                 options.HasOne(r => r.User)
                     .WithMany(u => u.Reservations)
-                    .HasForeignKey(r => r.UserNumber)
+                    .HasForeignKey(r => r.UserId)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade);
 
@@ -123,7 +123,7 @@ namespace Froom.Data.Database
             {
                 options.HasOne(r => r.User)
                     .WithMany()
-                    .HasForeignKey(r => r.UserNumber)
+                    .HasForeignKey(r => r.UserId)
                     .IsRequired(false)
                     .OnDelete(DeleteBehavior.SetNull);
 
@@ -147,5 +147,7 @@ namespace Froom.Data.Database
             // Seed sample data
             modelBuilder.Seed();
         }
+        public DbSet<User> User { get; set; }
+
     }
 }

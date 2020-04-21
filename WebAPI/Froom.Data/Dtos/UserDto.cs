@@ -1,10 +1,11 @@
 ﻿using Froom.Data.Entities;
+using System;
 
 namespace Froom.Data.Dtos
 {
     public class UserDto
     {
-        public int Number { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

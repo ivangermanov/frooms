@@ -6,6 +6,8 @@ namespace Froom.Data.Database
 {
     public static class ModelBuilderExtensions
     {
+        private readonly static Guid userId = Guid.NewGuid();
+
         // Sample data for the seeding
         public static void Seed(this ModelBuilder modelBuilder)
         {
@@ -26,62 +28,8 @@ namespace Froom.Data.Database
                 {
                     new User
                     {
-                        Number = 3947204,
-                        Name = "Ruthyn, Maud",
-                        Role = UserRole.NORMAL
-                    },
-                    new User
-                    {
-                        Number = 7492568,
-                        Name = "Ruthyn, Silas",
-                        Role = UserRole.NORMAL
-                    },
-                    new User
-                    {
-                        Number = 2475253,
-                        Name = "Knollys, Monica",
-                        Role = UserRole.NORMAL
-                    },
-                    new User
-                    {
-                        Number = 8538245,
-                        Name = "Toole, Larry",
-                        Role = UserRole.NORMAL
-                    },
-                    new User
-                    {
-                        Number = 1274628,
-                        Name = "O'Connor, Edmond",
-                        Role = UserRole.NORMAL
-                    },
-                    new User
-                    {
-                        Number = 4516348,
-                        Name = "Ashwoode, Mary",
-                        Role = UserRole.NORMAL
-                    },
-                    new User
-                    {
-                        Number = 3638459,
-                        Name = "Karnstein, Mircalla",
-                        Role = UserRole.NORMAL
-                    },
-                    new User
-                    {
-                        Number = 3634571,
-                        Name = "Brice, Tom",
-                        Role = UserRole.NORMAL
-                    },
-                    new User
-                    {
-                        Number = 7245343,
-                        Name = "Hawkes, Meg",
-                        Role = UserRole.NORMAL
-                    },
-                    new User
-                    {
-                        Number = 3635673,
-                        Name = "Cresswell, Penrose",
+                        Id = userId,
+                        Name = "SeedUser",
                         Role = UserRole.NORMAL
                     }
                 };
@@ -311,7 +259,7 @@ namespace Froom.Data.Database
                     new Reservation
                     {
                         Id = 1,
-                        UserNumber = 4516348,
+                        UserId = userId,
                         RoomId = 1,
                         StartTime = DateTime.Parse("2020-05-05 08:45:00"),
                         Duration = TimeSpan.Parse("001:00:00")
