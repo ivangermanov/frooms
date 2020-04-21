@@ -7,7 +7,7 @@ namespace Froom.Data.Entities
     {
         public int Id { get; set; }
 
-        public int UserNumber { get; set; }
+        public int? UserNumber { get; set; }
 
         public User User { get; set; }
 
