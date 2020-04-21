@@ -14,6 +14,13 @@ namespace WebAPI.Services.Interfaces
         public Task AddBuildingAsync(PostBuildingModel model);
 
         /// <summary>
+        /// Adds a new floor to the building.
+        /// </summary>
+        /// <param name="buildingName">The name of building.</param>
+        /// <param name="floorNumber">The number of the floor to be added.</param>
+        public Task AddFloorAsync(string buildingName, string floorNumber);
+
+        /// <summary>
         /// Get all the buildings for a campus.
         /// </summary>
         public Task<IEnumerable<BuildingDto>> GetBuildings(string? campusName);

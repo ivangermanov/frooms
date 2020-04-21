@@ -2,9 +2,7 @@
 using Froom.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Froom.UnitTest.Helpers
@@ -64,9 +62,9 @@ namespace Froom.UnitTest.Helpers
             var building1 = new Building()
             {
                 Name = "R1",
-                CampusId = _createdBuilding1.Entity.Id,
+                //CampusId = _createdBuilding1.Entity.Id,
                 Address = "Eindhoven, The Netherlands",
-                Rooms = new List<Room>()
+                //Rooms = new List<Room>()
             };
 
             _createdBuilding1 = database.Set<Building>().Add(building1);
@@ -78,10 +76,9 @@ namespace Froom.UnitTest.Helpers
             var room1 = new Room()
             {
                 Number = "40",
-                Floor = "2",
+                //Floor = "2",
                 Capacity = 40,
                 Reservations = new List<Reservation>(),
-                BuildingName = _createdBuilding1.Entity.Name,
                 Points = new List<Point>()
                 {
                     new Point() { X = 1.31, Y = 1.32 },

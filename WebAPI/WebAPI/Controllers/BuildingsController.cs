@@ -1,4 +1,5 @@
-﻿using Froom.Data.Models.Buildings;
+﻿using Froom.Data.Entities;
+using Froom.Data.Models.Buildings;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebAPI.Services.Interfaces;
@@ -20,6 +21,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> AddBuilding(PostBuildingModel model)
         {
             await _buildingService.AddBuildingAsync(model);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddFloor(string buildingName, string floorNumber)
+        {
+            await _buildingService.AddFloorAsync(buildingName, floorNumber);
 
             return Ok();
         }

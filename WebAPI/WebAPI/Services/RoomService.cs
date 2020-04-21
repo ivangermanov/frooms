@@ -24,29 +24,29 @@ namespace WebAPI.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? buildingName, string? floor)
+        public async Task<IEnumerable<RoomDto>> GetRooms(string? campusName, string? buildingName, string? floorNumber)
         {
             var rooms = _roomRepository.GetAll()
-                .Where(r => string.IsNullOrEmpty(campus) || r.Building.Campus.Name.Equals(campus))
-                .Where(r => string.IsNullOrEmpty(buildingName) || r.BuildingName.Equals(buildingName))
-                .Where(r => string.IsNullOrEmpty(floor) || r.Floor == floor);
+                .Where(r => string.IsNullOrEmpty(campusName) || r.Details.Building.CampusName.Equals(campusName))
+                .Where(r => string.IsNullOrEmpty(buildingName) || r.Details.BuildingName.Equals(buildingName))
+                .Where(r => string.IsNullOrEmpty(floorNumber) || r.Details.FloorNumber == floorNumber);
 
             return await _mapper.ProjectTo<RoomDto>(rooms).ToListAsync();
         }
 
-        public async Task<IEnumerable<RoomDto>> GetAvailableRooms(string campus, string buildingName, string floor,
+        public async Task<IEnumerable<RoomDto>> GetAvailableRooms(string campusName, string buildingName, string floorNumber,
             DateTime fromDate, DateTime toDate)
         {
-            if (campus == null || buildingName == null)
+            if (campusName == null || buildingName == null)
                 throw new ArgumentNullException("The campus or the building name was null.");
 
             if (fromDate > toDate)
                 throw new ArgumentException("The start DateTime cannot be after the end DateTime.");
 
             var rooms = _roomRepository.GetAll()
-                .Where(r => r.Building.Campus.Name == campus &&
-                            r.BuildingName == buildingName &&
-                            r.Floor == floor &&
+                .Where(r => r.Details.Building.CampusName == campusName &&
+                            r.Details.BuildingName == buildingName &&
+                            r.Details.FloorNumber == floorNumber &&
                             r.IsAvailable(fromDate, toDate));
 
             return await _mapper.ProjectTo<RoomDto>(rooms).ToListAsync();
