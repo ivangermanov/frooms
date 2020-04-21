@@ -13,7 +13,7 @@ namespace Froom.Data.Repositories.Interfaces
         Task AddAsync(Building building);
 
         /// <summary>
-        /// Gets all reservations from the database context.
+        /// Gets all buildings from the database context.
         /// </summary>
         IQueryable<Building> GetAll();
 
@@ -24,9 +24,15 @@ namespace Froom.Data.Repositories.Interfaces
         Task<Building> GetByIdAsync(int id);
 
         /// <summary>
-        /// Gets all reservations for a specific user.
+        /// Gets a building by name from the database context.
         /// </summary>
-        /// <param name="campus"> The campus name to get the building for.</param>
+        /// <param name="name"> The name of the building.</param>
+        Task<Building> GetByNameAsync(string name);
+
+        /// <summary>
+        /// Gets all buildings for a specific campus.
+        /// </summary>
+        /// <param name="campus"> The campus name to get the buildings for.</param>
         IQueryable<Building> GetForCampusAsync(string campusName);
 
         /// <summary>
