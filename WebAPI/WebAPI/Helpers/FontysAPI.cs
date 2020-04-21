@@ -1,19 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Net.Http.Headers;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Helpers
 {
-    // TODO: Figure out some way to not set client Bearer token on each call
     public class FontysAPI
     {
         private static readonly HttpClient Client = new HttpClient();
@@ -24,12 +19,17 @@ namespace WebAPI.Helpers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<string> GetUserInfo()
+        private async Task SetAccessTokenInHeader()
         {
             var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
 
             Client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", accessToken);
+        }
+
+        public async Task<string> GetUserInfo()
+        {
+            await this.SetAccessTokenInHeader();
 
             return await Client.GetStringAsync(FontysAPIEndpoints.userInfo);
         }
@@ -37,30 +37,21 @@ namespace WebAPI.Helpers
         #region Buildings
         public async Task<string> GetBuildings()
         {
-            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-
-            Client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", accessToken);
+            await this.SetAccessTokenInHeader();
 
             return await Client.GetStringAsync(FontysAPIEndpoints.buildings);
         }
 
         public async Task<string> GetBuildings(string id)
         {
-            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-
-            Client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", accessToken);
+            await this.SetAccessTokenInHeader();
 
             return await Client.GetStringAsync($"{FontysAPIEndpoints.buildings}/{id}");
         }
 
         public async Task<string> GetBuildingsNearby()
         {
-            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-
-            Client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", accessToken);
+            await this.SetAccessTokenInHeader();
 
             var queryString = new Dictionary<string, string>()
             {
@@ -75,30 +66,21 @@ namespace WebAPI.Helpers
         #region Location
         public async Task<string> GetLocationCurrent()
         {
-            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-
-            Client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", accessToken);
+            await this.SetAccessTokenInHeader();
 
             return await Client.GetStringAsync($"{FontysAPIEndpoints.location}/current");
         }
 
         public async Task<string> GetLocationMapImage(string campus, string building, string floor)
         {
-            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-
-            Client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", accessToken);
+            await this.SetAccessTokenInHeader();
 
             return await Client.GetStringAsync($"{FontysAPIEndpoints.location}/mapimage/{campus}/{building}/{floor}");
         }
 
         public async Task<string> GetLocationFloorStatistics()
         {
-            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-
-            Client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", accessToken);
+            await this.SetAccessTokenInHeader();
 
             return await Client.GetStringAsync($"{FontysAPIEndpoints.location}/floor-statistics");
         }
@@ -107,20 +89,14 @@ namespace WebAPI.Helpers
         #region Permissions
         public async Task<string> GetPermissionsScopes()
         {
-            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-
-            Client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", accessToken);
+            await this.SetAccessTokenInHeader();
 
             return await Client.GetStringAsync($"{FontysAPIEndpoints.permissions}/scopes");
         }
 
         public async Task<string> GetPermissionsRoles()
         {
-            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-
-            Client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", accessToken);
+            await this.SetAccessTokenInHeader();
 
             return await Client.GetStringAsync($"{FontysAPIEndpoints.permissions}/roles");
         }
