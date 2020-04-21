@@ -16,8 +16,13 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using VueCliMiddleware;
 using WebAPI.Helpers;
+using System.Security.Claims;
 using WebAPI.Services;
 using WebAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using Froom.Data.Entities;
 
 namespace WebAPI
 {
@@ -84,6 +89,31 @@ namespace WebAPI
 
                 options.GetClaimsFromUserInfoEndpoint = true;
                 options.UsePkce = false;
+                //Adding admin claim
+                options.Events = new OpenIdConnectEvents
+                {
+                    OnTokenValidated = async ctx =>
+                    {
+                        //Get user's id from claims that came from Fontys
+                        Guid id = new Guid(ctx.Principal.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                        //Get EF context
+                        var db = ctx.HttpContext.RequestServices.GetRequiredService<FroomContext>();
+                        //Check is user is an admin
+                        var isAdmin = await db.User.AnyAsync(e => e.Id == id && e.Role == UserRole.ADMIN);
+                        if (isAdmin)
+                        {
+                            //Add claim if they are
+                            var claims = new List<Claim>
+                            {
+                                new Claim(ClaimTypes.Role, "admin")
+                            };
+                            var appIdentity = new ClaimsIdentity(claims);
+
+                            ctx.Principal.AddIdentity(appIdentity);
+                        }
+                    }
+                };
             });
 
             services.AddHttpContextAccessor();

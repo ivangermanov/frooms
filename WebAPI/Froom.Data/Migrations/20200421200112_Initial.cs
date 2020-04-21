@@ -38,13 +38,13 @@ namespace Froom.Data.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Number = table.Column<int>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Role = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Number);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -125,7 +125,7 @@ namespace Froom.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserNumber = table.Column<int>(nullable: true),
+                    UserId = table.Column<Guid>(nullable: false),
                     RoomId = table.Column<int>(nullable: false),
                     DateCreated = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(nullable: true)
@@ -140,10 +140,10 @@ namespace Froom.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Report_User_UserNumber",
-                        column: x => x.UserNumber,
+                        name: "FK_Report_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "Number",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                 });
 
@@ -153,7 +153,7 @@ namespace Froom.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserNumber = table.Column<int>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
                     RoomId = table.Column<int>(nullable: false),
                     StartTime = table.Column<DateTime>(nullable: false),
                     Duration = table.Column<TimeSpan>(nullable: false)
@@ -168,10 +168,10 @@ namespace Froom.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reservation_User_UserNumber",
-                        column: x => x.UserNumber,
+                        name: "FK_Reservation_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "Number",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -219,20 +219,8 @@ namespace Froom.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "Number", "Name", "Role" },
-                values: new object[,]
-                {
-                    { 3634571, "Brice, Tom", 0 },
-                    { 3638459, "Karnstein, Mircalla", 0 },
-                    { 4516348, "Ashwoode, Mary", 0 },
-                    { 1274628, "O'Connor, Edmond", 0 },
-                    { 3947204, "Ruthyn, Maud", 0 },
-                    { 2475253, "Knollys, Monica", 0 },
-                    { 7492568, "Ruthyn, Silas", 0 },
-                    { 7245343, "Hawkes, Meg", 0 },
-                    { 8538245, "Toole, Larry", 0 },
-                    { 3635673, "Cresswell, Penrose", 0 }
-                });
+                columns: new[] { "Id", "Name", "Role" },
+                values: new object[] { new Guid("ad4bc3b1-4e5f-433f-8b0c-8f1fe2994a24"), "SeedUser", 0 });
 
             migrationBuilder.InsertData(
                 table: "Building",
@@ -277,8 +265,8 @@ namespace Froom.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Reservation",
-                columns: new[] { "Id", "Duration", "RoomId", "StartTime", "UserNumber" },
-                values: new object[] { 1, new TimeSpan(0, 1, 0, 0, 0), 1, new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified), 4516348 });
+                columns: new[] { "Id", "Duration", "RoomId", "StartTime", "UserId" },
+                values: new object[] { 1, new TimeSpan(0, 1, 0, 0, 0), 1, new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified), new Guid("ad4bc3b1-4e5f-433f-8b0c-8f1fe2994a24") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Building_CampusName",
@@ -307,9 +295,9 @@ namespace Froom.Data.Migrations
                 column: "RoomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Report_UserNumber",
+                name: "IX_Report_UserId",
                 table: "Report",
-                column: "UserNumber");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservation_RoomId",
@@ -317,9 +305,9 @@ namespace Froom.Data.Migrations
                 column: "RoomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservation_UserNumber",
+                name: "IX_Reservation_UserId",
                 table: "Reservation",
-                column: "UserNumber");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Room_DetailsId",
