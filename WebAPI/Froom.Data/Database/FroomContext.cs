@@ -25,32 +25,38 @@ namespace Froom.Data.Database
                     .ValueGeneratedNever();
             });
 
+            modelBuilder.Entity<Campus>(options =>
+            {
+                options.HasIndex(c => c.Name)
+                    .IsUnique();
+            });
+
+            modelBuilder.Entity<Building>(options =>
+            {
+                options.HasOne(b => b.Campus)
+                    .WithMany(c => c.Buildings)
+                    .HasForeignKey(b => b.CampusName)
+                    .HasPrincipalKey(c => c.Name)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
             modelBuilder.Entity<Room>(options =>
             {
                 options.HasKey(r =>
                     new
                     {
                         r.Number,
-                        r.Floor,
-                        r.BuildingName,
-                        r.BuildingCampus
+                        r.DetailsId
                     });
+
                 options.Property(r => r.Id).ValueGeneratedOnAdd();
                 options.HasAlternateKey(r => r.Id);
-                
 
-                options.HasOne(r => r.Building)
+                options.HasOne(r => r.Details)
                     .WithMany(b => b.Rooms)
-                    .HasForeignKey(r =>
-                    new {
-                        r.BuildingName,
-                        r.BuildingCampus
-                    })
-                    .HasPrincipalKey(b =>
-                    new {
-                        b.Name,
-                        b.CampusName
-                    })
+                    .HasForeignKey(r => r.DetailsId)
+                    .HasPrincipalKey(b => b.Id)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade);
 
@@ -62,20 +68,55 @@ namespace Froom.Data.Database
                         new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
             });
 
+            modelBuilder.Entity<Floor>(options =>
+            {
+                options.HasKey(f =>
+                    new
+                    {
+                        f.Number,
+                        f.Order
+                    });
+            });
+
+            modelBuilder.Entity<BuildingContents>(options =>
+            {
+                options.Property(r => r.Id).ValueGeneratedOnAdd();
+
+                options.HasKey(e => new
+                    {
+                        e.BuildingName,
+                        e.FloorNumber
+                    });
+
+                options.HasOne(e => e.Building)
+                    .WithMany(b => b.Contents)
+                    .HasForeignKey(e => e.BuildingName)
+                    .HasPrincipalKey(b => b.Name)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                options.HasOne(e => e.Floor)
+                    .WithMany()
+                    .HasForeignKey(e => e.FloorNumber)
+                    .HasPrincipalKey(f => f.Number)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
             modelBuilder.Entity<Reservation>(options =>
             {
                 options.HasOne(r => r.User)
                     .WithMany(u => u.Reservations)
                     .HasForeignKey(r => r.UserNumber)
                     .IsRequired()
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 options.HasOne(r => r.Room)
                     .WithMany(u => u.Reservations)
                     .HasForeignKey(r => r.RoomId)
                     .HasPrincipalKey(r => r.Id)
                     .IsRequired()
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Report>(options =>
@@ -83,15 +124,15 @@ namespace Froom.Data.Database
                 options.HasOne(r => r.User)
                     .WithMany()
                     .HasForeignKey(r => r.UserNumber)
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .IsRequired(false)
+                    .OnDelete(DeleteBehavior.SetNull);
 
                 options.HasOne(r => r.Room)
                     .WithMany()
                     .HasForeignKey(r => r.RoomId)
                     .HasPrincipalKey(r => r.Id)
                     .IsRequired()
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Picture>(options =>
@@ -103,20 +144,8 @@ namespace Froom.Data.Database
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<Building>(options =>
-            {
-                options.HasOne(b => b.Campus)
-                    .WithMany(c => c.Buildings)
-                    .HasForeignKey(b => b.CampusId)
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<Campus>(options =>
-            {
-                options.HasIndex(c => c.Name)
-                    .IsUnique();
-            });
+            // Seed sample data
+            modelBuilder.Seed();
         }
     }
 }
