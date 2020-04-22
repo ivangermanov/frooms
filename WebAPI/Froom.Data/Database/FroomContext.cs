@@ -125,14 +125,14 @@ namespace Froom.Data.Database
                     .WithMany()
                     .HasForeignKey(r => r.UserId)
                     .IsRequired(false)
-                    .OnDelete(DeleteBehavior.SetNull);
+                    .OnDelete(DeleteBehavior.NoAction);
 
                 options.HasOne(r => r.Room)
                     .WithMany()
                     .HasForeignKey(r => r.RoomId)
                     .HasPrincipalKey(r => r.Id)
                     .IsRequired()
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.NoAction);
             });
 
             modelBuilder.Entity<Picture>(options =>
