@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Froom.Data.Repositories
 {
+    /// <inheritdoc cref="ICampusRepository"/>
     public class CampusRepository : ICampusRepository
     {
         private readonly FroomContext _context;
@@ -32,7 +33,7 @@ namespace Froom.Data.Repositories
                 .Include(c => c.Buildings);
         }
 
-        public async Task<Campus> GetAsync(int id)
+        public async Task<Campus> GetByIdAsync(int id)
         {
             return await _campuses
                 .Include(c => c.Buildings)
@@ -40,12 +41,17 @@ namespace Froom.Data.Repositories
                 throw new DoesNotExistException($"Campus with ID: {id} does not exist.");
         }
 
-        public async Task<Campus> GetAsync(string name)
+        public async Task<Campus> GetByName(string name)
         {
             return await _campuses
                 .Include(c => c.Buildings)
                 .SingleOrDefaultAsync(c => c.Name == name) ??
                 throw new DoesNotExistException($"Campus with name: {name} does not exist.");
+        }
+
+        public IQueryable<string> GetNames()
+        {
+            return _campuses.Select(c => c.Name);
         }
 
         public async Task RemoveAsync(Campus campus)

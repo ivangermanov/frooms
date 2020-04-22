@@ -1,7 +1,4 @@
-﻿using Froom.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Froom.Data.Dtos
 {
@@ -9,11 +6,10 @@ namespace Froom.Data.Dtos
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
         public IEnumerable<BuildingDto> Buildings { get; set; }
 
         /// <summary>
-        /// Used only by IMapper. Initializes a new instance of BuildingDto.
+        /// Used only by IMapper. Initializes a new instance of CampusDto.
         /// </summary>
         public CampusDto() { }
     }

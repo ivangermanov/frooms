@@ -8,7 +8,7 @@ namespace Froom.Data.Models.Buildings
         public string Name { get; set; }
 
         [Required]
-        public int CampusId { get; set; }
+        public string CampusName { get; set; }
 
         [Required]
         public string Address { get; set; }
