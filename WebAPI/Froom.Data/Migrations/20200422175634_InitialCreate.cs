@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Froom.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -137,14 +137,12 @@ namespace Froom.Data.Migrations
                         name: "FK_Report_Room_RoomId",
                         column: x => x.RoomId,
                         principalTable: "Room",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Report_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -220,7 +218,7 @@ namespace Froom.Data.Migrations
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "Name", "Role" },
-                values: new object[] { new Guid("ad4bc3b1-4e5f-433f-8b0c-8f1fe2994a24"), "SeedUser", 0 });
+                values: new object[] { new Guid("735689ae-868e-486f-8a6c-7063f186e905"), "SeedUser", 0 });
 
             migrationBuilder.InsertData(
                 table: "Building",
@@ -266,7 +264,7 @@ namespace Froom.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Reservation",
                 columns: new[] { "Id", "Duration", "RoomId", "StartTime", "UserId" },
-                values: new object[] { 1, new TimeSpan(0, 1, 0, 0, 0), 1, new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified), new Guid("ad4bc3b1-4e5f-433f-8b0c-8f1fe2994a24") });
+                values: new object[] { 1, new TimeSpan(0, 1, 0, 0, 0), 1, new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified), new Guid("735689ae-868e-486f-8a6c-7063f186e905") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Building_CampusName",

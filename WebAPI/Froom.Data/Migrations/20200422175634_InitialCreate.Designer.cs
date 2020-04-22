@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Froom.Data.Migrations
 {
     [DbContext(typeof(FroomContext))]
-    [Migration("20200421200112_Initial")]
-    partial class Initial
+    [Migration("20200422175634_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -329,7 +329,7 @@ namespace Froom.Data.Migrations
                             Duration = new TimeSpan(0, 1, 0, 0, 0),
                             RoomId = 1,
                             StartTime = new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified),
-                            UserId = new Guid("ad4bc3b1-4e5f-433f-8b0c-8f1fe2994a24")
+                            UserId = new Guid("735689ae-868e-486f-8a6c-7063f186e905")
                         });
                 });
 
@@ -414,7 +414,7 @@ namespace Froom.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ad4bc3b1-4e5f-433f-8b0c-8f1fe2994a24"),
+                            Id = new Guid("735689ae-868e-486f-8a6c-7063f186e905"),
                             Name = "SeedUser",
                             Role = 0
                         });
@@ -462,13 +462,13 @@ namespace Froom.Data.Migrations
                         .WithMany()
                         .HasForeignKey("RoomId")
                         .HasPrincipalKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Froom.Data.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Reservation", b =>
