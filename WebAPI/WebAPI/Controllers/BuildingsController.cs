@@ -1,8 +1,6 @@
-﻿using Froom.Data.Models.Buildings;
+﻿using Froom.Data.Entities;
+using Froom.Data.Models.Buildings;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Services.Interfaces;
 
@@ -10,12 +8,11 @@ namespace WebAPI.Controllers
 {
     [Route("api/buildings")]
     [ApiController]
-    // TODO: Change to Buildings
-    public class BuildingController : ControllerBase
+    public class BuildingsController : ControllerBase
     {
         readonly IBuildingService _buildingService;
 
-        public BuildingController(IBuildingService buildingService)
+        public BuildingsController(IBuildingService buildingService)
         {
             _buildingService = buildingService;
         }
@@ -28,11 +25,18 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        // TODO: Change to GetBuildings and keep optional parameter
-        [HttpGet]
-        public async Task<IActionResult> GetBuildingsForCampus(string campusName)
+        [HttpPost]
+        public async Task<IActionResult> AddFloor(string buildingName, string floorNumber)
         {
-            return Ok(await _buildingService.GetBuildingsForCampus(campusName));
+            await _buildingService.AddFloorAsync(buildingName, floorNumber);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBuildings(string? campusName)
+        {
+            return Ok(await _buildingService.GetBuildings(campusName));
         }
 
         [HttpDelete]

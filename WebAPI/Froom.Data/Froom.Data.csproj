@@ -31,6 +31,16 @@
     <Compile Remove="Migrations\20200413203322_AddKeyBuildingCampus.Designer.cs" />
     <Compile Remove="Migrations\20200413203909_InitialCreate.cs" />
     <Compile Remove="Migrations\20200413203909_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200420123228_TestFloorEntity.cs" />
+    <Compile Remove="Migrations\20200420123228_TestFloorEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200421142231_Floors_and_Seeding.cs" />
+    <Compile Remove="Migrations\20200421142231_Floors_and_Seeding.Designer.cs" />
+    <Compile Remove="Migrations\20200421142807_Floors-and-Seeding.cs" />
+    <Compile Remove="Migrations\20200421142807_Floors-and-Seeding.Designer.cs" />
+    <Compile Remove="Migrations\20200421143206_Floor-and-Seeding.cs" />
+    <Compile Remove="Migrations\20200421143206_Floor-and-Seeding.Designer.cs" />
+    <Compile Remove="Migrations\20200421143354_Floor-and-Seeding.cs" />
+    <Compile Remove="Migrations\20200421143354_Floor-and-Seeding.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

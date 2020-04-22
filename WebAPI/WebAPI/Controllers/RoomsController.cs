@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Froom.Data.Models.Rooms;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
 using WebAPI.Helpers;
 using WebAPI.Services.Interfaces;
 
@@ -17,8 +13,8 @@ namespace WebAPI.Controllers
     [ApiController]
     public class RoomsController : ControllerBase
     {
-        private readonly IRoomService _roomService;
         private readonly FontysAPI _fontysApi;
+        private readonly IRoomService _roomService;
 
         public RoomsController(IRoomService roomService, FontysAPI fontysApi)
         {

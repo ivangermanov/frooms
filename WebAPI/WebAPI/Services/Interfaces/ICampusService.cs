@@ -8,15 +8,21 @@ namespace WebAPI.Services.Interfaces
     public interface ICampusService
     {
         /// <summary>
-        /// Adds a new campus.
+        /// Add a new campus.
         /// </summary>
         /// <param name="model">The campus to be added.</param>
         public Task AddCampusAsync(PostCampusModel model);
 
         /// <summary>
-        /// Get all the campuses.
+        /// Get all campuses.
+        /// Includes the buildings.
         /// </summary>
         public Task<IEnumerable<CampusDto>> GetCampuses();
+
+        /// <summary>
+        /// Get the names of all campuses.
+        /// </summary>
+        public Task<IEnumerable<string>> GetCampusNames();
 
         /// <summary>
         /// Remove a campus by name.
