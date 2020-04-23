@@ -47,7 +47,8 @@ namespace Froom.Data.Database
                     new
                     {
                         r.Number,
-                        r.DetailsId
+                        r.BuildingName,
+                        r.FloorNumber
                     });
 
                 options.Property(r => r.Id).ValueGeneratedOnAdd();
@@ -55,8 +56,16 @@ namespace Froom.Data.Database
 
                 options.HasOne(r => r.Details)
                     .WithMany(b => b.Rooms)
-                    .HasForeignKey(r => r.DetailsId)
-                    .HasPrincipalKey(b => b.Id)
+                    .HasForeignKey(r => new
+                        {
+                            r.BuildingName,
+                            r.FloorNumber
+                        })
+                    .HasPrincipalKey(b => new 
+                        {
+                            b.BuildingName,
+                            b.FloorNumber
+                        })
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade);
 

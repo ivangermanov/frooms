@@ -10,7 +10,9 @@ namespace Froom.Data.Entities
         
         public string Number { get; set; }
 
-        public int DetailsId { get; set; }
+        public string BuildingName { get; set; }
+
+        public string FloorNumber { get; set; }
 
         public BuildingContents Details { get; set; }
 

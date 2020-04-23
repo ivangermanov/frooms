@@ -215,35 +215,40 @@ namespace Froom.Data.Database
                     {
                         Id = 1,
                         Number = "40",
-                        DetailsId = 3,
+                        BuildingName = "R1",
+                        FloorNumber = "2e",
                         Capacity = 40
                     },
                     new Room
                     {
                         Id = 2,
                         Number = "10",
-                        DetailsId = 3,
+                        BuildingName = "R1",
+                        FloorNumber = "2e",
                         Capacity = 10
                     },
                     new Room
                     {
                         Id = 3,
                         Number = "05",
-                        DetailsId = 3,
+                        BuildingName = "R1",
+                        FloorNumber = "2e",
                         Capacity = 30
                     },
                     new Room
                     {
                         Id = 4,
                         Number = "03",
-                        DetailsId = 3,
+                        BuildingName = "R1",
+                        FloorNumber = "2e",
                         Capacity = 20
                     },
                     new Room
                     {
                         Id = 5,
                         Number = "71",
-                        DetailsId = 3,
+                        BuildingName = "R1",
+                        FloorNumber = "2e",
                         Capacity = 20
                     }
                 };
