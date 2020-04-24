@@ -12,26 +12,20 @@ namespace WebAPI.Services.Interfaces
         /// Filters the rooms by campus, building and floor.
         /// </summary>
         /// <param name="campus">The name of the campus.</param>
-        /// <param name="buildingName">The name of the building.</param>
+        /// <param name="building">The name of the building.</param>
         /// <param name="floor">The number of the floor. If null, the rooms for the whole building are returned.</param>
-        public Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? buildingName, string? floor);
+        public Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? building, string? floor);
 
         /// <summary>
         /// Returns the rooms without reservations for a period of time.
         /// </summary>
         /// <param name="campus">The name of the campus.</param>
-        /// <param name="buildingName">The name of the building.</param>
+        /// <param name="building">The name of the building.</param>
         /// <param name="floor">The number of the floor.</param>
         /// <param name="fromDate">The start time of the period.</param>
         /// <param name="toDate">The end time of the period.</param>
         /// <returns></returns>
-        public Task<IEnumerable<RoomDto>> GetAvailableRooms(string campus, string buildingName, string floor, DateTime fromDate, DateTime toDate);
-
-        /// <summary>
-        /// Adds one new room.
-        /// </summary>
-        /// <param name="model">The room to be added.</param>
-        public Task AddAsync(PostRoomModel model);
+        public Task<IEnumerable<RoomDto>> GetAvailableRooms(string campus, string building, string floor, DateTime fromDate, DateTime toDate);
 
         /// <summary>
         /// Adds multiple new rooms.
