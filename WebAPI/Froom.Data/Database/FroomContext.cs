@@ -33,6 +33,12 @@ namespace Froom.Data.Database
 
             modelBuilder.Entity<Building>(options =>
             {
+                options.HasKey(b => new
+                {
+                    b.Name,
+                    b.CampusName
+                });
+
                 options.HasOne(b => b.Campus)
                     .WithMany(c => c.Buildings)
                     .HasForeignKey(b => b.CampusName)
@@ -47,8 +53,7 @@ namespace Froom.Data.Database
                     new
                     {
                         r.Number,
-                        r.BuildingName,
-                        r.FloorNumber
+                        r.DetailsId
                     });
 
                 options.Property(r => r.Id).ValueGeneratedOnAdd();
@@ -56,16 +61,8 @@ namespace Froom.Data.Database
 
                 options.HasOne(r => r.Details)
                     .WithMany(b => b.Rooms)
-                    .HasForeignKey(r => new
-                        {
-                            r.BuildingName,
-                            r.FloorNumber
-                        })
-                    .HasPrincipalKey(b => new 
-                        {
-                            b.BuildingName,
-                            b.FloorNumber
-                        })
+                    .HasForeignKey(r => r.DetailsId)
+                    .HasPrincipalKey(b => b.Id)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade);
 
@@ -93,14 +90,23 @@ namespace Froom.Data.Database
 
                 options.HasKey(e => new
                     {
+                        e.CampusName,
                         e.BuildingName,
                         e.FloorNumber
                     });
 
                 options.HasOne(e => e.Building)
                     .WithMany(b => b.Contents)
-                    .HasForeignKey(e => e.BuildingName)
-                    .HasPrincipalKey(b => b.Name)
+                    .HasForeignKey(e => new
+                    {
+                        e.CampusName,
+                        e.BuildingName
+                    })
+                    .HasPrincipalKey(b => new
+                    {
+                        b.CampusName,
+                        b.Name
+                    })
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade);
 
