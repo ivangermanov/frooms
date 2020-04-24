@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Froom.Data.Migrations
 {
     [DbContext(typeof(FroomContext))]
-    [Migration("20200423151436_Changed_FK_Room_Details")]
-    partial class Changed_FK_Room_Details
+    [Migration("20200424113502_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,110 +23,107 @@ namespace Froom.Data.Migrations
 
             modelBuilder.Entity("Froom.Data.Entities.Building", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CampusName")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CampusName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CampusName");
+                    b.HasKey("Name", "CampusName");
 
                     b.ToTable("Building");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Address = "Unknown",
+                            Name = "R1",
                             CampusName = "EHV",
-                            Name = "R1"
+                            Address = "Unknown",
+                            Id = 1
                         },
                         new
                         {
-                            Id = 2,
-                            Address = "Unknown",
+                            Name = "R3R4",
                             CampusName = "EHV",
-                            Name = "R3R4"
+                            Address = "Unknown",
+                            Id = 2
                         },
                         new
                         {
-                            Id = 3,
-                            Address = "Unknown",
+                            Name = "R5",
                             CampusName = "EHV",
-                            Name = "R5"
+                            Address = "Unknown",
+                            Id = 3
                         },
                         new
                         {
-                            Id = 4,
-                            Address = "Unknown",
+                            Name = "EK",
                             CampusName = "EHV",
-                            Name = "EK"
+                            Address = "Unknown",
+                            Id = 4
                         },
                         new
                         {
-                            Id = 5,
-                            Address = "Unknown",
+                            Name = "ER",
                             CampusName = "EHV",
-                            Name = "ER"
+                            Address = "Unknown",
+                            Id = 5
                         },
                         new
                         {
-                            Id = 6,
-                            Address = "Unknown",
+                            Name = "ES",
                             CampusName = "EHV",
-                            Name = "ES"
+                            Address = "Unknown",
+                            Id = 6
                         },
                         new
                         {
-                            Id = 7,
-                            Address = "Unknown",
+                            Name = "S1",
                             CampusName = "EHV",
-                            Name = "S1"
+                            Address = "Unknown",
+                            Id = 7
                         },
                         new
                         {
-                            Id = 8,
-                            Address = "Unknown",
+                            Name = "S2",
                             CampusName = "EHV",
-                            Name = "S2"
+                            Address = "Unknown",
+                            Id = 8
                         },
                         new
                         {
-                            Id = 9,
-                            Address = "Unknown",
+                            Name = "S3",
                             CampusName = "EHV",
-                            Name = "S3"
+                            Address = "Unknown",
+                            Id = 9
                         },
                         new
                         {
-                            Id = 10,
-                            Address = "Unknown",
+                            Name = "TF",
                             CampusName = "EHV",
-                            Name = "TF"
+                            Address = "Unknown",
+                            Id = 10
                         },
                         new
                         {
-                            Id = 11,
-                            Address = "Unknown",
+                            Name = "TQ",
                             CampusName = "EHV",
-                            Name = "TQ"
+                            Address = "Unknown",
+                            Id = 11
                         });
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.BuildingContents", b =>
                 {
+                    b.Property<string>("CampusName")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("BuildingName")
                         .HasColumnType("nvarchar(450)");
 
@@ -138,7 +135,7 @@ namespace Froom.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.HasKey("BuildingName", "FloorNumber");
+                    b.HasKey("CampusName", "BuildingName", "FloorNumber");
 
                     b.HasIndex("FloorNumber");
 
@@ -147,24 +144,28 @@ namespace Froom.Data.Migrations
                     b.HasData(
                         new
                         {
+                            CampusName = "EHV",
                             BuildingName = "R1",
                             FloorNumber = "BG",
                             Id = 1
                         },
                         new
                         {
+                            CampusName = "EHV",
                             BuildingName = "R1",
                             FloorNumber = "1e",
                             Id = 2
                         },
                         new
                         {
+                            CampusName = "EHV",
                             BuildingName = "R1",
                             FloorNumber = "2e",
                             Id = 3
                         },
                         new
                         {
+                            CampusName = "EHV",
                             BuildingName = "R1",
                             FloorNumber = "3e",
                             Id = 4
@@ -329,7 +330,7 @@ namespace Froom.Data.Migrations
                             Duration = new TimeSpan(0, 1, 0, 0, 0),
                             RoomId = 1,
                             StartTime = new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified),
-                            UserId = new Guid("4a5302a1-db21-423a-882a-c3ac5476fd61")
+                            UserId = new Guid("f2b1fd61-492b-4c2b-9e59-055cd228d611")
                         });
                 });
 
@@ -338,11 +339,8 @@ namespace Froom.Data.Migrations
                     b.Property<string>("Number")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("BuildingName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("FloorNumber")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("DetailsId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Capacity")
                         .HasColumnType("int");
@@ -355,9 +353,9 @@ namespace Froom.Data.Migrations
                     b.Property<string>("Points")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Number", "BuildingName", "FloorNumber");
+                    b.HasKey("Number", "DetailsId");
 
-                    b.HasIndex("BuildingName", "FloorNumber");
+                    b.HasIndex("DetailsId");
 
                     b.ToTable("Room");
 
@@ -365,40 +363,35 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Number = "40",
-                            BuildingName = "R1",
-                            FloorNumber = "2e",
+                            DetailsId = 3,
                             Capacity = 40,
                             Id = 1
                         },
                         new
                         {
                             Number = "10",
-                            BuildingName = "R1",
-                            FloorNumber = "2e",
+                            DetailsId = 3,
                             Capacity = 10,
                             Id = 2
                         },
                         new
                         {
                             Number = "05",
-                            BuildingName = "R1",
-                            FloorNumber = "2e",
+                            DetailsId = 3,
                             Capacity = 30,
                             Id = 3
                         },
                         new
                         {
                             Number = "03",
-                            BuildingName = "R1",
-                            FloorNumber = "2e",
+                            DetailsId = 3,
                             Capacity = 20,
                             Id = 4
                         },
                         new
                         {
                             Number = "71",
-                            BuildingName = "R1",
-                            FloorNumber = "2e",
+                            DetailsId = 3,
                             Capacity = 20,
                             Id = 5
                         });
@@ -422,7 +415,7 @@ namespace Froom.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4a5302a1-db21-423a-882a-c3ac5476fd61"),
+                            Id = new Guid("f2b1fd61-492b-4c2b-9e59-055cd228d611"),
                             Name = "SeedUser",
                             Role = 0
                         });
@@ -440,17 +433,17 @@ namespace Froom.Data.Migrations
 
             modelBuilder.Entity("Froom.Data.Entities.BuildingContents", b =>
                 {
-                    b.HasOne("Froom.Data.Entities.Building", "Building")
-                        .WithMany("Contents")
-                        .HasForeignKey("BuildingName")
-                        .HasPrincipalKey("Name")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Froom.Data.Entities.Floor", "Floor")
                         .WithMany()
                         .HasForeignKey("FloorNumber")
                         .HasPrincipalKey("Number")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Froom.Data.Entities.Building", "Building")
+                        .WithMany("Contents")
+                        .HasForeignKey("CampusName", "BuildingName")
+                        .HasPrincipalKey("CampusName", "Name")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -499,7 +492,8 @@ namespace Froom.Data.Migrations
                 {
                     b.HasOne("Froom.Data.Entities.BuildingContents", "Details")
                         .WithMany("Rooms")
-                        .HasForeignKey("BuildingName", "FloorNumber")
+                        .HasForeignKey("DetailsId")
+                        .HasPrincipalKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

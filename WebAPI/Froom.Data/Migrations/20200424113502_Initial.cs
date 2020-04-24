@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Froom.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,16 +51,15 @@ namespace Froom.Data.Migrations
                 name: "Building",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false),
-                    Address = table.Column<string>(nullable: true),
-                    CampusName = table.Column<string>(nullable: false)
+                    CampusName = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false),
+                    Address = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Building", x => x.Id);
-                    table.UniqueConstraint("AK_Building_Name", x => x.Name);
+                    table.PrimaryKey("PK_Building", x => new { x.Name, x.CampusName });
+                    table.UniqueConstraint("AK_Building_CampusName_Name", x => new { x.CampusName, x.Name });
                     table.ForeignKey(
                         name: "FK_Building_Campus_CampusName",
                         column: x => x.CampusName,
@@ -73,6 +72,7 @@ namespace Froom.Data.Migrations
                 name: "BuildingContents",
                 columns: table => new
                 {
+                    CampusName = table.Column<string>(nullable: false),
                     BuildingName = table.Column<string>(nullable: false),
                     FloorNumber = table.Column<string>(nullable: false),
                     Id = table.Column<int>(nullable: false)
@@ -80,19 +80,19 @@ namespace Froom.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BuildingContents", x => new { x.BuildingName, x.FloorNumber });
+                    table.PrimaryKey("PK_BuildingContents", x => new { x.CampusName, x.BuildingName, x.FloorNumber });
                     table.UniqueConstraint("AK_BuildingContents_Id", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BuildingContents_Building_BuildingName",
-                        column: x => x.BuildingName,
-                        principalTable: "Building",
-                        principalColumn: "Name",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BuildingContents_Floor_FloorNumber",
                         column: x => x.FloorNumber,
                         principalTable: "Floor",
                         principalColumn: "Number",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BuildingContents_Building_CampusName_BuildingName",
+                        columns: x => new { x.CampusName, x.BuildingName },
+                        principalTable: "Building",
+                        principalColumns: new[] { "CampusName", "Name" },
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -218,35 +218,35 @@ namespace Froom.Data.Migrations
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "Name", "Role" },
-                values: new object[] { new Guid("735689ae-868e-486f-8a6c-7063f186e905"), "SeedUser", 0 });
+                values: new object[] { new Guid("f2b1fd61-492b-4c2b-9e59-055cd228d611"), "SeedUser", 0 });
 
             migrationBuilder.InsertData(
                 table: "Building",
-                columns: new[] { "Id", "Address", "CampusName", "Name" },
+                columns: new[] { "Name", "CampusName", "Address", "Id" },
                 values: new object[,]
                 {
-                    { 1, "Unknown", "EHV", "R1" },
-                    { 2, "Unknown", "EHV", "R3R4" },
-                    { 3, "Unknown", "EHV", "R5" },
-                    { 4, "Unknown", "EHV", "EK" },
-                    { 5, "Unknown", "EHV", "ER" },
-                    { 6, "Unknown", "EHV", "ES" },
-                    { 7, "Unknown", "EHV", "S1" },
-                    { 8, "Unknown", "EHV", "S2" },
-                    { 9, "Unknown", "EHV", "S3" },
-                    { 10, "Unknown", "EHV", "TF" },
-                    { 11, "Unknown", "EHV", "TQ" }
+                    { "R1", "EHV", "Unknown", 1 },
+                    { "R3R4", "EHV", "Unknown", 2 },
+                    { "R5", "EHV", "Unknown", 3 },
+                    { "EK", "EHV", "Unknown", 4 },
+                    { "ER", "EHV", "Unknown", 5 },
+                    { "ES", "EHV", "Unknown", 6 },
+                    { "S1", "EHV", "Unknown", 7 },
+                    { "S2", "EHV", "Unknown", 8 },
+                    { "S3", "EHV", "Unknown", 9 },
+                    { "TF", "EHV", "Unknown", 10 },
+                    { "TQ", "EHV", "Unknown", 11 }
                 });
 
             migrationBuilder.InsertData(
                 table: "BuildingContents",
-                columns: new[] { "BuildingName", "FloorNumber", "Id" },
+                columns: new[] { "CampusName", "BuildingName", "FloorNumber", "Id" },
                 values: new object[,]
                 {
-                    { "R1", "BG", 1 },
-                    { "R1", "1e", 2 },
-                    { "R1", "2e", 3 },
-                    { "R1", "3e", 4 }
+                    { "EHV", "R1", "BG", 1 },
+                    { "EHV", "R1", "1e", 2 },
+                    { "EHV", "R1", "2e", 3 },
+                    { "EHV", "R1", "3e", 4 }
                 });
 
             migrationBuilder.InsertData(
@@ -264,12 +264,7 @@ namespace Froom.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Reservation",
                 columns: new[] { "Id", "Duration", "RoomId", "StartTime", "UserId" },
-                values: new object[] { 1, new TimeSpan(0, 1, 0, 0, 0), 1, new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified), new Guid("735689ae-868e-486f-8a6c-7063f186e905") });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Building_CampusName",
-                table: "Building",
-                column: "CampusName");
+                values: new object[] { 1, new TimeSpan(0, 1, 0, 0, 0), 1, new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified), new Guid("f2b1fd61-492b-4c2b-9e59-055cd228d611") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BuildingContents_FloorNumber",
@@ -334,10 +329,10 @@ namespace Froom.Data.Migrations
                 name: "BuildingContents");
 
             migrationBuilder.DropTable(
-                name: "Building");
+                name: "Floor");
 
             migrationBuilder.DropTable(
-                name: "Floor");
+                name: "Building");
 
             migrationBuilder.DropTable(
                 name: "Campus");
