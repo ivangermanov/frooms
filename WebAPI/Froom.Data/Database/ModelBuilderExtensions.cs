@@ -181,25 +181,29 @@ namespace Froom.Data.Database
                     {
                         Id = 1,
                         BuildingName = "R1",
-                        FloorNumber = "BG"
+                        FloorNumber = "BG",
+                        CampusName = "EHV"
                     },
                     new BuildingContents
                     {
                         Id = 2,
                         BuildingName = "R1",
-                        FloorNumber = "1e"
+                        FloorNumber = "1e",
+                        CampusName = "EHV"
                     },
                     new BuildingContents
                     {
                         Id = 3,
                         BuildingName = "R1",
-                        FloorNumber = "2e"
+                        FloorNumber = "2e",
+                        CampusName = "EHV"
                     },
                     new BuildingContents
                     {
                         Id = 4,
                         BuildingName = "R1",
-                        FloorNumber = "3e"
+                        FloorNumber = "3e",
+                        CampusName = "EHV"
                     }
                 };
             }
@@ -215,40 +219,35 @@ namespace Froom.Data.Database
                     {
                         Id = 1,
                         Number = "40",
-                        BuildingName = "R1",
-                        FloorNumber = "2e",
+                        DetailsId = 3,
                         Capacity = 40
                     },
                     new Room
                     {
                         Id = 2,
                         Number = "10",
-                        BuildingName = "R1",
-                        FloorNumber = "2e",
+                        DetailsId = 3,
                         Capacity = 10
                     },
                     new Room
                     {
                         Id = 3,
                         Number = "05",
-                        BuildingName = "R1",
-                        FloorNumber = "2e",
+                        DetailsId = 3,
                         Capacity = 30
                     },
                     new Room
                     {
                         Id = 4,
                         Number = "03",
-                        BuildingName = "R1",
-                        FloorNumber = "2e",
+                        DetailsId = 3,
                         Capacity = 20
                     },
                     new Room
                     {
                         Id = 5,
                         Number = "71",
-                        BuildingName = "R1",
-                        FloorNumber = "2e",
+                        DetailsId = 3,
                         Capacity = 20
                     }
                 };
