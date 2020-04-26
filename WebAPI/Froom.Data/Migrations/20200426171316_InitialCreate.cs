@@ -218,7 +218,7 @@ namespace Froom.Data.Migrations
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "Name", "Role" },
-                values: new object[] { new Guid("81bf9d10-810f-464b-b999-e2cb02ab6c4c"), "SeedUser", 0 });
+                values: new object[] { new Guid("9c52eb48-30ac-4afa-a053-0f2ca0c520a4"), "SeedUser", 0 });
 
             migrationBuilder.InsertData(
                 table: "Building",
@@ -254,17 +254,17 @@ namespace Froom.Data.Migrations
                 columns: new[] { "Number", "DetailsId", "Capacity", "Id", "Points" },
                 values: new object[,]
                 {
-                    { "40", 3, 40, 1, null },
-                    { "10", 3, 10, 2, null },
-                    { "05", 3, 30, 3, null },
-                    { "03", 3, 20, 4, null },
-                    { "71", 3, 20, 5, null }
+                    { "40", 3, 40, 1, "[{\"X\":50.0,\"Y\":50.0},{\"X\":100.0,\"Y\":100.0}]" },
+                    { "10", 3, 10, 2, "[{\"X\":50.0,\"Y\":50.0},{\"X\":100.0,\"Y\":100.0}]" },
+                    { "05", 3, 30, 3, "[{\"X\":50.0,\"Y\":50.0},{\"X\":100.0,\"Y\":100.0}]" },
+                    { "03", 3, 20, 4, "[{\"X\":50.0,\"Y\":50.0},{\"X\":100.0,\"Y\":100.0}]" },
+                    { "71", 3, 20, 5, "[{\"X\":50.0,\"Y\":50.0},{\"X\":100.0,\"Y\":100.0}]" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Reservation",
                 columns: new[] { "Id", "Duration", "RoomId", "StartTime", "UserId" },
-                values: new object[] { 1, new TimeSpan(0, 1, 0, 0, 0), 1, new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified), new Guid("81bf9d10-810f-464b-b999-e2cb02ab6c4c") });
+                values: new object[] { 1, new TimeSpan(0, 1, 0, 0, 0), 1, new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified), new Guid("9c52eb48-30ac-4afa-a053-0f2ca0c520a4") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BuildingContents_FloorNumber",

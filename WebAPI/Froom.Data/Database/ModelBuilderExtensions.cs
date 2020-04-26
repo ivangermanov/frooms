@@ -1,6 +1,7 @@
 ﻿using Froom.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 
 namespace Froom.Data.Database
 {
@@ -220,35 +221,40 @@ namespace Froom.Data.Database
                         Id = 1,
                         Number = "40",
                         DetailsId = 3,
-                        Capacity = 40
+                        Capacity = 40,
+                        Points = new List<Point>(){new Point() { X = 50,Y = 50}, new Point() { X = 100, Y = 100 } }
                     },
                     new Room
                     {
                         Id = 2,
                         Number = "10",
                         DetailsId = 3,
-                        Capacity = 10
+                        Capacity = 10,
+                        Points = new List<Point>(){new Point() { X = 50,Y = 50}, new Point() { X = 100, Y = 100 } }
                     },
                     new Room
                     {
                         Id = 3,
                         Number = "05",
                         DetailsId = 3,
-                        Capacity = 30
+                        Capacity = 30,
+                        Points = new List<Point>(){new Point() { X = 50,Y = 50}, new Point() { X = 100, Y = 100 } }
                     },
                     new Room
                     {
                         Id = 4,
                         Number = "03",
                         DetailsId = 3,
-                        Capacity = 20
+                        Capacity = 20,
+                        Points = new List<Point>(){new Point() { X = 50,Y = 50}, new Point() { X = 100, Y = 100 } }
                     },
                     new Room
                     {
                         Id = 5,
                         Number = "71",
                         DetailsId = 3,
-                        Capacity = 20
+                        Capacity = 20,
+                        Points = new List<Point>(){new Point() { X = 50,Y = 50}, new Point() { X = 100, Y = 100 } }
                     }
                 };
             }
