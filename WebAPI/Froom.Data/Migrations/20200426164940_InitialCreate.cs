@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Froom.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -218,7 +218,7 @@ namespace Froom.Data.Migrations
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "Name", "Role" },
-                values: new object[] { new Guid("f2b1fd61-492b-4c2b-9e59-055cd228d611"), "SeedUser", 0 });
+                values: new object[] { new Guid("81bf9d10-810f-464b-b999-e2cb02ab6c4c"), "SeedUser", 0 });
 
             migrationBuilder.InsertData(
                 table: "Building",
@@ -264,7 +264,7 @@ namespace Froom.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Reservation",
                 columns: new[] { "Id", "Duration", "RoomId", "StartTime", "UserId" },
-                values: new object[] { 1, new TimeSpan(0, 1, 0, 0, 0), 1, new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified), new Guid("f2b1fd61-492b-4c2b-9e59-055cd228d611") });
+                values: new object[] { 1, new TimeSpan(0, 1, 0, 0, 0), 1, new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified), new Guid("81bf9d10-810f-464b-b999-e2cb02ab6c4c") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BuildingContents_FloorNumber",
