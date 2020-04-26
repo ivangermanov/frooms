@@ -328,7 +328,7 @@ namespace Froom.Data.Migrations
                             Duration = new TimeSpan(0, 1, 0, 0, 0),
                             RoomId = 1,
                             StartTime = new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified),
-                            UserId = new Guid("f2b1fd61-492b-4c2b-9e59-055cd228d611")
+                            UserId = new Guid("81bf9d10-810f-464b-b999-e2cb02ab6c4c")
                         });
                 });
 
@@ -413,7 +413,7 @@ namespace Froom.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f2b1fd61-492b-4c2b-9e59-055cd228d611"),
+                            Id = new Guid("81bf9d10-810f-464b-b999-e2cb02ab6c4c"),
                             Name = "SeedUser",
                             Role = 0
                         });
