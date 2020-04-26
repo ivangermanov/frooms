@@ -13,6 +13,8 @@ namespace Froom.Data.Dtos
 
         public string FloorNumber { get; set; }
 
+        public int FloorOrder { get; set; }
+
         public int? Capacity { get; set; }
 
         public ICollection<Point> Points { get; set; }

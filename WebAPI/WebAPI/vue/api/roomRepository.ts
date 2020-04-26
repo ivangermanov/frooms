@@ -1,15 +1,15 @@
 import Repository from './repository'
-import { IRoom } from '@/types/index'
+import { IRoomModel } from '@/types/index'
 
 const resource = '/rooms'
 
 export default {
-  getRooms (campus: string, buildingName: string, buildingCampus: string, floor?: string) {
+  getRooms (campus: string, buildingName: string, campusName: string, floor?: string) {
     return Repository.get(`${resource}`, {
       params: {
         campus,
         buildingName,
-        buildingCampus,
+        campusName,
         floor
       }
     })
@@ -17,13 +17,13 @@ export default {
   getRoom (id: number | string) {
     return Repository.get(`${resource}/${id}`)
   },
-  postRooms (payload: IRoom[]) {
+  postRooms (payload: IRoomModel[]) {
     return Repository.post(`${resource}`, payload)
   },
-  putRooms (payload: IRoom[]) {
+  putRooms (payload: IRoomModel[]) {
     return Repository.put(`${resource}`, payload)
   },
-  deleteRooms (payload: IRoom[]) {
+  deleteRooms (payload: IRoomModel[]) {
     return Repository.delete(`${resource}`, { data: payload })
   }
 }

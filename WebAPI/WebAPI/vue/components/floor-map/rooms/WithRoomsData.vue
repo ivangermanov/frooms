@@ -2,7 +2,7 @@
 import Vue, { VNode } from 'vue'
 import { mapMutations } from 'vuex'
 import { GeoJSON } from 'leaflet'
-import { IRoom, CreateIRoom, IRoomToGeoJSONFeature } from '@/types'
+import { IRoomDTO, IRoomModel, CreateIRoomModel, IRoomToGeoJSONFeature } from '@/types'
 
 import { RepositoryFactory } from '@/api/repositoryFactory'
 const RoomRepository = RepositoryFactory.room
@@ -10,10 +10,10 @@ const RoomRepository = RepositoryFactory.room
 export default Vue.extend({
   data () {
     return {
-      buildingCampus: 'EHV',
+      campusName: 'EHV',
       buildingName: 'R1',
       floor: '2e',
-      rooms: {} as { [key: string]: IRoom },
+      rooms: {} as { [key: string]: IRoomDTO },
       roomLayers: {} as { [key: string]: GeoJSON.Feature }
     }
   },
@@ -40,13 +40,12 @@ export default Vue.extend({
       if (this.editMode || this.deleteMode) { return }
 
       const { data } = await RoomRepository.getRooms(
-        this.buildingCampus,
+        this.campusName,
         this.buildingName,
-        this.buildingCampus,
         this.floor
       )
-      const rooms: IRoom[] = data
-      const newRooms = {} as { [key: string]: IRoom }
+      const rooms: IRoomDTO[] = data
+      const newRooms = {} as { [key: string]: IRoomDTO }
       const newRoomLayers = {} as { [key: string]: GeoJSON.Feature }
 
       rooms.forEach((room) => {
@@ -61,7 +60,7 @@ export default Vue.extend({
       }, 5000)
     },
     async postShape (shape: GeoJSON.Feature) {
-      const payload = [CreateIRoom(shape, this.floor, this.buildingName, this.buildingCampus)]
+      const payload = [CreateIRoomModel(shape, this.floor, this.buildingName, this.campusName)]
 
       const success = await RoomRepository.postRooms(payload).catch(() => {})
 
@@ -70,20 +69,20 @@ export default Vue.extend({
       }
     },
     async putShapes (shapes: GeoJSON) {
-      const payload: IRoom[] = []
+      const payload: IRoomModel[] = []
       shapes.eachLayer((layer: any) => {
         const shape = layer.toGeoJSON()
-        const room = CreateIRoom(shape, this.floor, this.buildingName, this.buildingCampus)
+        const room = CreateIRoomModel(shape, this.floor, this.buildingName, this.campusName)
         payload.push(room)
       })
 
       await RoomRepository.putRooms(payload).catch(() => {})
     },
     async deleteShapes (shapes: GeoJSON) {
-      const payload: IRoom[] = []
+      const payload: IRoomModel[] = []
       shapes.eachLayer((layer: any) => {
         const shape = layer.toGeoJSON()
-        const room = CreateIRoom(shape, this.floor, this.buildingName, this.buildingCampus)
+        const room = CreateIRoomModel(shape, this.floor, this.buildingName, this.campusName)
         payload.push(room)
       })
 
