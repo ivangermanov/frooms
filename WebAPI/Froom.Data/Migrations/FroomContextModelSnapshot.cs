@@ -328,7 +328,7 @@ namespace Froom.Data.Migrations
                             Duration = new TimeSpan(0, 1, 0, 0, 0),
                             RoomId = 1,
                             StartTime = new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified),
-                            UserId = new Guid("81bf9d10-810f-464b-b999-e2cb02ab6c4c")
+                            UserId = new Guid("9c52eb48-30ac-4afa-a053-0f2ca0c520a4")
                         });
                 });
 
@@ -363,35 +363,40 @@ namespace Froom.Data.Migrations
                             Number = "40",
                             DetailsId = 3,
                             Capacity = 40,
-                            Id = 1
+                            Id = 1,
+                            Points = "[{\"X\":50.0,\"Y\":50.0},{\"X\":100.0,\"Y\":100.0}]"
                         },
                         new
                         {
                             Number = "10",
                             DetailsId = 3,
                             Capacity = 10,
-                            Id = 2
+                            Id = 2,
+                            Points = "[{\"X\":50.0,\"Y\":50.0},{\"X\":100.0,\"Y\":100.0}]"
                         },
                         new
                         {
                             Number = "05",
                             DetailsId = 3,
                             Capacity = 30,
-                            Id = 3
+                            Id = 3,
+                            Points = "[{\"X\":50.0,\"Y\":50.0},{\"X\":100.0,\"Y\":100.0}]"
                         },
                         new
                         {
                             Number = "03",
                             DetailsId = 3,
                             Capacity = 20,
-                            Id = 4
+                            Id = 4,
+                            Points = "[{\"X\":50.0,\"Y\":50.0},{\"X\":100.0,\"Y\":100.0}]"
                         },
                         new
                         {
                             Number = "71",
                             DetailsId = 3,
                             Capacity = 20,
-                            Id = 5
+                            Id = 5,
+                            Points = "[{\"X\":50.0,\"Y\":50.0},{\"X\":100.0,\"Y\":100.0}]"
                         });
                 });
 
@@ -413,7 +418,7 @@ namespace Froom.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("81bf9d10-810f-464b-b999-e2cb02ab6c4c"),
+                            Id = new Guid("9c52eb48-30ac-4afa-a053-0f2ca0c520a4"),
                             Name = "SeedUser",
                             Role = 0
                         });
