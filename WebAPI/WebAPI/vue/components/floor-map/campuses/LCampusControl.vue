@@ -1,5 +1,5 @@
 <template>
-  <l-draw-control
+  <l-draw-toolbar
     :map-object="mapObject"
     :layers="allLayers"
     position="topright"
@@ -17,13 +17,13 @@
 import Vue from 'vue'
 import { mapMutations } from 'vuex'
 import { Map, geoJSON, GeoJSON, Polyline } from 'leaflet'
-import LDrawControl from './LDrawControl.vue'
+import LDrawToolbar from './LDrawToolbar.vue'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw-src.css'
 
 export default Vue.extend({
   components: {
-    LDrawControl
+    LDrawToolbar
   },
   props: {
     mapObject: {

@@ -3,7 +3,7 @@
     <l-map
       ref="map"
       :options="mapOptions"
-      style="height: 100%; padding: 10px; z-index: 0;"
+      style="height: 100%; z-index: 0;"
     >
       <with-campus-data
         v-slot="{
@@ -11,27 +11,39 @@
         }"
       >
         <template>
-          <with-rooms-data>
-            <template
-              v-slot="{
-                roomLayers,
-                postShape,
-                putShapes,
-                deleteShapes
-              }"
-            >
-              <div v-if="mapObject">
-                <l-draw
-                  :map-object="mapObject"
-                  :fetched-layers="roomLayers"
-                  @addLayer="postShape"
-                  @editLayers="putShapes"
-                  @deleteLayers="deleteShapes"
-                />
-                <l-floors :campus-names="campusNames" :map-object="mapObject" />
-              </div>
+          <with-building-data
+            v-slot="{
+              buildings
+            }"
+          >
+            <template>
+              <with-room-data>
+                <template
+                  v-slot="{
+                    roomLayers,
+                    postShape,
+                    putShapes,
+                    deleteShapes
+                  }"
+                >
+                  <div v-if="mapObject">
+                    <l-draw
+                      :map-object="mapObject"
+                      :fetched-layers="roomLayers"
+                      @addLayer="postShape"
+                      @editLayers="putShapes"
+                      @deleteLayers="deleteShapes"
+                    />
+                    <l-floors-control
+                      :campus-names="campusNames"
+                      :buildings="buildings"
+                      :map-object="mapObject"
+                    />
+                  </div>
+                </template>
+              </with-room-data>
             </template>
-          </with-rooms-data>
+          </with-building-data>
         </template>
       </with-campus-data>
     </l-map>
@@ -44,17 +56,21 @@ import { CRS, Map } from 'leaflet'
 import { LMap } from 'vue2-leaflet'
 
 import WithCampusData from './campuses/WithCampusData.vue'
-import WithRoomsData from './rooms/WithRoomsData.vue'
+import WithBuildingData from './buildings/WithBuildingData.vue'
+import WithRoomData from './rooms/WithRoomData.vue'
 import LDraw from './rooms/draw/LDraw.vue'
-import LFloors from './rooms/floors/LFloors.vue'
+import LFloorsControl from './rooms/floors/LFloorsControl.vue'
+import LCampusControl from './campuses/LCampusControl.vue'
 
 export default Vue.extend({
   components: {
     LMap,
     LDraw,
-    LFloors,
+    LCampusControl,
+    LFloorsControl,
     WithCampusData,
-    WithRoomsData
+    WithBuildingData,
+    WithRoomData
   },
   data () {
     return {
