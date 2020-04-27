@@ -2,7 +2,7 @@
   <l-draw-control
     :map-object="mapObject"
     :layers="allLayers"
-    position="topright"
+    :position="position"
     @addLayer="addLayer"
     @editStart="setEditMode(true)"
     @editStop="setEditMode(false)"
@@ -34,6 +34,10 @@ export default Vue.extend({
       type: Object,
       required: true,
       default: {} as { [key: string]: GeoJSON.Feature }
+    },
+    position: {
+      type: String,
+      required: true
     }
   },
   data () {
