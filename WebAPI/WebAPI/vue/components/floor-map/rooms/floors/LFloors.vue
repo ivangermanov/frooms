@@ -7,7 +7,7 @@ import { IFloor } from 'types'
 import { sortedIndexBy } from 'lodash'
 
 import './L.Control.Basemaps'
-import { Map, control, CRS, ImageOverlay, imageOverlay, LatLngBoundsExpression, ImageOverlayOptions, latLngBounds } from 'leaflet'
+import { Map, control, ImageOverlay, imageOverlay, latLngBounds } from 'leaflet'
 
 export default Vue.extend({
   props: {

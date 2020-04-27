@@ -1,96 +1,44 @@
 <script lang="ts">
 import Vue, { VNode } from 'vue'
-import { mapMutations } from 'vuex'
-import { GeoJSON } from 'leaflet'
-import { IRoomDTO, IRoomModel, CreateIRoomModel, IRoomToGeoJSONFeature } from '@/types'
-
-import { RepositoryFactory } from '@/api/repositoryFactory'
-const RoomRepository = RepositoryFactory.room
+import { computed, watch, toRefs } from '@vue/composition-api'
+import useRoomsData from '@/composition/use-rooms-data'
 
 export default Vue.extend({
-  data () {
-    return {
-      campusName: 'EHV',
-      buildingName: 'R1',
-      floor: '2e',
-      rooms: {} as { [key: string]: IRoomDTO },
-      roomLayers: {} as { [key: string]: GeoJSON.Feature }
-    }
+  props: {
+    campusName: { default: 'EHV', type: String },
+    buildingName: { default: 'R1', type: String },
+    floorNumber: { default: 'bg', type: String }
   },
-  computed: {
-    editMode (): Boolean {
-      return this.$store.state.roomAdmin.editMode
-    },
-    deleteMode (): Boolean {
-      return this.$store.state.roomAdmin.deleteMode
-    }
-  },
-  watch: {
-    editMode (val) {
-      if (!val) {
-        this.fetch()
-      }
-    }
-  },
-  created () {
-    this.fetch()
-  },
-  methods: {
-    async fetch () {
-      if (this.editMode || this.deleteMode) { return }
-
-      const { data } = await RoomRepository.getRooms(
-        this.campusName,
-        this.buildingName,
-        this.floor
-      )
-      const rooms: IRoomDTO[] = data
-      const newRooms = {} as { [key: string]: IRoomDTO }
-      const newRoomLayers = {} as { [key: string]: GeoJSON.Feature }
-
-      rooms.forEach((room) => {
-        newRooms[room.number] = room
-        newRoomLayers[room.number] = IRoomToGeoJSONFeature(room)
-      })
-      this.rooms = newRooms
-      this.roomLayers = newRoomLayers
-
-      setTimeout(() => {
-        this.fetch()
-      }, 5000)
-    },
-    async postShape (shape: GeoJSON.Feature) {
-      const payload = [CreateIRoomModel(shape, this.floor, this.buildingName, this.campusName)]
-
-      const success = await RoomRepository.postRooms(payload).catch(() => {})
-
-      if (success) {
-
-      }
-    },
-    async putShapes (shapes: GeoJSON) {
-      const payload: IRoomModel[] = []
-      shapes.eachLayer((layer: any) => {
-        const shape = layer.toGeoJSON()
-        const room = CreateIRoomModel(shape, this.floor, this.buildingName, this.campusName)
-        payload.push(room)
-      })
-
-      await RoomRepository.putRooms(payload).catch(() => {})
-    },
-    async deleteShapes (shapes: GeoJSON) {
-      const payload: IRoomModel[] = []
-      shapes.eachLayer((layer: any) => {
-        const shape = layer.toGeoJSON()
-        const room = CreateIRoomModel(shape, this.floor, this.buildingName, this.campusName)
-        payload.push(room)
-      })
-
-      await RoomRepository.deleteRooms(payload).catch(() => {})
-    },
-    ...mapMutations({
-      setSaved: 'roomAdmin/setSaved'
+  setup (props, context) {
+    const data = useRoomsData({
+      campusName: props.campusName as string,
+      buildingName: props.buildingName as string,
+      floorNumber: props.floorNumber as string
     })
+
+    const editMode = computed(() => context.root.$store.state.roomAdmin.editMode)
+    const deleteMode = computed(() => context.root.$store.state.roomAdmin.deleteMode)
+
+    watch(() => editMode, (val) => {
+      if (!val) {
+        data.getRooms()
+      }
+    })
+
+    function getRooms () {
+      if (editMode.value || deleteMode.value) { return }
+      data.getRooms()
+      setTimeout(() => {
+        data.getRooms()
+        getRooms()
+      }, 5000)
+    }
+
+    getRooms()
+
+    console.log(data)
+
+    return { ...toRefs(data), getRooms, editMode, deleteMode }
   },
   render (): VNode {
     const { roomLayers, postShape, putShapes, deleteShapes } = this
