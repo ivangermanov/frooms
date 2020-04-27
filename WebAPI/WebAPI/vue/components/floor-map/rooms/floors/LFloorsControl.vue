@@ -25,6 +25,10 @@ export default Vue.extend({
         { url: 'https://i.ibb.co/FnTZ7cR/3e.png', floor: '3e', order: 3 },
         { url: 'https://i.ibb.co/0D4ryqr/4e.png', floor: '4e', order: 4 }
       ] as IFloor[]
+    },
+    position: {
+      type: String,
+      required: true
     }
   },
   data () {
@@ -53,7 +57,8 @@ export default Vue.extend({
       if (this.control) { map.removeControl(this.control as any) }
 
       this.control = (control as any).basemaps({
-        basemaps: baseMaps
+        basemaps: baseMaps,
+        position: this.position
       })
       map.addControl(this.control as any)
     },

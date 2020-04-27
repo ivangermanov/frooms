@@ -28,6 +28,7 @@
                 >
                   <div v-if="mapObject">
                     <l-draw
+                      position="topright"
                       :map-object="mapObject"
                       :fetched-layers="roomLayers"
                       @addLayer="postShape"
@@ -35,6 +36,7 @@
                       @deleteLayers="deleteShapes"
                     />
                     <l-floors-control
+                      position="bottomright"
                       :campus-names="campusNames"
                       :buildings="buildings"
                       :map-object="mapObject"
