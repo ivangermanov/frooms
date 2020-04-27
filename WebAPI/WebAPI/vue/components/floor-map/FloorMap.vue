@@ -5,27 +5,35 @@
       :options="mapOptions"
       style="height: 100%; padding: 10px; z-index: 0;"
     >
-      <with-rooms-data v-if="mapObject">
-        <template
-          v-slot="{
-            roomLayers,
-            postShape,
-            putShapes,
-            deleteShapes
-          }"
-        >
-          <div>
-            <l-draw
-              :map-object="mapObject"
-              :fetched-layers="roomLayers"
-              @addLayer="postShape"
-              @editLayers="putShapes"
-              @deleteLayers="deleteShapes"
-            />
-            <l-floors :map-object="mapObject" />
-          </div>
+      <with-campus-data
+        v-slot="{
+          campusNames
+        }"
+      >
+        <template>
+          <with-rooms-data>
+            <template
+              v-slot="{
+                roomLayers,
+                postShape,
+                putShapes,
+                deleteShapes
+              }"
+            >
+              <div v-if="mapObject">
+                <l-draw
+                  :map-object="mapObject"
+                  :fetched-layers="roomLayers"
+                  @addLayer="postShape"
+                  @editLayers="putShapes"
+                  @deleteLayers="deleteShapes"
+                />
+                <l-floors :campus-names="campusNames" :map-object="mapObject" />
+              </div>
+            </template>
+          </with-rooms-data>
         </template>
-      </with-rooms-data>
+      </with-campus-data>
     </l-map>
   </client-only>
 </template>
@@ -35,6 +43,7 @@ import Vue from 'vue'
 import { CRS, Map } from 'leaflet'
 import { LMap } from 'vue2-leaflet'
 
+import WithCampusData from './campuses/WithCampusData.vue'
 import WithRoomsData from './rooms/WithRoomsData.vue'
 import LDraw from './rooms/draw/LDraw.vue'
 import LFloors from './rooms/floors/LFloors.vue'
@@ -44,6 +53,7 @@ export default Vue.extend({
     LMap,
     LDraw,
     LFloors,
+    WithCampusData,
     WithRoomsData
   },
   data () {
