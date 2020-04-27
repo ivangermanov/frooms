@@ -1,6 +1,6 @@
 <script lang="ts">
 import Vue, { VNode } from 'vue'
-import { computed, watch, toRefs } from '@vue/composition-api'
+import { computed, watch, toRefs, ref, onBeforeUnmount } from '@vue/composition-api'
 import useRoomsData from '@/composition/use-rooms-data'
 
 export default Vue.extend({
@@ -15,30 +15,24 @@ export default Vue.extend({
       buildingName: props.buildingName as string,
       floorNumber: props.floorNumber as string
     })
-
     const editMode = computed(() => context.root.$store.state.roomAdmin.editMode)
     const deleteMode = computed(() => context.root.$store.state.roomAdmin.deleteMode)
+    const fetchInterval = ref(setInterval(data.getRooms, 5000))
 
-    watch(() => editMode, (val) => {
-      if (!val) {
-        data.getRooms()
-      }
+    onBeforeUnmount(() => {
+      clearInterval(fetchInterval.value)
     })
 
-    function getRooms () {
-      if (editMode.value || deleteMode.value) { return }
-      data.getRooms()
-      setTimeout(() => {
-        data.getRooms()
-        getRooms()
-      }, 5000)
-    }
+    watch([editMode, deleteMode], ([editMode, deleteMode]) => {
+      clearInterval(fetchInterval.value)
+      if (editMode || deleteMode) { return }
 
-    getRooms()
+      fetchInterval.value = setInterval(data.getRooms, 5000)
+    })
 
-    console.log(data)
+    data.getRooms()
 
-    return { ...toRefs(data), getRooms, editMode, deleteMode }
+    return { ...toRefs(data) }
   },
   render (): VNode {
     const { roomLayers, postShape, putShapes, deleteShapes } = this
