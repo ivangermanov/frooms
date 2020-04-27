@@ -1,21 +1,24 @@
 <script lang="ts">
 import Vue, { VNode } from 'vue'
 import { toRefs } from '@vue/composition-api'
-import useCampusData from '@/composition/use-campus-data'
+import useBuildingData from '@/composition/use-building-data'
 
 export default Vue.extend({
+  props: {
+    campusName: { default: 'EHV', type: String }
+  },
   setup () {
-    const data = useCampusData()
+    const data = useBuildingData()
 
-    data.getCampusNames()
+    data.getBuildings()
 
     return { ...toRefs(data) }
   },
   render (): VNode {
-    const { campusNames } = this as any
+    const { buildings } = this as any
 
     return this.$scopedSlots.default!({
-      campusNames
+      buildings
     }) as any
   }
 })

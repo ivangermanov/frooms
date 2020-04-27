@@ -5,7 +5,7 @@ import { IRoomDTO, IRoomModel, CreateIRoomModel, IRoomToGeoJSONFeature } from '@
 import { RepositoryFactory } from '@/api/repositoryFactory'
 const RoomRepository = RepositoryFactory.room
 
-export default function useRoomsData (options: {campusName?: string, buildingName?: string, floorNumber?: string} = {}) {
+export default function useRoomData (options: {campusName?: string, buildingName?: string, floorNumber?: string} = {}) {
   const props = reactive({ ...options })
   const data = reactive({
     rooms: {} as { [key: string]: IRoomDTO },

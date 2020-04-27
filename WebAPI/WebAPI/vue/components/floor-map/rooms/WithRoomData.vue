@@ -1,7 +1,7 @@
 <script lang="ts">
 import Vue, { VNode } from 'vue'
 import { computed, watch, toRefs, ref, onBeforeUnmount } from '@vue/composition-api'
-import useRoomsData from '@/composition/use-rooms-data'
+import useRoomData from '@/composition/use-room-data'
 
 export default Vue.extend({
   props: {
@@ -10,7 +10,7 @@ export default Vue.extend({
     floorNumber: { default: 'bg', type: String }
   },
   setup (props, context) {
-    const data = useRoomsData({
+    const data = useRoomData({
       campusName: props.campusName as string,
       buildingName: props.buildingName as string,
       floorNumber: props.floorNumber as string
@@ -35,7 +35,7 @@ export default Vue.extend({
     return { ...toRefs(data) }
   },
   render (): VNode {
-    const { roomLayers, postShape, putShapes, deleteShapes } = this
+    const { roomLayers, postShape, putShapes, deleteShapes } = this as any
 
     return this.$scopedSlots.default!({
       roomLayers,
