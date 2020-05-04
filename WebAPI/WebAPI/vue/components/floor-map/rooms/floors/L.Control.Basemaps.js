@@ -25,6 +25,7 @@ L.Control.Basemaps = L.Control.extend({
         this.basemap = d
         this._map.addLayer(d)
         basemapClass += ' active alt'
+        map.fire('baselayerchange', d)
         map.setMaxBounds(d._bounds)
       }
 
