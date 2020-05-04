@@ -33,8 +33,23 @@
                   }"
                 >
                   <div v-if="mapObject">
-                    <l-campus-control :campus-name.sync="campusName" :campuses="campusNames" position="topleft" />
-                    <l-building-control :building-name.sync="buildingName" :buildings="buildings.map(building => building.name)" position="topleft" />
+                    <l-campus-control
+                      :campus-name.sync="campusName"
+                      :campuses="campusNames"
+                      position="topleft"
+                    />
+                    <l-building-control
+                      :building-name.sync="buildingName"
+                      :buildings="buildings.map(building => building.name)"
+                      position="topleft"
+                    />
+                    <l-floors-control
+                      :campus-names="campusNames"
+                      :buildings="buildings"
+                      :map-object="mapObject"
+                      position="bottomright"
+                      :floor-number.sync="floorNumber"
+                    />
                     <l-draw
                       position="topright"
                       :map-object="mapObject"
@@ -42,12 +57,6 @@
                       @addLayer="postShape"
                       @editLayers="putShapes"
                       @deleteLayers="deleteShapes"
-                    />
-                    <l-floors-control
-                      position="bottomright"
-                      :campus-names="campusNames"
-                      :buildings="buildings"
-                      :map-object="mapObject"
                     />
                   </div>
                 </template>
