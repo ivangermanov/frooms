@@ -5,7 +5,7 @@ const BuildingRepository = RepositoryFactory.building
 
 export default function useRoomsData () {
   const data = reactive({
-    buildings: {}
+    buildings: []
   })
 
   async function getBuildings () {

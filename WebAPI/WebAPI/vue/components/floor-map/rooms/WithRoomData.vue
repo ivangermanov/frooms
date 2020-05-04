@@ -5,9 +5,9 @@ import useRoomData from '@/composition/use-room-data'
 
 export default Vue.extend({
   props: {
-    campusName: { default: 'EHV', type: String },
-    buildingName: { default: 'R1', type: String },
-    floorNumber: { default: 'bg', type: String }
+    campusName: { default: '', type: String },
+    buildingName: { default: '', type: String },
+    floorNumber: { default: '', type: String }
   },
   setup (props, context) {
     const data = useRoomData({
