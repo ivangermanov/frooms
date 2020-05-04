@@ -34,7 +34,8 @@ export default Vue.extend({
   data () {
     return {
       baseMaps: [] as Array<ImageOverlay>,
-      control: null
+      control: null,
+      floorNumber: null
     }
   },
   watch: {
@@ -47,7 +48,15 @@ export default Vue.extend({
       },
       deep: true,
       immediate: true
+    },
+    floorNumber: {
+      handler (value: string) {
+        this.$emit('update:floorNumber', value)
+      }
     }
+  },
+  mounted () {
+    this.mapObject.on('baselayerchange', (layer) => { this.floorNumber = (layer as any).options.alt })
   },
   methods: {
     reloadOverlays () {
