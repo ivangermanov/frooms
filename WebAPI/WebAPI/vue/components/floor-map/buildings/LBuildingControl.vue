@@ -3,13 +3,13 @@
     <div class="control">
       <v-container>
         <v-autocomplete
-          :value="campusName"
-          :items="campuses"
+          :value="buildingName"
+          :items="buildings"
           :dark="false"
           :light="true"
           :dense="true"
-          label="Campus"
-          @change="updateCampusName"
+          label="Building"
+          @change="updateBuildingName"
         />
       </v-container>
     </div>
@@ -29,18 +29,18 @@ export default Vue.extend({
       type: String,
       required: true
     },
-    campuses: {
+    buildings: {
       type: Array,
       default: [] as String[]
     },
-    campusName: {
+    buildingName: {
       type: String,
       default: ''
     }
   },
   methods: {
-    updateCampusName (value: string) {
-      this.$emit('update:campusName', value)
+    updateBuildingName (value: string) {
+      this.$emit('update:buildingName', value)
     }
   }
 })

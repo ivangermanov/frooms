@@ -5,7 +5,7 @@ import useBuildingData from '@/composition/use-building-data'
 
 export default Vue.extend({
   props: {
-    campusName: { default: 'EHV', type: String }
+    campusName: { default: '', type: String }
   },
   setup () {
     const data = useBuildingData()
