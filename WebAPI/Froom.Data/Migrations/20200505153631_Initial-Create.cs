@@ -218,7 +218,11 @@ namespace Froom.Data.Migrations
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "Name", "Role" },
-                values: new object[] { new Guid("6d7dda1d-d461-4b3c-bf30-a1d71925cbe7"), "SeedUser", 0 });
+                values: new object[,]
+                {
+                    { new Guid("4ccb9c19-fdb7-471a-94d3-2748ebea7d15"), "SeedUser", 0 },
+                    { new Guid("5c861938-98ba-41d2-9e24-da3610e34544"), "Ivan Germanov", 1 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Building",
@@ -268,7 +272,7 @@ namespace Froom.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Reservation",
                 columns: new[] { "Id", "Duration", "RoomId", "StartTime", "UserId" },
-                values: new object[] { 1, new TimeSpan(0, 1, 0, 0, 0), 1, new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified), new Guid("6d7dda1d-d461-4b3c-bf30-a1d71925cbe7") });
+                values: new object[] { 1, new TimeSpan(0, 1, 0, 0, 0), 1, new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified), new Guid("4ccb9c19-fdb7-471a-94d3-2748ebea7d15") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BuildingContents_FloorNumber",
