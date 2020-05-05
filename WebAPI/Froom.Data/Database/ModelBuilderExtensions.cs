@@ -219,10 +219,10 @@ namespace Froom.Data.Database
                         Capacity = 40,
                         Points = new List<Point>
                         {
-                            new Point {X = 68.730469, Y = -4.915833}, new Point {X = 40.253906, Y = -5.615986},
-                            new Point {X = 40.78125, Y = 3.864255}, new Point {X = 68.90625, Y = 3.688855},
-                            new Point {X = 68.730469, Y = 24.686952}, new Point {X = 97.558594, Y = 24.686952},
-                            new Point {X = 97.558594, Y = -4.915833}, new Point {X = 68.730469, Y = -4.915833}
+                            new Point {X = 68.378906, Y = -4.039618}, new Point {X = 40.957031, Y = -4.390229},
+                            new Point {X = 40.78125, Y = 5.178482}, new Point {X = 68.818359, Y = 5.090944},
+                            new Point {X = 68.554688, Y = 26.273714}, new Point {X = 97.207031, Y = 25.958045},
+                            new Point {X = 97.558594, Y = -3.688855}, new Point {X = 68.378906, Y = -4.039618}
                         }
                     },
                     new Room
@@ -233,9 +233,9 @@ namespace Froom.Data.Database
                         Capacity = 10,
                         Points = new List<Point>
                         {
-                            new Point {X = -151.083984, Y = -67.474922}, new Point {X = -151.083984, Y = -51.508742},
-                            new Point {X = -129.199219, Y = -51.508742}, new Point {X = -129.199219, Y = -67.474922},
-                            new Point {X = -151.083984, Y = -67.474922}
+                            new Point {X = -151.347656, Y = -69.349339}, new Point {X = -150.996094, Y = -55.875311},
+                            new Point {X = -128.847656, Y = -56.170023}, new Point {X = -128.847656, Y = -69.472969}
+                            
                         }
                     },
                     new Room
@@ -246,9 +246,8 @@ namespace Froom.Data.Database
                         Capacity = 30,
                         Points = new List<Point>
                         {
-                            new Point {X = -216.210938, Y = -64.586185}, new Point {X = -183.691406, Y = -56.12106},
-                            new Point {X = -183.691406, Y = -64.586185},
-                            new Point {X = -216.210938, Y = -64.586185}
+                            new Point {X = -216.738281, Y = -67.101656}, new Point {X = -216.650391, Y = -60.020952},
+                            new Point {X = -183.867187, Y = -60.152442}, new Point {X = -183.691406, Y = -66.998844}
                         }
                     },
                     new Room
@@ -259,9 +258,9 @@ namespace Froom.Data.Database
                         Capacity = 20,
                         Points = new List<Point>
                         {
-                            new Point {X = -26.630859, Y = -16.88866}, new Point {X = -26.630859, Y = 5.528511},
-                            new Point {X = -5.361328, Y = 5.528511}, new Point {X = -5.361328, Y = -16.88866},
-                            new Point {X = -26.630859, Y = -16.88866}
+                            new Point {X = -26.367188, Y = -33.137551}, new Point {X = -26.71875, Y = -12.726084},
+                            new Point {X = -5.449219, Y = -12.726084}, new Point {X = -5.273438, Y = -34.016242},
+                            new Point {X = -26.367188, Y = -33.137551}
                         }
                     },
                     new Room
@@ -272,9 +271,9 @@ namespace Froom.Data.Database
                         Capacity = 20,
                         Points = new List<Point>
                         {
-                            new Point {X = -37.353516, Y = 15.792254}, new Point {X = -37.353516, Y = 35.532226},
-                            new Point {X = -15.380859, Y = 35.532226},
-                            new Point {X = -15.380859, Y = 15.792254}, new Point {X = -37.353516, Y = 15.792254}
+                            new Point {X = -37.265625, Y = -2.108899}, new Point {X = -37.265625, Y = 19.642588},
+                            new Point {X = -14.765625, Y = 19.311143},
+                            new Point {X = -15.46875, Y = -2.460181}, new Point {X = -37.265625, Y = -2.108899}
                         }
                     },
                     new Room
@@ -285,9 +284,9 @@ namespace Froom.Data.Database
                         Capacity = 50,
                         Points = new List<Point>
                         {
-                            new Point {X = -151.347656, Y = -58.35563}, new Point {X = -151.347656, Y = -36.031332},
-                            new Point {X = -129.550781, Y = -36.031332},
-                            new Point {X = -129.550781, Y = -58.35563}, new Point {X = -151.347656, Y = -58.35563}
+                            new Point {X = -150.820312, Y = -66.372755}, new Point {X = -150.996094, Y = -49.61071},
+                            new Point {X = -129.19921, Y = -49.496675},
+                            new Point {X = -129.199219, Y = -66.302205}, new Point {X = -150.820312, Y = -66.372755}
                         }
                     },
                     new Room
@@ -298,9 +297,9 @@ namespace Froom.Data.Database
                         Capacity = 20,
                         Points = new List<Point>
                         {
-                            new Point {X = -49.042969, Y = -58.263287}, new Point {X = -49.042969, Y = -41.640078},
-                            new Point {X = -25.3125, Y = -41.640078},
-                            new Point {X = -25.3125, Y = -58.263287}, new Point {X = -49.042969, Y = -58.263287}
+                            new Point {X = -48.691406, Y = -66.372755}, new Point {X = -48.515625, Y = -53.956086},
+                            new Point {X = -25.3125, Y = -53.748711},
+                            new Point {X = -25.3125, Y = -66.443107}, new Point {X = -48.691406, Y = -66.372755}
                         }
                     },
                     new Room
@@ -311,29 +310,16 @@ namespace Froom.Data.Database
                         Capacity = 20,
                         Points = new List<Point>
                         {
-                            new Point {X = -321.503906, Y = 56.848972}, new Point {X = -334.160156, Y = 54.673831},
-                            new Point {X = -334.160156, Y = 38.272689}, new Point {X = -321.679688, Y = 35.173808},
-                            new Point {X = -289.335938, Y = 35.029996}, new Point {X = -287.578125, Y = 38.68551},
-                            new Point {X = -287.578125, Y = 42.811522}, new Point {X = -288.808594, Y = 42.682435},
-                            new Point {X = -288.808594, Y = 57.984808}, new Point {X = -287.578125, Y = 58.077876},
-                            new Point {X = -287.753906, Y = 67.339861}, new Point {X = -295.664063, Y = 67.272043},
-                            new Point {X = -295.664063, Y = 62.593341}, new Point {X = -302.871094, Y = 62.593341},
-                            new Point {X = -302.871094, Y = 56.752723}, new Point {X = -321.503906, Y = 56.848972}
+                            new Point {X = -302.783203, Y = 45.336702}, new Point {X = -321.416016, Y = 45.02695},
+                            new Point {X = -333.808594, Y = 42.488302}, new Point {X = -333.896484, Y = 22.268764},
+                            new Point {X = -321.591797, Y = 18.979026}, new Point {X = -288.984375, Y = 19.311143},
+                            new Point {X = -287.666016, Y = 22.674847}, new Point {X = -287.578125, Y = 42.811522},
+                            new Point {X = -288.808594, Y = 42.682435}, new Point {X = -289.072266, Y = 47.15984},
+                            new Point {X = -287.578125, Y = 47.338823}, new Point {X = -287.666016, Y = 59.175928},
+                            new Point {X = -290.214844, Y = 59.085739}, new Point {X = -295.400391, Y = 59.085739},
+                            new Point {X = -295.576172, Y = 52.855864}, new Point {X = -302.783203, Y = 52.855864}
                         }
                     },
-                    new Room
-                    {
-                        Id = 9,
-                        Number = "2.01",
-                        DetailsId = 5,
-                        Capacity = 20,
-                        Points = new List<Point>
-                        {
-                            new Point {X = -203.90625, Y = 42.940339}, new Point {X = -203.90625, Y = 57.326521},
-                            new Point {X = -183.339844, Y = 57.326521},
-                            new Point {X = -183.339844, Y = 42.940339}, new Point {X = -203.90625, Y = 42.940339}
-                        }
-                    }
                 };
             }
         }
