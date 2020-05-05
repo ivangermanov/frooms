@@ -23,23 +23,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { RepositoryFactory } from '@/api/repositoryFactory'
-const UserRepository = RepositoryFactory.user
 
 export default Vue.extend({
-  created () {
-    this.getUserInfo()
-    this.getUserRoles()
-  },
-  methods: {
-    async getUserInfo () {
-      const { data } = await UserRepository.getUserInfo()
-      console.log(data)
-    },
-    async getUserRoles () {
-      const { data } = await UserRepository.getUserRoles()
-      console.log(data)
-    }
-  }
+
 })
 </script>

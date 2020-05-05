@@ -40,7 +40,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IActionResult GetUserRoles()
         {
-            var roles = User.Claims.Where(e => e.Type == ClaimTypes.Role).ToList();
+            var roles = User.Claims.Where(e => e.Type == ClaimTypes.Role).Select(role => role.Value).ToList();
             return Ok(roles);
         }
     }
