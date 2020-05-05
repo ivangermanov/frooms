@@ -18,13 +18,14 @@ export default Vue.extend({
     floors: {
       type: Array,
       required: false,
-      default: () => [
-        { url: 'https://i.ibb.co/f0nYv9G/bg.png', floor: 'BG', order: 0 },
-        { url: 'https://i.ibb.co/yP7k1X2/1e.png', floor: '1e', order: 1 },
-        { url: 'https://i.ibb.co/bQYTGBR/floor.png', floor: '2e', order: 2 },
-        { url: 'https://i.ibb.co/FnTZ7cR/3e.png', floor: '3e', order: 3 },
-        { url: 'https://i.ibb.co/0D4ryqr/4e.png', floor: '4e', order: 4 }
-      ] as IFloor[]
+      default: () => [] as IFloor[]
+      // () => [
+      //   { url: 'https://i.ibb.co/f0nYv9G/bg.png', floor: 'BG', order: 0 },
+      //   { url: 'https://i.ibb.co/yP7k1X2/1e.png', floor: '1e', order: 1 },
+      //   { url: 'https://i.ibb.co/bQYTGBR/floor.png', floor: '2e', order: 2 },
+      //   { url: 'https://i.ibb.co/FnTZ7cR/3e.png', floor: '3e', order: 3 },
+      //   { url: 'https://i.ibb.co/0D4ryqr/4e.png', floor: '4e', order: 4 }
+      // ] as IFloor[]
     },
     position: {
       type: String,
