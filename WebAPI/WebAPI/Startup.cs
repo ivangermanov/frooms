@@ -126,6 +126,7 @@ namespace WebAPI
             services.AddScoped<IBuildingRepository, BuildingRepository>();
             services.AddTransient<IBuildingService, BuildingService>();
             services.AddTransient<IFloorRepository, FloorRepository>();
+            services.AddTransient<IFloorService, FloorService>();
             services.AddTransient<IBuildingContentsRepository, BuildingContentsRepository>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -15,6 +15,7 @@
         <template
           v-slot="{
             roomLayers,
+            floors,
             postShape,
             putShapes,
             deleteShapes
@@ -32,16 +33,17 @@
               position="topleft"
             />
             <l-floors-control
+              :map-object="mapObject"
               :campus-names="campusNames"
               :buildings="buildings"
-              :map-object="mapObject"
-              position="bottomright"
+              :floors="floors"
               :floor-number.sync="floorNumber"
+              position="bottomright"
             />
             <l-draw
-              position="topright"
               :map-object="mapObject"
               :fetched-layers="roomLayers"
+              position="topright"
               @addLayer="postShape"
               @editLayers="putShapes"
               @deleteLayers="deleteShapes"
@@ -88,9 +90,9 @@ export default Vue.extend({
         maxZoom: 4,
         zoomControl: false
       },
-      campusName: '',
-      buildingName: '',
-      floorNumber: ''
+      campusName: null,
+      buildingName: null,
+      floorNumber: null
     }
   },
   computed: {
@@ -110,10 +112,10 @@ export default Vue.extend({
   },
   watch: {
     campusNames (value) {
-      if (this.campusName === '') { this.campusName = value[0] }
+      if (this.campusName === null) { this.campusName = value[0] }
     },
     buildings (value) {
-      if (this.buildingName === '') { this.buildingName = value[0].name }
+      if (this.buildingName === null) { this.buildingName = value[0].name }
     }
   },
   mounted () {

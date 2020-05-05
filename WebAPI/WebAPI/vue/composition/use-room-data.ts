@@ -4,12 +4,14 @@ import {
   IRoomDTO,
   IRoomModel,
   CreateIRoomModel,
-  IRoomToGeoJSONFeature
+  IRoomToGeoJSONFeature,
+  IFloor
 } from '@/types'
 
 import { RepositoryFactory } from '@/api/repositoryFactory'
 const RoomRepository = RepositoryFactory.room
 const FloorRepository = RepositoryFactory.floor
+const FontysApiRepository = RepositoryFactory.fontysApi
 
 export default function useRoomData (
   props: {
@@ -20,15 +22,30 @@ export default function useRoomData (
 ) {
   const data = reactive({
     rooms: {} as { [key: string]: IRoomDTO },
-    floors: [],
+    floors: [] as IFloor[],
     roomLayers: {} as { [key: string]: GeoJSON.Feature }
   })
 
   async function getFloors () {
-    console.log(props.campusName, props.buildingName)
-    const { data: json } = await FloorRepository.getFloors(props.buildingName!).catch()
-    data.floors = json
-    console.log(json)
+    const {
+      data: json
+    }: { data: Array<any> } = await FloorRepository.getFloors(
+      props.buildingName!
+    )
+    const floors = await Promise.all(json.map(async (floor) => {
+      const url = await FontysApiRepository.getLocationMapImage(
+        props.campusName!,
+        props.buildingName!,
+        floor.number!
+      ).catch()
+
+      return {
+        ...floor,
+        url
+      }
+    })) as IFloor[]
+
+    data.floors = floors
   }
 
   async function getRooms () {

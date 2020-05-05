@@ -11,7 +11,6 @@ export default function useRoomsData () {
   async function getBuildings () {
     const { data: json } = await BuildingRepository.getBuildings()
     const buildings = json
-    console.log(buildings)
     data.buildings = buildings
   }
 

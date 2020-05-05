@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.WebUtilities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.WebUtilities;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Helpers
@@ -29,74 +29,81 @@ namespace WebAPI.Helpers
 
         public async Task<string> GetUserInfo()
         {
-            await this.SetAccessTokenInHeader();
+            await SetAccessTokenInHeader();
 
             return await Client.GetStringAsync(FontysAPIEndpoints.userInfo);
         }
 
         #region Buildings
+
         public async Task<string> GetBuildings()
         {
-            await this.SetAccessTokenInHeader();
+            await SetAccessTokenInHeader();
 
             return await Client.GetStringAsync(FontysAPIEndpoints.buildings);
         }
 
         public async Task<string> GetBuildings(string id)
         {
-            await this.SetAccessTokenInHeader();
+            await SetAccessTokenInHeader();
 
             return await Client.GetStringAsync($"{FontysAPIEndpoints.buildings}/{id}");
         }
 
         public async Task<string> GetBuildingsNearby()
         {
-            await this.SetAccessTokenInHeader();
+            await SetAccessTokenInHeader();
 
-            var queryString = new Dictionary<string, string>()
+            var queryString = new Dictionary<string, string>
             {
-                { "latitude", "bar" },
-                { "longitude", "bar" }
+                {"latitude", "bar"},
+                {"longitude", "bar"}
             };
 
-            return await Client.GetStringAsync(QueryHelpers.AddQueryString($"{FontysAPIEndpoints.buildings}/nearby", queryString)); ;
+            return await Client.GetStringAsync(QueryHelpers.AddQueryString($"{FontysAPIEndpoints.buildings}/nearby",
+                queryString));
+            ;
         }
+
         #endregion
 
         #region Location
+
         public async Task<string> GetLocationCurrent()
         {
-            await this.SetAccessTokenInHeader();
+            await SetAccessTokenInHeader();
 
             return await Client.GetStringAsync($"{FontysAPIEndpoints.location}/current");
         }
 
-        public async Task<string> GetLocationMapImage(string campus, string building, string floor)
+        public async Task<byte[]> GetLocationMapImage(string campus, string building, string floor)
         {
-            await this.SetAccessTokenInHeader();
+            await SetAccessTokenInHeader();
 
-            return await Client.GetStringAsync($"{FontysAPIEndpoints.location}/mapimage/{campus}/{building}/{floor}");
+            return await Client.GetByteArrayAsync($"{FontysAPIEndpoints.location}/mapimage/{campus}/{building}/{floor}");
         }
 
         public async Task<string> GetLocationFloorStatistics()
         {
-            await this.SetAccessTokenInHeader();
+            await SetAccessTokenInHeader();
 
             return await Client.GetStringAsync($"{FontysAPIEndpoints.location}/floor-statistics");
         }
+
         #endregion
 
         #region Permissions
+
         public async Task<string> GetPermissionsScopes()
         {
-            await this.SetAccessTokenInHeader();
+            await SetAccessTokenInHeader();
 
             return await Client.GetStringAsync($"{FontysAPIEndpoints.permissions}/scopes");
         }
 
         public async Task<string> GetPermissionsRoles()
         {
-            await this.SetAccessTokenInHeader();
+            await SetAccessTokenInHeader();
 
             return await Client.GetStringAsync($"{FontysAPIEndpoints.permissions}/roles");
         }
@@ -105,6 +112,7 @@ namespace WebAPI.Helpers
         {
             return await Client.GetStringAsync($"{FontysAPIEndpoints.permissions}/claims");
         }
+
         #endregion
     }
 }
