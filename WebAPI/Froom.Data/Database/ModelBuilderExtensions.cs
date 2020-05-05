@@ -20,6 +20,12 @@ namespace Froom.Data.Database
                         Id = userId,
                         Name = "SeedUser",
                         Role = UserRole.NORMAL
+                    },
+                    new User
+                    {
+                        Id = new Guid("5c861938-98ba-41d2-9e24-da3610e34544"),
+                        Name = "Ivan Germanov",
+                        Role = UserRole.ADMIN
                     }
                 };
             }
