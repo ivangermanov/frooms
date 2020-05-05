@@ -17,6 +17,7 @@ namespace WebAPI.Controllers
             _buildingService = buildingService;
         }
 
+        [Route("addBuilding")]
         [HttpPost]
         public async Task<IActionResult> AddBuilding(PostBuildingModel model)
         {
@@ -25,6 +26,7 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
+        [Route("addFloor")]
         [HttpPost]
         public async Task<IActionResult> AddFloor(string buildingName, string floorNumber)
         {
