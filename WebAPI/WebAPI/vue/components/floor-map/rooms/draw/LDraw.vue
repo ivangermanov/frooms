@@ -1,22 +1,25 @@
 <template>
-  <l-draw-control
-    :map-object="mapObject"
-    :layers="allLayers"
-    :position="position"
-    @addLayer="addLayer"
-    @editStart="setEditMode(true)"
-    @editStop="setEditMode(false)"
-    @deleteStart="setDeleteMode(true)"
-    @deleteStop="setDeleteMode(false)"
-    @editLayers="editLayers"
-    @deleteLayers="deleteLayers"
-  />
+  <fragment v-if="isAdmin">
+    <l-draw-control
+      :map-object="mapObject"
+      :layers="allLayers"
+      :position="position"
+      @addLayer="addLayer"
+      @editStart="setEditMode(true)"
+      @editStop="setEditMode(false)"
+      @deleteStart="setDeleteMode(true)"
+      @deleteStop="setDeleteMode(false)"
+      @editLayers="editLayers"
+      @deleteLayers="deleteLayers"
+    />
+  </fragment>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { mapMutations } from 'vuex'
 import { Map, geoJSON, GeoJSON, Polyline } from 'leaflet'
+import { IUser } from 'types'
 import LDrawControl from './LDrawControl.vue'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw-src.css'
@@ -43,6 +46,14 @@ export default Vue.extend({
   data () {
     return {
       allLayers: geoJSON()
+    }
+  },
+  computed: {
+    isAdmin (): Boolean {
+      const info: IUser = this.$store.state.user.info
+      if (!info.role) { return true }
+      console.log(info.role.some(role => role === 'admin'))
+      return info.role.some(role => role === 'admin')
     }
   },
   watch: {
