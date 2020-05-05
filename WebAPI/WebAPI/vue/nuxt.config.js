@@ -30,7 +30,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/composition-api.ts'],
+  plugins: ['~/plugins/composition-api.ts', '~/plugins/vue-fragment.ts'],
   /*
    ** Nuxt.js dev-modules
    */
