@@ -21,6 +21,7 @@ using WebAPI.Services;
 using WebAPI.Services.Interfaces;
 using System.Collections.Generic;
 using Froom.Data.Entities;
+using Microsoft.OpenApi.Models;
 
 namespace WebAPI
 {
@@ -136,12 +137,24 @@ namespace WebAPI
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "FROOM API", Version = "v1" });
+            });
+
             services.AddSpaStaticFiles(opt => opt.RootPath = "vue/dist");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "FROOM API");
+            });
+
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
