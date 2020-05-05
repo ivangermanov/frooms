@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [ApiController]
+
     [Route("api")]
+    [ApiController]
     public class HomeController : ControllerBase
     {
+
         [Route("logout")]
+        [HttpPost]
         public ActionResult Logout()
         {
             return SignOut(CookieAuthenticationDefaults.AuthenticationScheme,
