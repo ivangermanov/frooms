@@ -19,8 +19,6 @@ using WebAPI.Helpers;
 using System.Security.Claims;
 using WebAPI.Services;
 using WebAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using Froom.Data.Entities;
 
@@ -128,6 +126,8 @@ namespace WebAPI
             services.AddTransient<IFloorRepository, FloorRepository>();
             services.AddTransient<IFloorService, FloorService>();
             services.AddTransient<IBuildingContentsRepository, BuildingContentsRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers()
