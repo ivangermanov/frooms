@@ -55,6 +55,7 @@ namespace WebAPI.Controllers
 
         // TODO: Authorize as admin
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PostRooms(IEnumerable<PostRoomModel> model)
         {
             await _roomService.AddRangeAsync(model);
@@ -63,6 +64,7 @@ namespace WebAPI.Controllers
 
         // TODO: Authorize as admin
         [HttpPut]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PutRooms(IEnumerable<PostRoomModel> model)
         {
             await _roomService.UpdateRangeAsync(model);
@@ -71,6 +73,7 @@ namespace WebAPI.Controllers
 
         // TODO: Authorize as admin
         [HttpDelete]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteRooms(IEnumerable<DeleteRoomModel> model)
         {
             await _roomService.RemoveRangeAsync(model);
