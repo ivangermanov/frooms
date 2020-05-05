@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
+using WebAPI.Helpers;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Controllers
@@ -11,10 +13,12 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        IUserService _userService;
+        private readonly IUserService _userService; 
+        private readonly FontysAPI _fontysApi;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, FontysAPI fontysApi)
         {
+            _fontysApi = fontysApi;
             _userService = userService;
         }
 
@@ -24,13 +28,19 @@ namespace WebAPI.Controllers
             return Ok(_userService.AddUserAsync(model));
         }
 
-
-        [Route("getUserRoles")]
         [HttpGet]
-        [Authorize]
-        public IActionResult GetCurrentUserRoles()
+        [Route("me")]
+        public async Task<IActionResult> GetUserInfo()
         {
-            var roles = User.Claims.Where(e => e.Type == ClaimTypes.Role).ToList();
+            var result = await _fontysApi.GetUserInfo();
+            return Ok(result);
+        }
+
+        [Route("me/roles")]
+        [HttpGet]
+        public IActionResult GetUserRoles()
+        {
+            var roles = User.Claims.Where(e => e.Type == ClaimTypes.Role).Select(role => role.Value).ToList();
             return Ok(roles);
         }
     }

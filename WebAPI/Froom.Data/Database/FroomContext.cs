@@ -33,6 +33,12 @@ namespace Froom.Data.Database
 
             modelBuilder.Entity<Building>(options =>
             {
+                options.HasKey(b => new
+                {
+                    b.Name,
+                    b.CampusName
+                });
+
                 options.HasOne(b => b.Campus)
                     .WithMany(c => c.Buildings)
                     .HasForeignKey(b => b.CampusName)
@@ -84,14 +90,23 @@ namespace Froom.Data.Database
 
                 options.HasKey(e => new
                     {
+                        e.CampusName,
                         e.BuildingName,
                         e.FloorNumber
                     });
 
                 options.HasOne(e => e.Building)
                     .WithMany(b => b.Contents)
-                    .HasForeignKey(e => e.BuildingName)
-                    .HasPrincipalKey(b => b.Name)
+                    .HasForeignKey(e => new
+                    {
+                        e.CampusName,
+                        e.BuildingName
+                    })
+                    .HasPrincipalKey(b => new
+                    {
+                        b.CampusName,
+                        b.Name
+                    })
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade);
 

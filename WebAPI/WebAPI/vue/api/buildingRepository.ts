@@ -1,9 +1,9 @@
 import Repository from './repository'
 
-const resource = '/auth'
+const resource = '/buildings'
 
 export default {
-  getUserInfo () {
+  getBuildings () {
     return Repository.get(`${resource}`)
   }
 }

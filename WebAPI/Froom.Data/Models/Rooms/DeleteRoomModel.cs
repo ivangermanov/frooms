@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Froom.Data.Models.Rooms
 {
@@ -10,10 +7,10 @@ namespace Froom.Data.Models.Rooms
         [Required]
         public string Number { get; set; }
         [Required]
-        public string Floor { get; set; }
+        public string FloorNumber { get; set; }
         [Required]
         public string BuildingName { get; set; }
         [Required]
-        public string BuildingCampus { get; set; }
+        public string CampusName { get; set; }
     }
 }

@@ -41,6 +41,8 @@
     <Compile Remove="Migrations\20200421143206_Floor-and-Seeding.Designer.cs" />
     <Compile Remove="Migrations\20200421143354_Floor-and-Seeding.cs" />
     <Compile Remove="Migrations\20200421143354_Floor-and-Seeding.Designer.cs" />
+    <Compile Remove="Migrations\20200505150743_Initial-Create.cs" />
+    <Compile Remove="Migrations\20200505150743_Initial-Create.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

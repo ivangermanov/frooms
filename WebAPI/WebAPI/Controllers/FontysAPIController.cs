@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebAPI.Helpers;
 
@@ -27,11 +28,12 @@ namespace WebAPI.Controllers
 
         #region Location
         [HttpGet]
-        [Route("location/mapimage/{campus}/{building}/{floor}")]
-        public async Task<IActionResult> GetLocationMapImage(string campus, string building, string floor)
+        [Route("location/mapimage/{campusName}/{buildingName}/{floorNumber}")]
+        public async Task<IActionResult> GetLocationMapImage(string campusName, string buildingName, string floorNumber)
         {
-            var result = await _fontysApi.GetLocationMapImage(campus, building, floor);
-            return Ok(result);
+            var result = await _fontysApi.GetLocationMapImage(campusName, buildingName, floorNumber);
+            
+            return File(result, "image/png");
         }
 
         [HttpGet]
