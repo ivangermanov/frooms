@@ -82,13 +82,15 @@ export default Vue.extend({
         const bounds = latLngBounds(topLeft, bottomRight)
 
         const options = {
-          alt: floor.floor,
+          alt: floor.number,
           order: floor.order
         }
+
         const basemap = imageOverlay(floor.url, bounds, options)
         baseMaps.splice(sortedIndexBy(baseMaps, basemap, 'options.order'), 0, basemap)
         this.reloadOverlays()
       }
+
       image.src = floor.url
     }
   }

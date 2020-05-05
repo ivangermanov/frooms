@@ -11,7 +11,6 @@ export default function useRoomsData () {
   async function getCampusNames () {
     const { data: json } = await CampusRepository.getCampusNames()
     const names: string[] = json
-    console.log(names)
     data.campusNames = names
   }
 

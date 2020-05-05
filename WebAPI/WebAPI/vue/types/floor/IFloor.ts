@@ -1,5 +1,5 @@
 export interface IFloor {
     url: string,
-    floor: string,
+    number: string,
     order: number
 }
