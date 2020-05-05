@@ -50,7 +50,6 @@ export default Vue.extend({
     watch(
       () => [props.campusName, props.buildingName, props.floorNumber],
       ([campusName, buildingName, floorNumber]) => {
-        console.log(campusName, buildingName, floorNumber)
         if (
           campusName !== null &&
           buildingName !== null &&

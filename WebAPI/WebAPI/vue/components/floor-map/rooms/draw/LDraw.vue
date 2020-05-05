@@ -48,6 +48,7 @@ export default Vue.extend({
   watch: {
     fetchedLayers (layers: { [key: string]: GeoJSON.Feature }) {
       const allLayers = this.allLayers
+      allLayers.clearLayers()
 
       allLayers.eachLayer((layer: any) => {
         const geoJSON: GeoJSON.Feature = (layer as any).toGeoJSON()

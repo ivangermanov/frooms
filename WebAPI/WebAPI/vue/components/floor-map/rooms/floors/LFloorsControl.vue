@@ -42,6 +42,7 @@ export default Vue.extend({
   watch: {
     floors: {
       handler (value: Array<IFloor>) {
+        if (this.control) { this.mapObject.removeControl(this.control as any) }
         this.baseMaps = []
         value.forEach((floor) => {
           this.loadBasemap(floor)
@@ -58,6 +59,9 @@ export default Vue.extend({
   },
   mounted () {
     this.mapObject.on('baselayerchange', (layer) => { this.floorNumber = (layer as any).options.alt })
+  },
+  beforeDestroy () {
+    this.mapObject.off('baselayerchange')
   },
   methods: {
     reloadOverlays () {

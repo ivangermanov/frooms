@@ -62,6 +62,7 @@ export default function useRoomData (
       newRooms[room.number] = room
       newRoomLayers[room.number] = IRoomToGeoJSONFeature(room)
     })
+
     data.rooms = newRooms
     data.roomLayers = newRoomLayers
   }
