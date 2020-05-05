@@ -20,12 +20,35 @@ namespace Froom.Data.MapperProfiles
         /// </summary>
         private void ConfigureMappings()
         {
-            CreateMap<PostRoomModel, Room>();
-            CreateMap<DeleteRoomModel, Room>();
+            CreateMap<PostRoomModel, Room>().ForMember(
+                r => r.DetailsId,
+                conf => conf.MapFrom<CustomRoomDetailsResolver>());
+
+            CreateMap<DeleteRoomModel, Room>().ForMember(
+                r => r.DetailsId,
+                conf => conf.MapFrom<CustomRoomDetailsResolver>());
+
             CreateMap<PostReservationModel, Reservation>();
             CreateMap<PostUserModel, User>();
             CreateMap<PostCampusModel, Campus>();
             CreateMap<PostBuildingModel, Building>();
+        }
+    }
+
+    public class CustomRoomDetailsResolver : IValueResolver<PostRoomModel, Room, int>, IValueResolver<DeleteRoomModel, Room, int>
+    {
+        public int Resolve(PostRoomModel source, Room destination, int destMember, ResolutionContext context)
+        {
+            dynamic detailsDic = context.Options.Items["DetailsId"];
+
+            return (detailsDic.Result)[source];
+        }
+
+        public int Resolve(DeleteRoomModel source, Room destination, int destMember, ResolutionContext context)
+        {
+            dynamic detailsDic = context.Options.Items["DetailsId"];
+
+            return (detailsDic.Result)[source];
         }
     }
 }

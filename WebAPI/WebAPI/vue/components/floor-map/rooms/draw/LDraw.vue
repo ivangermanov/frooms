@@ -1,29 +1,32 @@
 <template>
-  <l-draw-toolbar
-    :map-object="mapObject"
-    :layers="allLayers"
-    position="topright"
-    @addLayer="addLayer"
-    @editStart="setEditMode(true)"
-    @editStop="setEditMode(false)"
-    @deleteStart="setDeleteMode(true)"
-    @deleteStop="setDeleteMode(false)"
-    @editLayers="editLayers"
-    @deleteLayers="deleteLayers"
-  />
+  <fragment v-if="isAdmin">
+    <l-draw-control
+      :map-object="mapObject"
+      :layers="allLayers"
+      :position="position"
+      @addLayer="addLayer"
+      @editStart="setEditMode(true)"
+      @editStop="setEditMode(false)"
+      @deleteStart="setDeleteMode(true)"
+      @deleteStop="setDeleteMode(false)"
+      @editLayers="editLayers"
+      @deleteLayers="deleteLayers"
+    />
+  </fragment>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { mapMutations } from 'vuex'
 import { Map, geoJSON, GeoJSON, Polyline } from 'leaflet'
-import LDrawToolbar from './LDrawToolbar.vue'
+import { IUser } from 'types'
+import LDrawControl from './LDrawControl.vue'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw-src.css'
 
 export default Vue.extend({
   components: {
-    LDrawToolbar
+    LDrawControl
   },
   props: {
     mapObject: {
@@ -34,6 +37,10 @@ export default Vue.extend({
       type: Object,
       required: true,
       default: {} as { [key: string]: GeoJSON.Feature }
+    },
+    position: {
+      type: String,
+      required: true
     }
   },
   data () {
@@ -41,9 +48,18 @@ export default Vue.extend({
       allLayers: geoJSON()
     }
   },
+  computed: {
+    isAdmin (): Boolean {
+      const info: IUser = this.$store.state.user.info
+      if (!info.role) { return true }
+      console.log(info.role.some(role => role === 'admin'))
+      return info.role.some(role => role === 'admin')
+    }
+  },
   watch: {
     fetchedLayers (layers: { [key: string]: GeoJSON.Feature }) {
       const allLayers = this.allLayers
+      allLayers.clearLayers()
 
       allLayers.eachLayer((layer: any) => {
         const geoJSON: GeoJSON.Feature = (layer as any).toGeoJSON()

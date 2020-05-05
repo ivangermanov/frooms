@@ -6,6 +6,8 @@ namespace Froom.Data.Entities
     {
         public int Id { get; set; }
 
+        public string CampusName { get; set; }
+
         public string BuildingName { get; set; }
 
         public Building Building { get; set; }

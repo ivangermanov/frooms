@@ -16,63 +16,66 @@ namespace WebAPI.Services
     public class RoomService : IRoomService
     {
         private readonly IRoomRepository _roomRepository;
+        private readonly IBuildingContentsRepository _detailsRepository;
         private readonly IMapper _mapper;
 
-        public RoomService(IRoomRepository roomRepository, IMapper mapper)
+        public RoomService(
+            IRoomRepository roomRepository,
+            IBuildingContentsRepository detailsRepository,
+            IMapper mapper)
         {
             _roomRepository = roomRepository;
+            _detailsRepository = detailsRepository;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<RoomDto>> GetRooms(string? campusName, string? buildingName, string? floorNumber)
+        public async Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? building, string? floor)
         {
             var rooms = _roomRepository.GetAll()
-                .Where(r => string.IsNullOrEmpty(campusName) || r.Details.Building.CampusName.Equals(campusName))
-                .Where(r => string.IsNullOrEmpty(buildingName) || r.Details.BuildingName.Equals(buildingName))
-                .Where(r => string.IsNullOrEmpty(floorNumber) || r.Details.FloorNumber == floorNumber);
+                .Where(r => string.IsNullOrEmpty(campus) || r.Details.Building.CampusName.Equals(campus))
+                .Where(r => string.IsNullOrEmpty(building) || r.Details.BuildingName.Equals(building))
+                .Where(r => string.IsNullOrEmpty(floor) || r.Details.FloorNumber == floor);
 
             return await _mapper.ProjectTo<RoomDto>(rooms).ToListAsync();
         }
 
-        public async Task<IEnumerable<RoomDto>> GetAvailableRooms(string campusName, string buildingName, string floorNumber,
-            DateTime fromDate, DateTime toDate)
+        public async Task<IEnumerable<RoomDto>> GetAvailableRooms(
+            string campus,
+            string building,
+            string floor,
+            DateTime fromDate,
+            DateTime toDate)
         {
-            if (campusName == null || buildingName == null)
+            if (campus == null || building == null)
                 throw new ArgumentNullException("The campus or the building name was null.");
 
             if (fromDate > toDate)
                 throw new ArgumentException("The start DateTime cannot be after the end DateTime.");
 
             var rooms = _roomRepository.GetAll()
-                .Where(r => r.Details.Building.CampusName == campusName &&
-                            r.Details.BuildingName == buildingName &&
-                            r.Details.FloorNumber == floorNumber &&
+                .Where(r => r.Details.Building.CampusName == campus &&
+                            r.Details.BuildingName == building &&
+                            r.Details.FloorNumber == floor &&
                             r.IsAvailable(fromDate, toDate));
 
             return await _mapper.ProjectTo<RoomDto>(rooms).ToListAsync();
         }
 
-        public async Task AddAsync(PostRoomModel model)
-        {
-            var room = _mapper.Map<Room>(model);
-            await _roomRepository.AddAsync(room);
-        }
-
         public async Task AddRangeAsync(IEnumerable<PostRoomModel> model)
         {
-            var rooms = _mapper.Map<IEnumerable<Room>>(model);
+            var rooms = _mapper.Map<IEnumerable<Room>>(model, opts => opts.Items["DetailsId"] = GetDetailsId(model));
             await _roomRepository.AddRangeAsync(rooms);
         }
 
         public async Task UpdateRangeAsync(IEnumerable<PostRoomModel> model)
         {
-            var rooms = _mapper.Map<IEnumerable<Room>>(model);
+            var rooms = _mapper.Map<IEnumerable<Room>>(model, opts => opts.Items["DetailsId"] = GetDetailsId(model));
             await _roomRepository.UpdateRangeAsync(rooms);
         }
 
         public async Task RemoveRangeAsync(IEnumerable<DeleteRoomModel> model)
         {
-            var rooms = _mapper.Map<IEnumerable<Room>>(model);
+            var rooms = _mapper.Map<IEnumerable<Room>>(model, opts => opts.Items["DetailsId"] = GetDetailsId(model));
 
             var dbRooms = new List<Room>(rooms.Count());
 
@@ -80,6 +83,30 @@ namespace WebAPI.Services
                 dbRooms.Add(await _roomRepository.FindAsync(room));
 
             await _roomRepository.RemoveRangeAsync(dbRooms);
+        }
+
+        private async Task<Dictionary<PostRoomModel, int>> GetDetailsId(IEnumerable<PostRoomModel> models)
+        {
+            var detailsId = new Dictionary<PostRoomModel, int>();
+
+            foreach (var m in models.ToList())
+            {
+                detailsId.Add(m, await _detailsRepository.GetIdAsync(m.CampusName, m.BuildingName, m.FloorNumber));
+            }
+
+            return detailsId;
+        }
+
+        private async Task<Dictionary<DeleteRoomModel, int>> GetDetailsId(IEnumerable<DeleteRoomModel> models)
+        {
+            var detailsId = new Dictionary<DeleteRoomModel, int>();
+
+            foreach (var m in models.ToList())
+            {
+                detailsId.Add(m, await _detailsRepository.GetIdAsync(m.CampusName, m.BuildingName, m.FloorNumber));
+            }
+
+            return detailsId;
         }
     }
 }

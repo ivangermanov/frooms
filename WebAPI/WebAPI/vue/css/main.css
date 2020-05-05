@@ -5,3 +5,11 @@ html {
 a {
     text-decoration: none;
 }
+
+.control {
+    width: fit-content;
+    border-radius: 4px;
+    border: 1.5px solid;
+    background-color: white;
+    border-color: #BBB;
+}
