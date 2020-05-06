@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Froom.Data.Models.Reservations;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Controllers
@@ -17,16 +19,25 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Route("{userId}")]
-        public IActionResult GetReservationsForUser(Guid userId)
+        public async Task<IActionResult> GetReservationsForUser(Guid userId)
         {
-            return Ok(_reservationService.GetReservationsForUser(userId));
+            var reservations = await _reservationService.GetReservationsForUser(userId);
+            return Ok(reservations);
         }
 
         [HttpGet]
         [Route("{roomId}")]
-        public IActionResult GetReservationsForRoom(int roomId)
+        public async Task<IActionResult> GetReservationsForRoom(int roomId)
         {
-            return Ok(_reservationService.GetReservationsForRoom(roomId));
+            var reservations = await _reservationService.GetReservationsForRoom(roomId);
+            return Ok(reservations);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostReservation(PostReservationModel model)
+        {
+            await _reservationService.AddReservationAsync(model);
+            return Ok();
         }
     }
 }

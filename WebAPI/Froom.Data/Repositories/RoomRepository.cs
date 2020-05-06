@@ -54,13 +54,15 @@ namespace Froom.Data.Repositories
         public IQueryable<Room> GetAll()
         {
             return _rooms
-                .Include(r => r.Details);
+                .Include(r => r.Details)
+                .Include(r => r.Reservations);
         }
 
         public async Task<Room> GetByIdAsync(int id)
         {
             // TODO: Maybe try filtering with FindAsync?
             return await _rooms
+                       .Include(r => r.Details)
                        .Include(u => u.Reservations)
                        .SingleOrDefaultAsync(r => r.Id == id) ??
                    throw new DoesNotExistException($"Room with ID: {id} does not exist.");

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row justify="center">
+    <v-row>
       <loader :loading="loading" />
 
       <v-dialog
@@ -28,18 +28,28 @@
             </template>
           </v-stepper-header>
 
-          <v-responsive height="500">
+          <v-responsive :height="$vuetify.breakpoint.xs ? 'auto' : '500'">
             <v-stepper-items>
               <v-stepper-content
                 :step="1"
               >
-                <room-filter :campuses="data.campuses" @update-reservation-details="updateReservationDetailsEvent" />
+                <room-filter
+                  :campuses="data.campuses"
+                  @update-reservation-details="updateReservationDetailsEvent"
+                />
               </v-stepper-content>
 
               <v-stepper-content
                 :step="2"
               >
-                <pick-room :rooms="data.rooms" @update-selected-room="updateSelectedRoom" />
+                <pick-room
+                  :rooms="data.rooms"
+                  :selected-room="reservationDetails.room"
+                  :floors="data.floors"
+                  :selected-floor.sync="reservationDetails.floor"
+                  @update-selected-room="updateSelectedRoom"
+                  @fetch-rooms="fetchRooms"
+                />
               </v-stepper-content>
 
               <v-stepper-content
@@ -77,14 +87,19 @@
 </template>
 
 <script>
+import moment from 'moment'
 import Loader from './Loader.vue'
-import RoomFilter from './RoomFilter.vue'
-import PickRoom from './PickRoom.vue'
-import ConfirmReservation from './ConfirmReservation.vue'
+import RoomFilter from './room-filter/RoomFilter.vue'
+import PickRoom from './pick-room/PickRoom.vue'
+import ConfirmReservation from './confirm-reservation/ConfirmReservation.vue'
 
 import { RepositoryFactory } from '@/api/repositoryFactory'
+
 const CampusRepository = RepositoryFactory.campus
 const RoomRepository = RepositoryFactory.room
+const UserRepository = RepositoryFactory.user
+const ReservationRepository = RepositoryFactory.reservation
+const FloorRepository = RepositoryFactory.floor
 
 export default {
 
@@ -94,15 +109,18 @@ export default {
     return {
       data: {
         campuses: [],
-        rooms: []
+        rooms: [],
+        floors: []
       },
       loading: true,
       dialog: false,
       currentStep: 1,
       steps: 3,
       reservationDetails: {
+        user: null,
         campus: null,
         building: null,
+        floor: null,
         room: null,
         startDate: null,
         endDate: null
@@ -116,6 +134,18 @@ export default {
       this.reservationDetails.building != null &&
       this.reservationDetails.startDate != null &&
       this.reservationDetails.endDate != null
+    },
+    duration () {
+      if (this.reservationDetailsAreReady) {
+        const totalSeconds = this.reservationDetails.endDate.diff(this.reservationDetails.startDate, 'seconds')
+        const momentDuration = moment.duration(totalSeconds, 'seconds')
+        const hours = momentDuration.hours()
+        const minutes = momentDuration.minutes()
+
+        return `${this.padTime(hours)}:${this.padTime(minutes)}`
+      }
+
+      return '00:00'
     }
   },
 
@@ -130,7 +160,7 @@ export default {
       if (this.currentStep < this.steps) {
         this.currentStep += 1
       } else {
-        // Post the reservation
+        this.postReservation()
         this.dialog = false
         this.$router.push({
           path: '/'
@@ -144,25 +174,50 @@ export default {
       }
     },
 
-    fetchCampuses () {
-      const fetch = async () => {
-        const { data } = await CampusRepository.getCampuses()
-        this.data.campuses = data
-      }
-
-      fetch()
+    async fetchCampuses () {
+      const { data } = await CampusRepository.getCampuses()
+      this.data.campuses = data
 
       this.loading = false
       this.dialog = true
     },
 
-    fetchRooms () {
-      const fetch = async () => {
-        const { data } = await RoomRepository.getRooms(this.reservationDetails.campus.name, this.reservationDetails.building.name)
+    async fetchRooms () {
+      if (this.data.floors.length > 0) {
+        const { data } = await RoomRepository.getAvailableRooms(
+          this.reservationDetails.campus.name,
+          this.reservationDetails.building.name,
+          this.reservationDetails.floor.number,
+          this.reservationDetails.startDate.toISOString(true),
+          this.reservationDetails.endDate.toISOString(true)
+        )
         this.data.rooms = data
+        this.reservationDetails.room = null
       }
+    },
 
-      fetch()
+    async fetchUser () {
+      const { data } = await UserRepository.getUser(this.$store.state.user.info.name)
+      this.reservationDetails.user = data
+    },
+
+    async fetchFloors () {
+      const { data } = await FloorRepository.getFloors(this.reservationDetails.building.name)
+      this.data.floors = data
+      this.reservationDetails.floor = null
+    },
+
+    async postReservation () {
+      await this.fetchUser()
+
+      await ReservationRepository.postReservation(
+        {
+          userId: this.reservationDetails.user.id,
+          roomId: this.reservationDetails.room.id,
+          startTime: this.reservationDetails.startDate.toISOString(true),
+          duration: this.duration
+        }
+      )
     },
 
     updateReservationDetailsEvent (value) {
@@ -172,12 +227,17 @@ export default {
       this.reservationDetails.endDate = value.endDate
 
       if (this.reservationDetailsAreReady) {
+        this.fetchFloors()
         this.fetchRooms()
       }
     },
 
     updateSelectedRoom (value) {
       this.reservationDetails.room = value
+    },
+
+    padTime (time) {
+      return time < 10 ? `0${time}` : `${time}`
     }
   }
 }

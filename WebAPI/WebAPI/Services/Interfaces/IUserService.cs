@@ -12,10 +12,17 @@ namespace WebAPI.Services.Interfaces
         /// Adds a user.
         /// </summary>
         public Task AddUserAsync(PostUserModel model);
+
         /// <summary>
         /// Gets a user based on specified number or name.
         /// If nothing is pecified returns all users.
         /// </summary>
         public Task<IEnumerable<UserDto>> GetUserAsync(Guid? id, string? name);
+
+        /// <summary>
+        /// Gets a user based on specified name if it doesn't exist create it.
+        /// If nothing is pecified returns all users.
+        /// </summary>
+        public Task<UserDto> GetUserByNameOrCreateAsync(string name);
     }
 }

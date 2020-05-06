@@ -41,9 +41,9 @@
               position="bottomright"
             />
             <l-draw
+              position="topright"
               :map-object="mapObject"
               :fetched-layers="roomLayers"
-              position="topright"
               @addLayer="postShape"
               @editLayers="putShapes"
               @deleteLayers="deleteShapes"

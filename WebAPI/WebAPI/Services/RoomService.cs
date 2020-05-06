@@ -52,13 +52,14 @@ namespace WebAPI.Services
             if (fromDate > toDate)
                 throw new ArgumentException("The start DateTime cannot be after the end DateTime.");
 
-            var rooms = _roomRepository.GetAll()
+            var rooms = await _roomRepository.GetAll()
                 .Where(r => r.Details.Building.CampusName == campus &&
                             r.Details.BuildingName == building &&
-                            r.Details.FloorNumber == floor &&
-                            r.IsAvailable(fromDate, toDate));
+                            r.Details.FloorNumber == floor).ToListAsync();
 
-            return await _mapper.ProjectTo<RoomDto>(rooms).ToListAsync();
+            rooms = rooms.Where(r => r.IsAvailable(fromDate, toDate)).ToList();
+
+            return _mapper.Map<IEnumerable<RoomDto>>(rooms);
         }
 
         public async Task AddRangeAsync(IEnumerable<PostRoomModel> model)
