@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Froom.Data.Dtos;
 using Froom.Data.Entities;
+using Froom.Data.Exceptions;
 using Froom.Data.Models.Users;
 using Froom.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,27 @@ namespace WebAPI.Services
                 .Where(e => string.IsNullOrEmpty(name) || e.Name.Equals(name));
 
             return await _mapper.ProjectTo<UserDto>(users).ToListAsync();
+        }
+
+        public async Task<UserDto> GetUserByNameOrCreateAsync(string name)
+        {
+            User user;
+            try
+            {
+                user = await _userRepository.GetByNameAsync(name);
+            }
+            catch(DoesNotExistException)
+            {
+                await AddUserAsync(new PostUserModel()
+                {
+                    Name = name,
+                    Role = UserRole.NORMAL
+                });
+
+                user = await _userRepository.GetByNameAsync(name);
+            }
+
+            return _mapper.Map<UserDto>(user);
         }
     }
 }

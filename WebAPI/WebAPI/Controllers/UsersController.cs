@@ -1,6 +1,7 @@
 using Froom.Data.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -23,9 +24,17 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddUser(PostUserModel model)
+        public async Task<IActionResult> AddUser(PostUserModel model)
         {
-            return Ok(_userService.AddUserAsync(model));
+            await _userService.AddUserAsync(model);
+            return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUser(string name)
+        {
+            var user = await _userService.GetUserByNameOrCreateAsync(name);
+            return Ok(user);
         }
 
         [HttpGet]

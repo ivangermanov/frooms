@@ -22,11 +22,12 @@ namespace Froom.Data.Entities
 
         public bool IsAvailable(DateTime fromDate, DateTime toDate)
         {
-            if (this.Reservations is null)
+            if (Reservations is null || Reservations.Count == 0)
                 return true;
 
-            return this.Reservations
-                .Where(r => r.StartTime.Add(r.Duration) <= fromDate && r.StartTime >= toDate)
+            return !Reservations
+                .Where(r => (DateTime.Compare(r.StartTime, fromDate) >= 0 && DateTime.Compare(r.StartTime, toDate) <= 0) ||
+                            (DateTime.Compare(r.StartTime.Add(r.Duration), fromDate) >= 0 && DateTime.Compare(r.StartTime.Add(r.Duration), toDate) <= 0))
                 .Any();
         }
     }

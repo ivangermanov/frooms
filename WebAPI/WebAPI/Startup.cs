@@ -129,6 +129,8 @@ namespace WebAPI
             services.AddTransient<IBuildingContentsRepository, BuildingContentsRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddTransient<IReservationService, ReservationService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers()
