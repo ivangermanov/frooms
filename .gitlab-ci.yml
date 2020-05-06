@@ -1,8 +1,8 @@
-cache:
-    untracked: true
-    key: "$CI_BUILD_REF_NAME"
-    paths:
-        - WebAPI/WebAPI/vue/node_modules/
+#cache:
+#    untracked: true
+#    key: "$CI_BUILD_REF_NAME"
+#    paths:
+#        - WebAPI/WebAPI/vue/node_modules/
 
 
 
