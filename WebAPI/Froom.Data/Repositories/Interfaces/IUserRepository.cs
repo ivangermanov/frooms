@@ -25,6 +25,12 @@ namespace Froom.Data.Repositories.Interfaces
         Task<User> GetByIdAsync(Guid Id);
 
         /// <summary>
+        /// Gets a user by name from the database context.
+        /// </summary>
+        /// <param name="name"> The name of the user.</param>
+        Task<User> GetByNameAsync(string name);
+
+        /// <summary>
         /// Updates information about a user.
         /// </summary>
         /// <param name="user"> The user to be updated.</param>

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Froom.Data.Repositories
 {
     /// <inheritdoc cref="IReservationRepository"/>
-    class ReservationRepository : IReservationRepository
+    public class ReservationRepository : IReservationRepository
     {
         private readonly FroomContext _context;
         private readonly DbSet<Reservation> _reservations;
