@@ -4,7 +4,7 @@ namespace Froom.Data.Models.Reservations
 {
     public class PostReservationModel
     {
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
 
         public int RoomId { get; set; }
 
