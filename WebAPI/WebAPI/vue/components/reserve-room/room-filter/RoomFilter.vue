@@ -13,7 +13,6 @@
 import FilterOption from './FilterOption.vue'
 
 export default {
-
   components: { FilterOption },
 
   props: {

@@ -30,11 +30,12 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetUser(string name)
+        [HttpPost]
+        [Route("findorcreate")]
+        public async Task<IActionResult> FindOrCreateUser(PostUserModel model)
         {
-            var user = await _userService.GetUserByNameOrCreateAsync(name);
-            return Ok(user);
+            var result = await _userService.FindOrCreateUserAsync(model);
+            return Ok(result);
         }
 
         [HttpGet]

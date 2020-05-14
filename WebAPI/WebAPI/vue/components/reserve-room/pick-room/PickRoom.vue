@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import BaseDropDownSelector from '@/components/reserve-room/room-filter/BaseDropDownSelector'
+import BaseDropDownSelector from '@/components/base/BaseDropdownSelector.vue'
 import FloorMap from '@/components/floor-map/FloorMap.vue'
 
 export default {
