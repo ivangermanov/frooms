@@ -17,5 +17,10 @@ namespace Froom.Data.Entities
         public DateTime StartTime { get; set; }
 
         public TimeSpan Duration { get; set; }
+
+        public bool IsExpired()
+        {
+            return (this.StartTime + this.Duration < DateTime.Now) ? true : false;
+        }
     }
 }
