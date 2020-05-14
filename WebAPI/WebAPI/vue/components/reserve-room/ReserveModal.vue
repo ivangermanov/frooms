@@ -88,10 +88,10 @@
 
 <script>
 import moment from 'moment'
-import Loader from './Loader.vue'
 import RoomFilter from './room-filter/RoomFilter.vue'
 import PickRoom from './pick-room/PickRoom.vue'
 import ConfirmReservation from './confirm-reservation/ConfirmReservation.vue'
+import Loader from '~/components/base/BaseLoader.vue'
 
 import { RepositoryFactory } from '@/api/repositoryFactory'
 
@@ -117,7 +117,6 @@ export default {
       currentStep: 1,
       steps: 3,
       reservationDetails: {
-        user: null,
         campus: null,
         building: null,
         floor: null,
@@ -129,12 +128,17 @@ export default {
   },
 
   computed: {
-    reservationDetailsAreReady () {
+    roomFilterOptionsAreReady () {
       return this.reservationDetails.campus != null &&
       this.reservationDetails.building != null &&
       this.reservationDetails.startDate != null &&
       this.reservationDetails.endDate != null
     },
+
+    reservationDetailsAreReady () {
+      return this.roomFilterOptionsAreReady && (this.reservationDetails.room != null || this.currentStep === 1)
+    },
+
     duration () {
       if (this.reservationDetailsAreReady) {
         const totalSeconds = this.reservationDetails.endDate.diff(this.reservationDetails.startDate, 'seconds')
@@ -183,7 +187,7 @@ export default {
     },
 
     async fetchRooms () {
-      if (this.data.floors.length > 0) {
+      if (this.roomFilterOptionsAreReady && this.reservationDetails.floor != null) {
         const { data } = await RoomRepository.getAvailableRooms(
           this.reservationDetails.campus.name,
           this.reservationDetails.building.name,
@@ -196,23 +200,25 @@ export default {
       }
     },
 
-    async fetchUser () {
-      const { data } = await UserRepository.getUser(this.$store.state.user.info.name)
-      this.reservationDetails.user = data
-    },
-
     async fetchFloors () {
       const { data } = await FloorRepository.getFloors(this.reservationDetails.building.name)
       this.data.floors = data
       this.reservationDetails.floor = null
+      await this.fetchRooms()
     },
 
     async postReservation () {
-      await this.fetchUser()
+      const currentUserId = this.$store.state.user.info.sub
+      const currentUserName = this.$store.state.user.info.name
+
+      await UserRepository.findOrCreateUser({
+        id: currentUserId,
+        name: currentUserName
+      })
 
       await ReservationRepository.postReservation(
         {
-          userId: this.reservationDetails.user.id,
+          userId: currentUserId,
           roomId: this.reservationDetails.room.id,
           startTime: this.reservationDetails.startDate.toISOString(true),
           duration: this.duration
@@ -226,9 +232,8 @@ export default {
       this.reservationDetails.startDate = value.startDate
       this.reservationDetails.endDate = value.endDate
 
-      if (this.reservationDetailsAreReady) {
+      if (this.roomFilterOptionsAreReady) {
         this.fetchFloors()
-        this.fetchRooms()
       }
     },
 

@@ -7,7 +7,7 @@ namespace Froom.Data.Entities
     {
         public User()
         {
-            Id = Guid.NewGuid();
+            Role = UserRole.NORMAL;
         }
 
         public Guid Id { get; set; }

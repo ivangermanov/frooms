@@ -38,16 +38,16 @@
           <span>Dark mode</span>
         </v-tooltip>
       </div>
-      <v-tooltip v-if="isAdmin" bottom>
+      <v-tooltip v-if="true" bottom>
         <template v-slot:activator="{ on }">
           <span class="d-flex" v-on="on">
-            <v-icon>mdi-view-dashboard</v-icon>
-            <v-btn to="/admin">
-              Admin
+            <v-icon>mdi-home</v-icon>
+            <v-btn to="/">
+              Home
             </v-btn>
           </span>
         </template>
-        <span>Admin</span>
+        <span>Home</span>
       </v-tooltip>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
@@ -65,70 +65,30 @@
     </v-app-bar>
     <v-content>
       <nuxt />
-      <portal-target name="modals" />
     </v-content>
   </v-app>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { IUser } from 'types'
-import { mapMutations } from 'vuex'
-// import { computed } from '@vue/composition-api'
-import { RepositoryFactory } from '@/api/repositoryFactory'
-const UserRepository = RepositoryFactory.user
 
-export default Vue.extend({
+export default {
   data () {
     return {
       drawer: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Floor map',
-          to: '/floor-map'
-        },
-        {
-          icon: 'mdi-briefcase-search',
-          title: 'Reserve a room',
-          to: '/reserve-room'
+          icon: 'mdi-view-dashboard',
+          title: 'Overview',
+          to: '/admin'
         }
       ],
       miniVariant: false,
-      title: 'Froom'
+      title: 'Froom Admin Dashboard'
     }
-  },
-  computed: {
-    isAdmin () {
-      if (this.$store.state.user.info.role === undefined) {
-        return false
-      }
-      return this.$store.state.user.info.role.includes('admin')
-    }
-  },
-  async created () {
-    const data = await this.getUserData()
-    console.log(data)
-    this.setUser(data)
-  },
-  methods: {
-    async getUserData () {
-      const { data: info }: {data: IUser} = await UserRepository.getUserInfo()
-      const { data: roles }: {data: Array<string>} = await UserRepository.getUserRoles()
-      info.role = roles
-      return info
-    },
-    ...mapMutations({
-      setUser: 'user/setUser'
-    })
   }
-})
+}
 </script>
+
 <style scoped>
   .switch {
     height: 25px;
