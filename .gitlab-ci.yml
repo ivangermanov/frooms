@@ -1,11 +1,3 @@
-#cache:
-#    untracked: true
-#    key: "$CI_BUILD_REF_NAME"
-#    paths:
-#        - WebAPI/WebAPI/vue/node_modules/
-
-
-
 stages:
  - build
  - migrate
@@ -47,17 +39,14 @@ build vue:
 migrate web-api:
  stage: migrate
  only: 
-      - master
-      - develop
+   - master
+   - develop
  tags:
    - shell-runner
- before_script:
-   - powershell -File C:\PowershellScripts\connectToFontys.ps1
  script:
    - cd ./WebAPI/WebAPI
    - dotnet tool restore
    - dotnet ef database update
-   - powershell -File C:\PowershellScripts\disconnectFromFontys.ps1
    
 deploy:
     stage: deploy
