@@ -13,6 +13,3 @@ export default {
   components: { ReserveModal }
 }
 </script>
-
-<style>
-</style>

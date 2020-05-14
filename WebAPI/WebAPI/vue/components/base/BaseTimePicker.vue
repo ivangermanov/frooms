@@ -20,7 +20,8 @@
       :value="time"
       format="24hr"
       full-width
-      @change="updateTime"
+      @click:hour="updateHour"
+      @click:minute="updateMinute"
     >
       <v-spacer />
       <v-btn text color="primary" @click="modal = false">
@@ -59,13 +60,39 @@ export default {
 
   data () {
     return {
-      modal: false
+      modal: false,
+      hour: null,
+      minute: null
+    }
+  },
+
+  computed: {
+    timeIsReady () {
+      return this.hour != null && this.minute != null
     }
   },
 
   methods: {
-    updateTime (value) {
-      this.$emit('update:time', value)
+    padNumber (number) {
+      return number < 10 ? `0${number}` : `${number}`
+    },
+
+    updateHour (value) {
+      this.hour = this.padNumber(value)
+      if (this.timeIsReady) {
+        this.updateTime()
+      }
+    },
+
+    updateMinute (value) {
+      this.minute = this.padNumber(value)
+      if (this.timeIsReady) {
+        this.updateTime()
+      }
+    },
+
+    updateTime () {
+      this.$emit('update:time', `${this.hour}:${this.minute}`)
     }
   }
 }

@@ -1,15 +1,11 @@
 import Repository from './repository'
-import { IUser } from '@/types/index'
+import { IUser, IPostUser } from '@/types/index'
 
 const resource = '/users'
 
 export default {
-  getUser (name: string) {
-    return Repository.get(`${resource}`, {
-      params: {
-        name
-      }
-    })
+  findOrCreateUser (payload: IPostUser) {
+    return Repository.post(`${resource}/findorcreate`, payload)
   },
   postUser (payload: IUser) {
     return Repository.post(`${resource}`, payload)
