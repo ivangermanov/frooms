@@ -17,7 +17,7 @@ namespace WebAPI.Services.Interfaces
         /// Gets a user based on specified number or name.
         /// If nothing is pecified returns all users.
         /// </summary>
-        public Task<IEnumerable<UserDto>> GetUserAsync(Guid? id, string? name);
+        public Task<IEnumerable<UserDto>> GetUserAsync(Guid? id, string? name=null);
 
         /// <summary>
         /// Check if a user exist.

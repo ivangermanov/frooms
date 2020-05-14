@@ -12,6 +12,8 @@ namespace Froom.Data.Dtos
 
         public TimeSpan Duration { get; set; }
 
+        public bool Expired { get; set; }
+
         /// <summary>
         /// Used only by IMapper. Initializes a new instance of ReservationDto.
         /// </summary>
