@@ -25,41 +25,33 @@ namespace WebAPI.Services
             _mapper = mapper;
         }
 
-        public async Task AddUserAsync(PostUserModel model)
+        public async Task<UserDto> AddUserAsync(PostUserModel model)
         {
             var user = _mapper.Map<User>(model);
 
             await _userRepository.AddAsync(user);
+
+            return _mapper.Map<UserDto>(user);
         }
 
-        public async Task<IEnumerable<UserDto>> GetUserAsync(Guid? id, string? name)
+        public async Task<UserDto> FindOrCreateUserAsync(PostUserModel model)
+        {
+            var user = (await GetUserAsync(model.Id)).FirstOrDefault();
+            if(user == null)
+            {
+                user = await AddUserAsync(model);
+            }
+
+            return user;
+        }
+
+        public async Task<IEnumerable<UserDto>> GetUserAsync(Guid? id, string? name = null)
         {
             var users = _userRepository.GetAll()
                 .Where(e => id == null || e.Id.Equals(id))
                 .Where(e => string.IsNullOrEmpty(name) || e.Name.Equals(name));
 
             return await _mapper.ProjectTo<UserDto>(users).ToListAsync();
-        }
-
-        public async Task<UserDto> GetUserByNameOrCreateAsync(string name)
-        {
-            User user;
-            try
-            {
-                user = await _userRepository.GetByNameAsync(name);
-            }
-            catch(DoesNotExistException)
-            {
-                await AddUserAsync(new PostUserModel()
-                {
-                    Name = name,
-                    Role = UserRole.NORMAL
-                });
-
-                user = await _userRepository.GetByNameAsync(name);
-            }
-
-            return _mapper.Map<UserDto>(user);
         }
     }
 }

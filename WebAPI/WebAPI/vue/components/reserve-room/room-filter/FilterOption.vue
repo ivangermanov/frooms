@@ -51,9 +51,9 @@
 
 <script>
 import moment from 'moment'
-import BaseDatePicker from './BaseDatePicker'
-import BaseDropDownSelector from './BaseDropDownSelector'
-import BaseTimePicker from './BaseTimePicker'
+import BaseTimePicker from '@/components/base/BaseTimePicker.vue'
+import BaseDatePicker from '@/components/base/BaseDatePicker.vue'
+import BaseDropDownSelector from '@/components/base/BaseDropdownSelector.vue'
 
 export default {
   components: { BaseDatePicker, BaseDropDownSelector, BaseTimePicker },
