@@ -21,7 +21,7 @@ namespace Froom.Data.Repositories
 
         public async Task<int> GetIdAsync(string campusName, string buildingName, string floorNumber)
         {
-            return (await _buildingContents
+            return (await _buildingContents.AsNoTracking()
                 .SingleAsync(b => b.CampusName == campusName
                     && b.BuildingName == buildingName
                     && b.FloorNumber == floorNumber)).Id;

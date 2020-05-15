@@ -44,10 +44,10 @@ namespace Froom.Data.Repositories.Interfaces
         public Task<Room> GetByIdAsync(int id);
 
         /// <summary>
-        /// Gets a room by primary key from the database context.
+        /// Gets the full database entitity.
         /// </summary>
-        /// <param name="room"> The room model.</param>
-        public Task<Room> FindAsync(Room room);
+        /// <param name="room"> The room.</param>
+        public Task<Room> GetEntityAsync(Room room);
 
         /// <summary>
         /// Updates information about a room.
