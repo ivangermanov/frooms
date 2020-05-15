@@ -62,26 +62,40 @@ namespace WebAPI.Services
             return _mapper.Map<IEnumerable<RoomDto>>(rooms);
         }
 
-        public async Task AddRangeAsync(IEnumerable<PostRoomModel> model)
+        public async Task AddRangeAsync(IEnumerable<PostRoomModel> models)
         {
-            var rooms = _mapper.Map<IEnumerable<Room>>(model, opts => opts.Items["DetailsId"] = GetDetailsId(model));
+            var rooms = _mapper.Map<IEnumerable<Room>>(models, opts => opts.Items["DetailsId"] = GetDetailsId(models));
             await _roomRepository.AddRangeAsync(rooms);
         }
 
-        public async Task UpdateRangeAsync(IEnumerable<PostRoomModel> model)
+        public async Task UpdateRangeAsync(IEnumerable<PostRoomModel> models)
         {
-            var rooms = _mapper.Map<IEnumerable<Room>>(model, opts => opts.Items["DetailsId"] = GetDetailsId(model));
-            await _roomRepository.UpdateRangeAsync(rooms);
-        }
+            var rooms = _mapper.Map<IEnumerable<Room>>(models, opts => opts.Items["DetailsId"] = GetDetailsId(models));
 
-        public async Task RemoveRangeAsync(IEnumerable<DeleteRoomModel> model)
-        {
-            var rooms = _mapper.Map<IEnumerable<Room>>(model, opts => opts.Items["DetailsId"] = GetDetailsId(model));
-
-            var dbRooms = new List<Room>(rooms.Count());
+            var dbRooms = new List<Room>();
 
             foreach (var room in rooms)
-                dbRooms.Add(await _roomRepository.FindAsync(room));
+                dbRooms.Add(await _roomRepository.GetEntityAsync(room));
+
+            foreach(var room in dbRooms)
+            {
+                var model = rooms.Where(x => x.Number == room.Number && x.DetailsId == room.DetailsId).Single();
+
+                room.Capacity = model.Capacity;
+                room.Points = model.Points;
+            }
+
+            await _roomRepository.UpdateRangeAsync(dbRooms);
+        }
+
+        public async Task RemoveRangeAsync(IEnumerable<DeleteRoomModel> models)
+        {
+            var rooms = _mapper.Map<IEnumerable<Room>>(models, opts => opts.Items["DetailsId"] = GetDetailsId(models));
+
+            var dbRooms = new List<Room>();
+
+            foreach (var room in rooms)
+                dbRooms.Add(await _roomRepository.GetEntityAsync(room));
 
             await _roomRepository.RemoveRangeAsync(dbRooms);
         }
