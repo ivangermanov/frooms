@@ -46,7 +46,7 @@ namespace Froom.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Room> FindAsync(Room room)
+        public async Task<Room> GetEntityAsync(Room room)
         {
             return await _rooms.FindAsync(room.Number, room.DetailsId);
         }
@@ -54,6 +54,7 @@ namespace Froom.Data.Repositories
         public IQueryable<Room> GetAll()
         {
             return _rooms
+                .AsNoTracking()
                 .Include(r => r.Details)
                 .Include(r => r.Reservations);
         }
@@ -62,10 +63,11 @@ namespace Froom.Data.Repositories
         {
             // TODO: Maybe try filtering with FindAsync?
             return await _rooms
-                       .Include(r => r.Details)
-                       .Include(u => u.Reservations)
-                       .SingleOrDefaultAsync(r => r.Id == id) ??
-                   throw new DoesNotExistException($"Room with ID: {id} does not exist.");
+                .AsNoTracking()
+                .Include(r => r.Details)
+                .Include(u => u.Reservations)
+                .SingleOrDefaultAsync(r => r.Id == id) ??
+            throw new DoesNotExistException($"Room with ID: {id} does not exist.");
         }
 
         public async Task UpdateAsync(Room room)

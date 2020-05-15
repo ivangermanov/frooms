@@ -1,10 +1,8 @@
 using Froom.Data.Models.Users;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using WebAPI.Helpers;
 using WebAPI.Services.Interfaces;
 
