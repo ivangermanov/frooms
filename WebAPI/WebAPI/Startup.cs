@@ -139,6 +139,8 @@ namespace WebAPI
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddTransient<IReservationService, ReservationService>();
 
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
