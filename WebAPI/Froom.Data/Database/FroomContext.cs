@@ -159,6 +159,15 @@ namespace Froom.Data.Database
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
+            modelBuilder.Entity<Notification>(options =>
+            {
+                options.HasKey(n => n.Id);
+                options.Property(n => n.Id)
+                    .ValueGeneratedOnAdd();
+                options.Property(n => n.CreatedDate)
+                    .HasDefaultValueSql("getdate()");
+            });
+
             // Seed sample data
             modelBuilder.Seed();
         }

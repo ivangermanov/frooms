@@ -348,6 +348,22 @@ namespace Froom.Data.Database
             }
         }
 
+        public static Notification[] Notifications
+        {
+            get
+            {
+                return new[]
+                {
+                    new Notification
+                    {
+                        Id = 1,
+                        UserId = userId,
+                        Message = "SeededNotification"
+                    }
+                };
+            }
+        }
+
         // Sample data for the seeding
         public static void Seed(this ModelBuilder modelBuilder)
         {
@@ -358,6 +374,8 @@ namespace Froom.Data.Database
             modelBuilder.Entity<BuildingContents>().HasData(BuildingFloorRooms_Relationship);
             modelBuilder.Entity<Room>().HasData(Rooms);
             modelBuilder.Entity<Reservation>().HasData(Reservations);
+            modelBuilder.Entity<Notification>().HasData(Notifications);
         }
+
     }
 }
