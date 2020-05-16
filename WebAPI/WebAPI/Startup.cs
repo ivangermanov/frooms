@@ -44,8 +44,6 @@ namespace WebAPI
                 options.UseSqlServer(
                     Configuration["ConnectionString:FontysDB"],
                     x => x.MigrationsAssembly("Froom.Data"));
-
-                options.EnableSensitiveDataLogging();
             });
 
             services.AddCors(options =>
