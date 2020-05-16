@@ -29,6 +29,7 @@ namespace Froom.Data.MapperProfiles
             CreateMap<Campus, CampusDto>();
             CreateMap<Building, BuildingDto>();
             CreateMap<Floor, FloorDto>();
+            CreateMap<Notification, NotificationDto>();
         }
     }
 }
