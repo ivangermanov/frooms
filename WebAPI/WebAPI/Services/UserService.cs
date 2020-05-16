@@ -56,6 +56,13 @@ namespace WebAPI.Services
             return user;
         }
 
+        public async Task<IEnumerable<NotificationDto>> GetNotifications(Guid userId)
+        {
+            var notifications = _notificationRepository.GetForUser(userId);
+
+            return await _mapper.ProjectTo<NotificationDto>(notifications).ToListAsync();
+        }
+
         public async Task<IEnumerable<UserDto>> GetUserAsync(Guid? id, string? name = null)
         {
             var users = _userRepository.GetAll()
