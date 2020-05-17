@@ -13,6 +13,7 @@
           <v-text-field
             v-model="date"
             label="Date"
+
             :dark="false"
             :light="true"
             :dense="true"
@@ -22,7 +23,7 @@
             v-on="on"
           />
         </template>
-        <v-date-picker v-model="date" no-title scrollable>
+        <v-date-picker v-model="date" :min="minDate" :max="maxDate" no-title scrollable>
           <v-spacer />
           <v-btn text color="primary" @click="menu = false">
             Cancel
@@ -38,6 +39,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import moment from 'moment'
 export default Vue.extend({
   data () {
     return {
@@ -45,10 +47,19 @@ export default Vue.extend({
       menu: false
     }
   },
-  methods: {
-    updateBuildingName (value: string) {
-      this.$emit('update:buildingName', value)
+  computed: {
+    minDate () {
+      return moment().format('YYYY-MM-DD')
+    },
+    maxDate () {
+      // TODO: calculate based on semester
+      return moment().add(3, 'M').format('YYYY-MM-DD')
     }
+  },
+  methods: {
+    // updateBuildingName (value: string) {
+    //   this.$emit('update:buildingName', value)
+    // }
   }
 })
 </script>
