@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using WebAPI.Helpers;
 using WebAPI.Services.Interfaces;
+using System;
 
 namespace WebAPI.Controllers
 {
@@ -50,6 +51,14 @@ namespace WebAPI.Controllers
         {
             var roles = User.Claims.Where(e => e.Type == ClaimTypes.Role).Select(role => role.Value).ToList();
             return Ok(roles);
+        }
+
+        [Route("me/notifications")]
+        [HttpGet]
+        public IActionResult GetUserNotifications(Guid userId)
+        {
+            var notifications = _userService.GetNotifications(userId);
+            return Ok(notifications);
         }
     }
 }
