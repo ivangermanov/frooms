@@ -118,19 +118,28 @@ namespace WebAPI
             services.AddHttpContextAccessor();
 
             services.AddTransient<FontysAPI>();
+
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddTransient<IRoomService, RoomService>();
+
             services.AddScoped<ICampusRepository, CampusRepository>();
             services.AddTransient<ICampusService, CampusService>();
+
             services.AddScoped<IBuildingRepository, BuildingRepository>();
             services.AddTransient<IBuildingService, BuildingService>();
-            services.AddTransient<IFloorRepository, FloorRepository>();
+
+            services.AddScoped<IFloorRepository, FloorRepository>();
             services.AddTransient<IFloorService, FloorService>();
-            services.AddTransient<IBuildingContentsRepository, BuildingContentsRepository>();
+
+            services.AddScoped<IBuildingContentsRepository, BuildingContentsRepository>();
+
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
+
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddTransient<IReservationService, ReservationService>();
+
+            services.AddScoped<INotificationRepository, NotificationRepository>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers()
