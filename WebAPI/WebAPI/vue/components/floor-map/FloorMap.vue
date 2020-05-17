@@ -32,8 +32,8 @@
                 :buildings="buildings.map(building => building.name)"
               />
               <l-date-control />
-              <l-time-control :label="`Start time`" />
-              <l-time-control :label="`End time`" />
+              <l-time-control :label="`Start time`" icon="mdi-clock-time-four" />
+              <l-time-control :label="`End time`" icon="mdi-clock-time-nine" />
               <l-floors-control
                 :map-object="mapObject"
                 :campus-names="campusNames"
