@@ -18,7 +18,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapMutations } from 'vuex'
-import { Map, geoJSON, GeoJSON, Polyline } from 'leaflet'
+import { Map, geoJSON, GeoJSON } from 'leaflet'
 import { IUser } from 'types'
 import LDrawControl from './LDrawControl.vue'
 import 'leaflet-draw'
@@ -88,15 +88,7 @@ export default Vue.extend({
         allLayers.addData(layer)
       })
     },
-    addLayer (layer: Polyline) {
-      const randNumber = Math.random()
-        .toString(36)
-        .substring(7)
-
-      const geoJSON = layer.toGeoJSON()
-      // TODO: Remove random number
-      geoJSON.properties.number = randNumber
-
+    addLayer (geoJSON: GeoJSON.Feature<any>) {
       this.allLayers.addData(geoJSON)
       this.$emit('addLayer', geoJSON)
     },

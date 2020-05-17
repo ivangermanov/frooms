@@ -80,7 +80,7 @@ export default Vue.extend({
 
       map.on(Draw.Event.CREATED, (e) => {
         const layer: Polyline = e.layer
-        const content = 'Bla'
+        const content = 'Enter room number'
         layer.bindPopup(content, {
           editable: true,
           autoClose: false,
@@ -89,8 +89,13 @@ export default Vue.extend({
           closeOnClick: false
         } as any)
         this.tempLayers.addLayer(layer)
+        layer.getPopup()!.on('save', (e: any) => {
+          const geoJSON = layer.toGeoJSON()
+          geoJSON.properties.number = e.value
+          this.$emit('addLayer', geoJSON)
+          this.tempLayers.removeLayer(layer)
+        })
         layer.openPopup()
-        // this.$emit('addLayer', layer)
       })
       map.on(Draw.Event.EDITSTART, () => {
         this.$emit('editStart')
