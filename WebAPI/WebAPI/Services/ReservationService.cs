@@ -16,11 +16,16 @@ namespace WebAPI.Services
     public class ReservationService : IReservationService
     {
         private readonly IReservationRepository _reservationRepository;
+        private readonly INotificationRepository _notificationRepository;
         private readonly IMapper _mapper;
 
-        public ReservationService(IReservationRepository reservationRepository, IMapper mapper)
+        public ReservationService(
+            IReservationRepository reservationRepository,
+            INotificationRepository notificationRepository,
+            IMapper mapper)
         {
             _reservationRepository = reservationRepository;
+            _notificationRepository = notificationRepository;
             _mapper = mapper;
         }
 
@@ -30,8 +35,19 @@ namespace WebAPI.Services
                 throw new ArgumentException($"{nameof(PostReservationModel)} is null.");
 
             var reservation = _mapper.Map<Reservation>(model);
-
+     
             await _reservationRepository.AddAsync(reservation);
+
+            var notification = new Notification()
+            {
+                UserId = reservation.UserId,
+                Message = $"Reservation created for room {reservation.Room.Number} " +
+                    $"in building {reservation.Room.Details.BuildingName}, " +
+                    $"{reservation.Room.Details.CampusName} " +
+                    $"for {reservation.StartTime:0:MM/dd/yy H:mm}"
+            };
+
+            await _notificationRepository.AddAsync(notification);
         }
 
         public async Task<IEnumerable<ReservationDto>> GetReservationsForRoom(int roomId)

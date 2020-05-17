@@ -24,5 +24,10 @@ namespace WebAPI.Services.Interfaces
         /// If the user does not exist, create it.
         /// </summary>
         public Task<UserDto> FindOrCreateUserAsync(PostUserModel model);
+
+        /// <summary>
+        /// Gets all notifications for a user.
+        /// </summary>
+        public Task<IEnumerable<NotificationDto>> GetNotifications(Guid userId);
     }
 }
