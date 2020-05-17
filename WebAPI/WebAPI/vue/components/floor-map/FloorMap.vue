@@ -3,7 +3,7 @@
     <l-map
       ref="map"
       :options="mapOptions"
-      style="height: 100%; z-index: 0;"
+      style="height: 100vh; z-index: 0;"
     >
       <l-control-zoom position="topright" />
 
@@ -21,7 +21,7 @@
             deleteShapes
           }"
         >
-          <div v-if="mapObject">
+          <fragment v-if="mapObject">
             <l-campus-control
               :campus-name.sync="campusName"
               :campuses="campusNames"
@@ -39,16 +39,19 @@
               :floors="floors"
               :floor-number.sync="floorNumber"
               position="bottomright"
+              @fetchedFloors="(value) => floorImagesReady = value"
             />
-            <l-draw
-              position="topright"
-              :map-object="mapObject"
-              :fetched-layers="roomLayers"
-              @addLayer="postShape"
-              @editLayers="putShapes"
-              @deleteLayers="deleteShapes"
-            />
-          </div>
+            <fragment v-if="floorImagesReady">
+              <l-draw
+                position="topright"
+                :map-object="mapObject"
+                :fetched-layers="roomLayers"
+                @addLayer="postShape"
+                @editLayers="putShapes"
+                @deleteLayers="deleteShapes"
+              />
+            </fragment>
+          </fragment>
         </template>
       </with-room-data>
     </l-map>
@@ -92,7 +95,8 @@ export default Vue.extend({
       },
       campusName: null,
       buildingName: null,
-      floorNumber: null
+      floorNumber: null,
+      floorImagesReady: false
     }
   },
   computed: {

@@ -52,38 +52,45 @@ export default Vue.extend({
     isAdmin (): Boolean {
       const info: IUser = this.$store.state.user.info
       if (!info.role) { return true }
-      console.log(info.role.some(role => role === 'admin'))
       return info.role.some(role => role === 'admin')
     }
   },
   watch: {
     fetchedLayers (layers: { [key: string]: GeoJSON.Feature }) {
-      const allLayers = this.allLayers
-      allLayers.clearLayers()
-
-      allLayers.eachLayer((layer: any) => {
-        const geoJSON: GeoJSON.Feature = (layer as any).toGeoJSON()
-        const number = geoJSON.properties?.number
-
-        if (number && layers[number]) {
-          allLayers.removeLayer(layer)
-          Object.assign(geoJSON, layers[number])
-          allLayers.addData(geoJSON)
-          delete layers[number]
-        }
-      })
-
-      const values = Object.values(layers)
-      values.forEach((layer) => {
-        allLayers.addData(layer)
-      })
+      this.drawLayers(layers)
     }
   },
   beforeMount () {
     const map = this.mapObject
     map.addLayer(this.allLayers)
   },
+  beforeDestroy () {
+    this.allLayers.clearLayers()
+  },
   methods: {
+    drawLayers (layers: { [key: string]: GeoJSON.Feature}) {
+      setTimeout(() => {
+        const allLayers = this.allLayers
+        allLayers.clearLayers()
+
+        allLayers.eachLayer((layer: any) => {
+          const geoJSON: GeoJSON.Feature = (layer as any).toGeoJSON()
+          const number = geoJSON.properties?.number
+
+          if (number && layers[number]) {
+            allLayers.removeLayer(layer)
+            Object.assign(geoJSON, layers[number])
+            allLayers.addData(geoJSON)
+            delete layers[number]
+          }
+        })
+
+        const values = Object.values(layers)
+        values.forEach((layer) => {
+          allLayers.addData(layer)
+        })
+      }, 2000)
+    },
     addLayer (layer: Polyline) {
       const randNumber = Math.random()
         .toString(36)
