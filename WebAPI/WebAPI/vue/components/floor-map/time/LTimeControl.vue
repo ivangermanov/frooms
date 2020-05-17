@@ -16,7 +16,7 @@
             :dark="false"
             :light="true"
             :dense="true"
-            prepend-icon="mdi-clock"
+            :prepend-icon="icon"
             readonly
             hide-details="auto"
             v-on="on"
@@ -32,7 +32,8 @@
 import Vue from 'vue'
 export default Vue.extend({
   props: {
-    label: { type: String, default: 'Time' }
+    label: { type: String, default: 'Time' },
+    icon: { type: String, default: 'mdi-clock' }
   },
   data () {
     return {
