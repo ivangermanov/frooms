@@ -80,9 +80,9 @@ export default Vue.extend({
       const image = new Image()
       const promise = new Promise((resolve) => {
         image.onload = () => {
-          const topLeft = map.layerPointToLatLng([0, 0])
-          const bottomRight = map.layerPointToLatLng([image.naturalWidth, image.naturalHeight])
-          const bounds = latLngBounds(topLeft, bottomRight)
+          const southWest = map.unproject([image.naturalWidth, 0], 2)
+          const northEast = map.unproject([0, image.naturalHeight], 2)
+          const bounds = latLngBounds(southWest, northEast)
 
           const options = {
             alt: floor.number,
