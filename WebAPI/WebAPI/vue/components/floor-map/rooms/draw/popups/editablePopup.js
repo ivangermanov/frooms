@@ -158,6 +158,7 @@ L.Popup.include({
     const inputField = this._inputField
     if (inputField.innerHTML.length > 0) {
       this.setContent(inputField.innerHTML)
+      this.fire('save', { value: inputField.innerHTML })
     } else {
       alert('Enter something')
     };
