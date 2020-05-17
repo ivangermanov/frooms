@@ -63,7 +63,7 @@ import Vue from 'vue'
 import { CRS, Map } from 'leaflet'
 import { LMap, LControlZoom } from 'vue2-leaflet'
 
-import { toRefs } from '@vue/composition-api'
+import { toRefs, watch } from '@vue/composition-api'
 import LDraw from './rooms/draw/LDraw.vue'
 import LFloorsControl from './rooms/floors/LFloorsControl.vue'
 import LCampusControl from './campuses/LCampusControl.vue'
@@ -92,8 +92,6 @@ export default Vue.extend({
         maxZoom: 4,
         zoomControl: false
       },
-      campusName: null,
-      buildingName: null,
       floorNumber: null,
       floorImagesReady: false
     }
@@ -106,20 +104,16 @@ export default Vue.extend({
   },
   setup () {
     const campusData = useCampusData()
-    campusData.getCampusNames()
-
     const buildingData = useBuildingData()
-    buildingData.getBuildings()
+
+    watch(
+      [campusData.campusName],
+      ([campusName]) => {
+        buildingData.getBuildings(campusName)
+      }
+    )
 
     return { ...toRefs(campusData), ...toRefs(buildingData) }
-  },
-  watch: {
-    campusNames (value) {
-      if (this.campusName === null) { this.campusName = value[0] }
-    },
-    buildings (value) {
-      if (this.buildingName === null) { this.buildingName = value[0].name }
-    }
   },
   mounted () {
     this.$nextTick(() => {
