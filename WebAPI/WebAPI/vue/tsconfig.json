@@ -28,7 +28,8 @@
         "@nuxt/types",
         "@nuxt/vue-app",
         "@nuxtjs/vuetify",
-        "@nuxtjs/axios"
+        "@nuxtjs/axios",
+        "nuxt-leaflet"
       ]
     },
     "exclude": [
