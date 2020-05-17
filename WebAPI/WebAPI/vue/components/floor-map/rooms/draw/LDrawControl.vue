@@ -25,10 +25,18 @@ export default Vue.extend({
       required: true
     }
   },
+  data () {
+    return {
+      drawControl: {} as Control.Draw
+    }
+  },
   beforeMount () {
     this.$nextTick(() => {
       this.attachToolbar()
     })
+  },
+  beforeDestroy () {
+    this.mapObject.removeControl(this.drawControl)
   },
   methods: {
     attachToolbar () {
@@ -61,6 +69,7 @@ export default Vue.extend({
       const drawControl = new Control.Draw(options)
       const map = this.mapObject
       map.addControl(drawControl)
+      this.drawControl = drawControl
 
       map.on(Draw.Event.CREATED, (e) => {
         const layer: Polyline = e.layer
