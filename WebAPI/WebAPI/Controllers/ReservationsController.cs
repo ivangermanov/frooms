@@ -1,6 +1,9 @@
 ﻿using Froom.Data.Models.Reservations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WebAPI.Services.Interfaces;
 
@@ -11,10 +14,27 @@ namespace WebAPI.Controllers
     public class ReservationsController : ControllerBase
     {
         IReservationService _reservationService;
+        IUserService _userService;
 
-        public ReservationsController(IReservationService reservationService)
+        public ReservationsController(IReservationService reservationService, IUserService userService)
         {
             _reservationService = reservationService;
+            _userService = userService;
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("getCurrentUserReservations")]
+        public async Task<IActionResult> GetAllReservationsPerCurrentUser()
+        {
+            var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var exists = await _userService.GetUserAsync(userId);
+            if (exists.Any() == false)
+            {
+                return Ok(null);
+            }
+            var reservations = await _reservationService.GetReservationsForUser(userId);
+            return Ok(reservations);
         }
 
         [HttpGet]
