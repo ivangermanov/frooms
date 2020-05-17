@@ -1,34 +1,26 @@
 <template>
-  <l-control :position="position">
-    <div class="control">
-      <v-container>
-        <v-autocomplete
-          :value="buildingName"
-          :items="buildings"
-          :dark="false"
-          :light="true"
-          :dense="true"
-          label="Building"
-          @change="updateBuildingName"
-        />
-      </v-container>
-    </div>
-  </l-control>
+  <div class="control">
+    <v-container>
+      <v-autocomplete
+        prepend-icon="mdi-domain"
+        :value="buildingName"
+        :items="buildings"
+        :dark="false"
+        :light="true"
+        :dense="true"
+        label="Building"
+        hide-details="auto"
+        @change="updateBuildingName"
+      />
+    </v-container>
+  </div>
 </template>
 
 <script lang="ts">
-import { LControl } from 'vue2-leaflet'
 
 import Vue from 'vue'
 export default Vue.extend({
-  components: {
-    LControl
-  },
   props: {
-    position: {
-      type: String,
-      required: true
-    },
     buildings: {
       type: Array,
       default: [] as String[]

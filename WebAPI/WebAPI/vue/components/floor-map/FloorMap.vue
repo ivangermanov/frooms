@@ -22,25 +22,28 @@
           }"
         >
           <fragment v-if="mapObject">
-            <l-campus-control
-              :campus-name.sync="campusName"
-              :campuses="campusNames"
-              position="topleft"
-            />
-            <l-building-control
-              :building-name.sync="buildingName"
-              :buildings="buildings.map(building => building.name)"
-              position="topleft"
-            />
-            <l-floors-control
-              :map-object="mapObject"
-              :campus-names="campusNames"
-              :buildings="buildings"
-              :floors="floors"
-              :floor-number.sync="floorNumber"
-              position="bottomright"
-              @fetchedFloors="(value) => floorImagesReady = value"
-            />
+            <l-control position="topleft" class="topleft-control-panel">
+              <l-campus-control
+                :campus-name.sync="campusName"
+                :campuses="campusNames"
+                position="topleft"
+              />
+              <l-building-control
+                :building-name.sync="buildingName"
+                :buildings="buildings.map(building => building.name)"
+                position="topleft"
+              />
+              <l-date-control position="topleft" />
+              <l-floors-control
+                :map-object="mapObject"
+                :campus-names="campusNames"
+                :buildings="buildings"
+                :floors="floors"
+                :floor-number.sync="floorNumber"
+                position="bottomright"
+                @fetchedFloors="(value) => floorImagesReady = value"
+              />
+            </l-control>
             <fragment v-if="floorImagesReady">
               <l-draw
                 position="topright"
@@ -61,13 +64,14 @@
 import Vue from 'vue'
 
 import { CRS, Map } from 'leaflet'
-import { LMap, LControlZoom } from 'vue2-leaflet'
+import { LMap, LControlZoom, LControl } from 'vue2-leaflet'
 
 import { toRefs, watch } from '@vue/composition-api'
 import LDraw from './rooms/draw/LDraw.vue'
 import LFloorsControl from './rooms/floors/LFloorsControl.vue'
 import LCampusControl from './campuses/LCampusControl.vue'
 import LBuildingControl from './buildings/LBuildingControl.vue'
+import LDateControl from './dates/LDateControl.vue'
 import WithRoomData from './rooms/WithRoomData.vue'
 import useCampusData from '@/composition/use-campus-data'
 import useBuildingData from '@/composition/use-building-data'
@@ -78,7 +82,9 @@ export default Vue.extend({
     LDraw,
     LControlZoom,
     LCampusControl,
+    LControl,
     LBuildingControl,
+    LDateControl,
     LFloorsControl,
     WithRoomData
   },
@@ -122,3 +128,11 @@ export default Vue.extend({
   }
 })
 </script>
+<style>
+.topleft-control-panel {
+  display: grid;
+  grid-row-gap: 10px;
+  grid-template-rows: "1fr 1fr 1fr";
+  width: 165px;
+}
+</style>
