@@ -69,27 +69,25 @@ export default Vue.extend({
   },
   methods: {
     drawLayers (layers: { [key: string]: GeoJSON.Feature}) {
-      setTimeout(() => {
-        const allLayers = this.allLayers
-        allLayers.clearLayers()
+      const allLayers = this.allLayers
+      allLayers.clearLayers()
 
-        allLayers.eachLayer((layer: any) => {
-          const geoJSON: GeoJSON.Feature = (layer as any).toGeoJSON()
-          const number = geoJSON.properties?.number
+      allLayers.eachLayer((layer: any) => {
+        const geoJSON: GeoJSON.Feature = (layer as any).toGeoJSON()
+        const number = geoJSON.properties?.number
 
-          if (number && layers[number]) {
-            allLayers.removeLayer(layer)
-            Object.assign(geoJSON, layers[number])
-            allLayers.addData(geoJSON)
-            delete layers[number]
-          }
-        })
+        if (number && layers[number]) {
+          allLayers.removeLayer(layer)
+          Object.assign(geoJSON, layers[number])
+          allLayers.addData(geoJSON)
+          delete layers[number]
+        }
+      })
 
-        const values = Object.values(layers)
-        values.forEach((layer) => {
-          allLayers.addData(layer)
-        })
-      }, 2000)
+      const values = Object.values(layers)
+      values.forEach((layer) => {
+        allLayers.addData(layer)
+      })
     },
     addLayer (layer: Polyline) {
       const randNumber = Math.random()
