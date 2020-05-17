@@ -5,10 +5,13 @@ import {
   Control,
   Draw,
   Map,
-  Polyline
+  Polyline,
+  geoJSON,
+  Popup
 } from 'leaflet'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw-src.css'
+import './popups/editablePopup'
 
 export default Vue.extend({
   props: {
@@ -27,15 +30,19 @@ export default Vue.extend({
   },
   data () {
     return {
-      drawControl: {} as Control.Draw
+      drawControl: {} as Control.Draw,
+      tempLayers: geoJSON()
     }
   },
   beforeMount () {
     this.$nextTick(() => {
       this.attachToolbar()
     })
+
+    this.mapObject.addLayer(this.tempLayers)
   },
   beforeDestroy () {
+    this.mapObject.removeLayer(this.tempLayers)
     this.mapObject.removeControl(this.drawControl)
   },
   methods: {
@@ -50,12 +57,12 @@ export default Vue.extend({
             drawError: {
               color: '#e1e100'
             },
-            repeatMode: true
+            repeatMode: false
           },
           circle: false,
           rectangle: {
             showArea: false,
-            repeatMode: true
+            repeatMode: false
           },
           polyline: false,
           marker: false,
@@ -73,7 +80,17 @@ export default Vue.extend({
 
       map.on(Draw.Event.CREATED, (e) => {
         const layer: Polyline = e.layer
-        this.$emit('addLayer', layer)
+        const content = 'Bla'
+        layer.bindPopup(content, {
+          editable: true,
+          autoClose: false,
+          closeOnEscapeKey: false,
+          closeButton: false,
+          closeOnClick: false
+        } as any)
+        this.tempLayers.addLayer(layer)
+        layer.openPopup()
+        // this.$emit('addLayer', layer)
       })
       map.on(Draw.Event.EDITSTART, () => {
         this.$emit('editStart')

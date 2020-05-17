@@ -61,11 +61,10 @@ export default Vue.extend({
     }
   },
   beforeMount () {
-    const map = this.mapObject
-    map.addLayer(this.allLayers)
+    this.mapObject.addLayer(this.allLayers)
   },
   beforeDestroy () {
-    this.allLayers.clearLayers()
+    this.mapObject.removeLayer(this.allLayers)
   },
   methods: {
     drawLayers (layers: { [key: string]: GeoJSON.Feature}) {
