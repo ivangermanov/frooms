@@ -26,14 +26,14 @@
               <l-campus-control
                 :campus-name.sync="campusName"
                 :campuses="campusNames"
-                position="topleft"
               />
               <l-building-control
                 :building-name.sync="buildingName"
                 :buildings="buildings.map(building => building.name)"
-                position="topleft"
               />
-              <l-date-control position="topleft" />
+              <l-date-control />
+              <l-time-control :label="`Start time`" />
+              <l-time-control :label="`End time`" />
               <l-floors-control
                 :map-object="mapObject"
                 :campus-names="campusNames"
@@ -72,6 +72,7 @@ import LFloorsControl from './rooms/floors/LFloorsControl.vue'
 import LCampusControl from './campuses/LCampusControl.vue'
 import LBuildingControl from './buildings/LBuildingControl.vue'
 import LDateControl from './dates/LDateControl.vue'
+import LTimeControl from './time/LTimeControl.vue'
 import WithRoomData from './rooms/WithRoomData.vue'
 import useCampusData from '@/composition/use-campus-data'
 import useBuildingData from '@/composition/use-building-data'
@@ -85,6 +86,7 @@ export default Vue.extend({
     LControl,
     LBuildingControl,
     LDateControl,
+    LTimeControl,
     LFloorsControl,
     WithRoomData
   },
