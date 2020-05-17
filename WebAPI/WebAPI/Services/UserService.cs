@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Froom.Data.Dtos;
 using Froom.Data.Entities;
-using Froom.Data.Exceptions;
 using Froom.Data.Models.Users;
 using Froom.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -17,11 +16,15 @@ namespace WebAPI.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly INotificationRepository _notificationRepository;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository,
+            INotificationRepository notificationRepository,
+            IMapper mapper)
         {
             _userRepository = userRepository;
+            _notificationRepository = notificationRepository;
             _mapper = mapper;
         }
 
@@ -30,6 +33,14 @@ namespace WebAPI.Services
             var user = _mapper.Map<User>(model);
 
             await _userRepository.AddAsync(user);
+
+            var notification = new Notification()
+            {
+                UserId = user.Id,
+                Message = "Welcome to Frooms!"
+            };
+
+            await _notificationRepository.AddAsync(notification);
 
             return _mapper.Map<UserDto>(user);
         }
@@ -43,6 +54,13 @@ namespace WebAPI.Services
             }
 
             return user;
+        }
+
+        public async Task<IEnumerable<NotificationDto>> GetNotifications(Guid userId)
+        {
+            var notifications = _notificationRepository.GetForUser(userId);
+
+            return await _mapper.ProjectTo<NotificationDto>(notifications).ToListAsync();
         }
 
         public async Task<IEnumerable<UserDto>> GetUserAsync(Guid? id, string? name = null)
