@@ -61,8 +61,8 @@ namespace WebAPI
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             }).AddCookie(options =>
             {
-                options.LoginPath = "/login";
-                options.LogoutPath = "/logout";
+                options.LoginPath = "/api/login";
+                options.LogoutPath = "/api/logout";
             }).AddOpenIdConnect(options =>
             {
                 options.ClientId = AppSettings.ClientId;
