@@ -39,7 +39,7 @@ namespace Froom.UnitTest.Helpers
             {
                 Id = new Guid("05847a38-8ea2-4232-966e-512d4159c554"),
                 Name = "Yevheniia Buzykina",
-                Role = UserRole.NORMAL
+                Role = UserRole.USER
             };
 
             _createdNormalUser = database.Set<User>().Add(normalUser);
