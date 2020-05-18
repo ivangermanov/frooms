@@ -19,12 +19,21 @@ namespace Froom.Data.Database
                     {
                         Id = userId,
                         Name = "SeedUser",
+                        Email = "seeduser@gmail.com",
                         Role = UserRole.USER
                     },
                     new User
                     {
                         Id = new Guid("5c861938-98ba-41d2-9e24-da3610e34544"),
                         Name = "Ivan Germanov",
+                        Email = "i.germanov@student.fontys.nl",
+                        Role = UserRole.ADMIN
+                    },
+                    new User
+                    {
+                        Id = new Guid("05847a38-8ea2-4232-966e-512d4159c554"),
+                        Name = "Yevheniia Buzykina",
+                        Email = "y.buzykina@student.fontys.nl",
                         Role = UserRole.ADMIN
                     }
                 };
