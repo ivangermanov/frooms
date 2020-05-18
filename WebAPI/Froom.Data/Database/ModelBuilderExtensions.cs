@@ -19,7 +19,7 @@ namespace Froom.Data.Database
                     {
                         Id = userId,
                         Name = "SeedUser",
-                        Role = UserRole.NORMAL
+                        Role = UserRole.USER
                     },
                     new User
                     {

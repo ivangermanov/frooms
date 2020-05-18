@@ -9,6 +9,10 @@ namespace Froom.Data.Dtos
 
         public string Name { get; set; }
 
+        public string Email { get; set; }
+
+        public bool IsBlocked { get; set; }
+
         public UserRole Role { get; set; }
 
         /// <summary>
