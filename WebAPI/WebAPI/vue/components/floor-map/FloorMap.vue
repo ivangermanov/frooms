@@ -3,7 +3,7 @@
     <l-map
       ref="map"
       :options="mapOptions"
-      style="height: 100%; z-index: 0;"
+      style="height: 100vh; z-index: 0;"
     >
       <l-control-zoom position="topright" />
 
@@ -21,34 +21,40 @@
             deleteShapes
           }"
         >
-          <div v-if="mapObject">
-            <l-campus-control
-              :campus-name.sync="campusName"
-              :campuses="campusNames"
-              position="topleft"
-            />
-            <l-building-control
-              :building-name.sync="buildingName"
-              :buildings="buildings.map(building => building.name)"
-              position="topleft"
-            />
-            <l-floors-control
-              :map-object="mapObject"
-              :campus-names="campusNames"
-              :buildings="buildings"
-              :floors="floors"
-              :floor-number.sync="floorNumber"
-              position="bottomright"
-            />
-            <l-draw
-              position="topright"
-              :map-object="mapObject"
-              :fetched-layers="roomLayers"
-              @addLayer="postShape"
-              @editLayers="putShapes"
-              @deleteLayers="deleteShapes"
-            />
-          </div>
+          <fragment v-if="mapObject">
+            <l-control position="topleft" class="topleft-control-panel">
+              <l-campus-control
+                :campus-name.sync="campusName"
+                :campuses="campusNames"
+              />
+              <l-building-control
+                :building-name.sync="buildingName"
+                :buildings="buildings.map(building => building.name)"
+              />
+              <l-date-control />
+              <l-time-control :label="`Start time`" icon="mdi-clock-time-four" />
+              <l-time-control :label="`End time`" icon="mdi-clock-time-nine" />
+              <l-floors-control
+                :map-object="mapObject"
+                :campus-names="campusNames"
+                :buildings="buildings"
+                :floors="floors"
+                :floor-number.sync="floorNumber"
+                position="bottomright"
+                @fetchedFloors="(value) => floorImagesReady = value"
+              />
+            </l-control>
+            <fragment v-if="floorImagesReady">
+              <l-draw
+                position="topright"
+                :map-object="mapObject"
+                :fetched-layers="roomLayers"
+                @addLayer="postShape"
+                @editLayers="putShapes"
+                @deleteLayers="deleteShapes"
+              />
+            </fragment>
+          </fragment>
         </template>
       </with-room-data>
     </l-map>
@@ -58,13 +64,15 @@
 import Vue from 'vue'
 
 import { CRS, Map } from 'leaflet'
-import { LMap, LControlZoom } from 'vue2-leaflet'
+import { LMap, LControlZoom, LControl } from 'vue2-leaflet'
 
-import { toRefs } from '@vue/composition-api'
+import { toRefs, watch } from '@vue/composition-api'
 import LDraw from './rooms/draw/LDraw.vue'
 import LFloorsControl from './rooms/floors/LFloorsControl.vue'
 import LCampusControl from './campuses/LCampusControl.vue'
 import LBuildingControl from './buildings/LBuildingControl.vue'
+import LDateControl from './dates/LDateControl.vue'
+import LTimeControl from './time/LTimeControl.vue'
 import WithRoomData from './rooms/WithRoomData.vue'
 import useCampusData from '@/composition/use-campus-data'
 import useBuildingData from '@/composition/use-building-data'
@@ -75,7 +83,10 @@ export default Vue.extend({
     LDraw,
     LControlZoom,
     LCampusControl,
+    LControl,
     LBuildingControl,
+    LDateControl,
+    LTimeControl,
     LFloorsControl,
     WithRoomData
   },
@@ -85,14 +96,12 @@ export default Vue.extend({
       mapOptions: {
         crs: CRS.Simple,
         attributionControl: false,
-        zoom: 2,
-        minZoom: 2,
+        minZoom: 1,
         maxZoom: 4,
         zoomControl: false
       },
-      campusName: null,
-      buildingName: null,
-      floorNumber: null
+      floorNumber: null,
+      floorImagesReady: false
     }
   },
   computed: {
@@ -103,20 +112,16 @@ export default Vue.extend({
   },
   setup () {
     const campusData = useCampusData()
-    campusData.getCampusNames()
-
     const buildingData = useBuildingData()
-    buildingData.getBuildings()
+
+    watch(
+      [campusData.campusName],
+      ([campusName]) => {
+        buildingData.getBuildings(campusName)
+      }
+    )
 
     return { ...toRefs(campusData), ...toRefs(buildingData) }
-  },
-  watch: {
-    campusNames (value) {
-      if (this.campusName === null) { this.campusName = value[0] }
-    },
-    buildings (value) {
-      if (this.buildingName === null) { this.buildingName = value[0].name }
-    }
   },
   mounted () {
     this.$nextTick(() => {
@@ -125,3 +130,11 @@ export default Vue.extend({
   }
 })
 </script>
+<style>
+.topleft-control-panel {
+  display: grid;
+  grid-row-gap: 10px;
+  grid-template-rows: "1fr 1fr 1fr";
+  width: 165px;
+}
+</style>

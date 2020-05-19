@@ -1,10 +1,11 @@
-import { reactive, toRefs } from '@vue/composition-api'
+import { reactive, toRefs, watch } from '@vue/composition-api'
 
 import { RepositoryFactory } from '@/api/repositoryFactory'
 const CampusRepository = RepositoryFactory.campus
 
 export default function useRoomsData () {
   const data = reactive({
+    campusName: null as unknown as string,
     campusNames: [] as string[]
   })
 
@@ -14,5 +15,14 @@ export default function useRoomsData () {
     data.campusNames = names
   }
 
-  return { ...toRefs(data), getCampusNames }
+  watch(
+    () => [data.campusNames],
+    ([campusNames]) => {
+      if (!data.campusName && campusNames[0]) { data.campusName = campusNames[0] }
+    }
+  )
+
+  getCampusNames()
+
+  return toRefs(data)
 }
