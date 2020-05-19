@@ -35,8 +35,9 @@ namespace WebAPI.Services
                 throw new ArgumentException($"{nameof(PostReservationModel)} is null.");
 
             var reservation = _mapper.Map<Reservation>(model);
-     
             await _reservationRepository.AddAsync(reservation);
+
+            reservation = await _reservationRepository.GetByIdAsync(reservation.Id);
 
             var notification = new Notification()
             {

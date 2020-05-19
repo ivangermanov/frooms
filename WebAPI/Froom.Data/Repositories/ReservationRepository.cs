@@ -39,6 +39,7 @@ namespace Froom.Data.Repositories
             return _reservations
                 .Include(r => r.User)
                 .Include(r => r.Room)
+                    .ThenInclude(room => room.Details)
                 .SingleOrDefaultAsync(r => r.Id == id) ??
                 throw new DoesNotExistException($"Reservation with ID: {id} does not exist");
         }
