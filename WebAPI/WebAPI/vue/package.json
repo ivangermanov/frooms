@@ -16,10 +16,10 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.10.3",
     "@nuxtjs/dotenv": "^1.4.1",
-    "@nuxtjs/moment": "^1.6.0",
+    "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
     "@types/leaflet-draw": "^1.0.2",
-    "@types/toastr": "^2.1.37",
+    "@types/toastr": "^2.1.38",
     "@vue/composition-api": "^0.5.0",
     "leaflet": "^1.6.0",
     "leaflet-draw": "^1.0.4",
@@ -33,15 +33,15 @@
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.6.6",
-    "@nuxtjs/eslint-config-typescript": "^1.0.2",
+    "@nuxtjs/eslint-config-typescript": "^2.0.0",
     "@nuxtjs/vuetify": "^1.11.2",
     "@types/leaflet": "^1.5.12",
-    "@types/lodash": "^4.14.150",
-    "@vue/test-utils": "^1.0.0-beta.33",
-    "babel-jest": "^26.0.0",
-    "eslint": "^6.8.0",
+    "@types/lodash": "^4.14.151",
+    "@vue/test-utils": "^1.0.2",
+    "babel-jest": "^26.0.1",
+    "eslint": "^7.0.0",
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.10.0",
-    "jest": "^26.0.0",
+    "jest": "^26.0.1",
     "vue-jest": "^3.0.5"
   }
 }

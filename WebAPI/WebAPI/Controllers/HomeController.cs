@@ -11,7 +11,7 @@ namespace WebAPI.Controllers
     {
 
         [Route("logout")]
-        [HttpPost]
+        [HttpGet]
         public ActionResult Logout()
         {
             return SignOut(CookieAuthenticationDefaults.AuthenticationScheme,
