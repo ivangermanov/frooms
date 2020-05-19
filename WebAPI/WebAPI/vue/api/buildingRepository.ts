@@ -3,7 +3,11 @@ import Repository from './repository'
 const resource = '/buildings'
 
 export default {
-  getBuildings () {
-    return Repository.get(`${resource}`)
+  getBuildings (campusName?: string) {
+    return Repository.get(`${resource}`, {
+      params: {
+        campusName
+      }
+    })
   }
 }

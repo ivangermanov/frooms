@@ -19,13 +19,6 @@ export default Vue.extend({
       type: Array,
       required: false,
       default: () => [] as IFloor[]
-      // () => [
-      //   { url: 'https://i.ibb.co/f0nYv9G/bg.png', floor: 'BG', order: 0 },
-      //   { url: 'https://i.ibb.co/yP7k1X2/1e.png', floor: '1e', order: 1 },
-      //   { url: 'https://i.ibb.co/bQYTGBR/floor.png', floor: '2e', order: 2 },
-      //   { url: 'https://i.ibb.co/FnTZ7cR/3e.png', floor: '3e', order: 3 },
-      //   { url: 'https://i.ibb.co/0D4ryqr/4e.png', floor: '4e', order: 4 }
-      // ] as IFloor[]
     },
     position: {
       type: String,
@@ -43,9 +36,14 @@ export default Vue.extend({
     floors: {
       handler (value: Array<IFloor>) {
         if (this.control) { this.mapObject.removeControl(this.control as any) }
+        this.$emit('fetchedFloors', false)
         this.baseMaps = []
+        const promises: Promise<any>[] = []
         value.forEach((floor) => {
-          this.loadBasemap(floor)
+          promises.push(this.loadBasemap(floor))
+        })
+        Promise.all(promises).then(() => {
+          this.$emit('fetchedFloors', true)
         })
       },
       deep: true,
@@ -80,22 +78,27 @@ export default Vue.extend({
       const baseMaps = this.baseMaps
       const map = this.mapObject
       const image = new Image()
-      image.onload = () => {
-        const topLeft = map.layerPointToLatLng([0, 0])
-        const bottomRight = map.layerPointToLatLng([image.naturalWidth, image.naturalHeight])
-        const bounds = latLngBounds(topLeft, bottomRight)
+      const promise = new Promise((resolve) => {
+        image.onload = () => {
+          const southWest = map.unproject([image.naturalWidth, 0], 2)
+          const northEast = map.unproject([0, image.naturalHeight], 2)
+          const bounds = latLngBounds(southWest, northEast)
 
-        const options = {
-          alt: floor.number,
-          order: floor.order
+          const options = {
+            alt: floor.number,
+            order: floor.order
+          }
+
+          const basemap = imageOverlay(floor.url, bounds, options)
+          baseMaps.splice(sortedIndexBy(baseMaps, basemap, 'options.order'), 0, basemap)
+          this.reloadOverlays()
+          resolve(true)
         }
 
-        const basemap = imageOverlay(floor.url, bounds, options)
-        baseMaps.splice(sortedIndexBy(baseMaps, basemap, 'options.order'), 0, basemap)
-        this.reloadOverlays()
-      }
+        image.src = floor.url
+      })
 
-      image.src = floor.url
+      return promise
     }
   }
 })
