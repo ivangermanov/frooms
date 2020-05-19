@@ -47,6 +47,13 @@ namespace Froom.Data.Repositories
                throw new DoesNotExistException($"User with name: {name} does not exist.");
         }
 
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            return await _users
+             .SingleOrDefaultAsync(u => u.Email == email) ??
+             throw new DoesNotExistException($"User with email: {email} does not exist.");
+        }
+
         public async Task Update(User user)
         {
             _users.Update(user);

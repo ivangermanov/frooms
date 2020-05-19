@@ -483,12 +483,21 @@ namespace Froom.Data.Migrations
                         {
                             Id = new Guid("2e54132b-2059-4f11-b316-e97026657f24"),
                             Name = "SeedUser",
+                            Email = "seeduser@gmail.com",
                             Role = 0
                         },
                         new
                         {
                             Id = new Guid("5c861938-98ba-41d2-9e24-da3610e34544"),
                             Name = "Ivan Germanov",
+                            Email = "i.germanov@student.fontys.nl",
+                            Role = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("05847a38-8ea2-4232-966e-512d4159c554"),
+                            Name = "Yevheniia Buzykina",
+                            Email = "y.buzykina@student.fontys.nl",
                             Role = 1
                         });
                 });

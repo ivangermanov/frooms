@@ -31,6 +31,12 @@ namespace Froom.Data.Repositories.Interfaces
         Task<User> GetByNameAsync(string name);
 
         /// <summary>
+        /// Gets a user by email from the database context.
+        /// </summary>
+        /// <param name="email"> The email of the user.</param>
+        Task<User> GetByEmailAsync(string email);
+
+        /// <summary>
         /// Updates information about a user.
         /// </summary>
         /// <param name="user"> The user to be updated.</param>

@@ -7,13 +7,16 @@ namespace Froom.Data.Entities
     {
         public User()
         {
-            Role = UserRole.NORMAL;
+            Role = UserRole.USER;
         }
 
         public Guid Id { get; set; }
 
         public string Name { get; set; }
 
+        public string Email { get; set; }
+
+        public bool IsBlocked { get; set; }
         public UserRole Role { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; }
@@ -21,7 +24,7 @@ namespace Froom.Data.Entities
 
     public enum UserRole
     {
-        NORMAL = 0,
+        USER = 0,
         ADMIN = 1
     }
 }
