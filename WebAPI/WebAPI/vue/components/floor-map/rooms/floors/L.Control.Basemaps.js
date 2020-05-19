@@ -27,6 +27,7 @@ L.Control.Basemaps = L.Control.extend({
         basemapClass += ' active alt'
         map.fire('baselayerchange', d)
         map.setMaxBounds(d._bounds)
+        map.fitBounds(d._bounds)
       }
 
       if (d._url) {
@@ -78,11 +79,12 @@ L.Control.Basemaps = L.Control.extend({
               }
             }
             map.removeLayer(this.basemap)
-            map.setMaxBounds(d._bounds)
+            this.basemap = d
             map.addLayer(d)
             d.bringToBack()
             map.fire('baselayerchange', d)
-            this.basemap = d
+            map.setMaxBounds(d._bounds)
+            map.fitBounds(d._bounds)
 
             L.DomUtil.removeClass(container.getElementsByClassName('basemap active alt')[0], 'active')
             L.DomUtil.removeClass(container.getElementsByClassName('basemap alt')[0], 'alt')
