@@ -23,9 +23,8 @@ namespace WebAPI.Controllers.admin
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
-            //for admin name, email, roles, actions: (un)block, edit roles
             var result = await _userService.GetUserAsync();
-            return Ok(result);
+            return Ok(result.ToList());
         }
     }
 }

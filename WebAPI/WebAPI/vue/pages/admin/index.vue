@@ -5,37 +5,25 @@
         background-color="primary"
         dark
       >
-        <v-tab
-          :key="Users"
-        >
+        <v-tab>
           Users
         </v-tab>
-        <v-tab
-          :key="Reservations"
-        >
+        <v-tab>
           Reservations
         </v-tab>
-        <v-tab
-          :key="Statistics"
-        >
+        <v-tab>
           Statistics
         </v-tab>
       </v-tabs>
   
       <v-tabs-items v-model="tab">
-        <v-tab-item
-          :key="Users"
-        >
-          <user-overview />
+        <v-tab-item>
+          <user-overview :users="users"/>
         </v-tab-item>
-                <v-tab-item
-            :key="Reservations"
-          >
+        <v-tab-item>
           Reservations
         </v-tab-item>
-                <v-tab-item
-            :key="Statistics"
-          >
+        <v-tab-item>
           Statistics
         </v-tab-item>
       </v-tabs-items>
@@ -43,15 +31,26 @@
 </template>
 
 <script lang="ts">
+
+import axios from 'axios'
 import UserOverview from '@/components/admin/user-overview/UserOverview.vue'
+
 export default {
   middleware: 'admin',
   layout: 'admin',
   components: { UserOverview },
-    data () {
+  data () {
     return {
-      tab: null
-      }
+      tab: null,
+      users: []
     }
+  },
+  beforeMount () {
+    axios.get('api/admin/users')
+      .then(r => {
+        this.users = r.data;
+        console.log(this.users);
+      });
+  }
 }
 </script>
