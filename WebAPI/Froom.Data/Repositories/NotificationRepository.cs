@@ -32,5 +32,13 @@ namespace Froom.Data.Repositories
                 .Where(x => x.UserId == userId)
                 .OrderByDescending(x => x.CreatedDate);
         }
+
+        public async Task MarkReadAsync(int notificationId)
+        {
+            var notification = await _notifications.FindAsync(notificationId);
+            notification.IsNew = false;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
