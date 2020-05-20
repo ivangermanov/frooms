@@ -145,7 +145,7 @@ namespace WebAPI
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "FROOM API", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "FROOM API", Version = "v1" }); });
 
             services.AddSpaStaticFiles(opt => opt.RootPath = "vue/dist");
         }
@@ -200,7 +200,7 @@ namespace WebAPI
                 if (env.IsDevelopment())
                     endpoints.MapToVueCliProxy(
                         "{*path}",
-                        new SpaOptions {SourcePath = "vue/"},
+                        new SpaOptions { SourcePath = "vue/" },
                         "dev",
                         regex: "Compiled successfully",
                         forceKill: true
