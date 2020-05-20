@@ -34,6 +34,9 @@
 
 import axios from 'axios'
 import UserOverview from '@/components/admin/user-overview/UserOverview.vue'
+import { RepositoryFactory } from '@/api/repositoryFactory'
+
+const AdminUserRepository = RepositoryFactory.adminUser
 
 export default {
   middleware: 'admin',
@@ -46,11 +49,14 @@ export default {
     }
   },
   beforeMount () {
-    axios.get('api/admin/users')
-      .then(r => {
-        this.users = r.data;
-        console.log(this.users);
-      });
+      this.getUsers();
+  },
+  methods: {
+    async getUsers () {
+      const { data } = await AdminUserRepository.getUsers();
+      this.users = data;
+      console.log(this.users);
+    }
   }
 }
 </script>
