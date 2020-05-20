@@ -166,6 +166,8 @@ namespace Froom.Data.Database
                     .ValueGeneratedOnAdd();
                 options.Property(n => n.CreatedDate)
                     .HasDefaultValueSql("getdate()");
+                options.Property(n => n.IsNew)
+                    .HasDefaultValue(true);
             });
 
             // Seed sample data
