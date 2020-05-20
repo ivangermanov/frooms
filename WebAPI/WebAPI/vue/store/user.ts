@@ -20,3 +20,9 @@ export const mutations = {
     state.info = { ...state.info, ...payload }
   }
 }
+
+export const getters = {
+  isAdmin: (state: any) => {
+    return state.info.role.includes('admin')
+  }
+}
