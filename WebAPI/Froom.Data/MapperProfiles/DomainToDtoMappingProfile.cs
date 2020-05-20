@@ -17,19 +17,31 @@ namespace Froom.Data.MapperProfiles
         private void ConfigureMappings()
         {
             CreateMap<Room, RoomDto>()
-                .ForMember(dto => dto.CampusName, conf => conf.MapFrom(r => r.Details.Building.CampusName))
-                .ForMember(dto => dto.BuildingName, conf => conf.MapFrom(r => r.Details.BuildingName))
-                .ForMember(dto => dto.FloorNumber, conf => conf.MapFrom(r => r.Details.FloorNumber));
+                .ForMember(
+                    dto => dto.CampusName,
+                    conf => conf.MapFrom(r => r.Details.Building.CampusName))
+                .ForMember(
+                    dto => dto.BuildingName,
+                    conf => conf.MapFrom(r => r.Details.BuildingName))
+                .ForMember(
+                    dto => dto.FloorNumber,
+                    conf => conf.MapFrom(r => r.Details.FloorNumber));
 
             CreateMap<BuildingContents, BuildingContentsDto>()
-                .ForMember(dto => dto.FloorOrder, conf => conf.MapFrom(f => f.Floor.Order));
+                .ForMember(
+                    dto => dto.FloorOrder,
+                    conf => conf.MapFrom(f => f.Floor.Order));
+
+            CreateMap<Notification, NotificationDto>()
+                .ForMember(
+                    dto => dto.CreatedDate,
+                    conf => conf.MapFrom(n => n.CreatedDate.ToString("MM/dd/yy")));
 
             CreateMap<Reservation, ReservationDto>();
             CreateMap<User, UserDto>();
             CreateMap<Campus, CampusDto>();
             CreateMap<Building, BuildingDto>();
             CreateMap<Floor, FloorDto>();
-            CreateMap<Notification, NotificationDto>();
         }
     }
 }
