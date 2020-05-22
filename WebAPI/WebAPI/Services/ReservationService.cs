@@ -42,10 +42,11 @@ namespace WebAPI.Services
             var notification = new Notification()
             {
                 UserId = reservation.UserId,
-                Message = $"Reservation created for room {reservation.Room.Number} " +
-                    $"in building {reservation.Room.Details.BuildingName}, " +
+                Title = "Reservation created",
+                Message = $"{reservation.Room.Details.BuildingName}_" +
+                    $"{reservation.Room.Number}, " +
                     $"{reservation.Room.Details.CampusName} " +
-                    $"for {reservation.StartTime:0:MM/dd/yy H:mm}"
+                    $"for {reservation.StartTime: MM/dd/yy H:mm}"
             };
 
             await _notificationRepository.AddAsync(notification);

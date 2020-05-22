@@ -367,7 +367,9 @@ namespace Froom.Data.Database
                     {
                         Id = 1,
                         UserId = userId,
-                        Message = "SeededNotification"
+                        Title = "Seeded Notification",
+                        Message = "Seeded notification text.",
+                        IsNew = true
                     }
                 };
             }

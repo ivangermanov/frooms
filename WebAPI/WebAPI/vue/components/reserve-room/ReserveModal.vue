@@ -211,7 +211,6 @@ export default {
       const currentUserId = this.$store.state.user.info.sub
       const currentUserName = this.$store.state.user.info.name
       const currentUserEmail = this.$store.state.user.info.email
-      console.log(currentUserEmail);
       await UserRepository.findOrCreateUser({
         id: currentUserId,
         name: currentUserName,
