@@ -28,6 +28,11 @@ namespace WebAPI.Services.Interfaces
         /// <summary>
         /// Gets all notifications for a user.
         /// </summary>
-        public Task<IEnumerable<NotificationDto>> GetNotifications(Guid userId);
+        public Task<IEnumerable<NotificationDto>> GetNotificationsAsync(Guid userId);
+
+        /// <summary>
+        /// Marks a notification as not new.
+        /// </summary>
+        public Task MarkNotificationRead(int notificationId);
     }
 }

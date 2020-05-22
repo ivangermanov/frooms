@@ -37,7 +37,8 @@ namespace WebAPI.Services
             var notification = new Notification()
             {
                 UserId = user.Id,
-                Message = "Welcome to Frooms!"
+                Title = "Welcome to Frooms!",
+                Message = "You just made your first reservation. :)"
             };
 
             await _notificationRepository.AddAsync(notification);
@@ -56,11 +57,16 @@ namespace WebAPI.Services
             return user;
         }
 
-        public async Task<IEnumerable<NotificationDto>> GetNotifications(Guid userId)
+        public async Task<IEnumerable<NotificationDto>> GetNotificationsAsync(Guid userId)
         {
             var notifications = _notificationRepository.GetForUser(userId);
 
             return await _mapper.ProjectTo<NotificationDto>(notifications).ToListAsync();
+        }
+
+        public async Task MarkNotificationRead(int notificationId)
+        {
+            await _notificationRepository.MarkReadAsync(notificationId);
         }
 
         public async Task<IEnumerable<UserDto>> GetUserAsync(Guid? id=null, string? name = null)
