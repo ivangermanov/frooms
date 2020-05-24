@@ -8,7 +8,7 @@
       <v-tab>
         Users
       </v-tab>
-        <v-tab
+      <v-tab>
         Reservations
       </v-tab>
       <v-tab>
@@ -17,10 +17,10 @@
     </v-tabs>
 
     <v-tabs-items v-model="tab">
-        <v-tab-item>
-          <user-overview :users="users"/>
+      <v-tab-item>
+        <user-overview :users="users"/>
       </v-tab-item>
-        <v-tab-item>
+      <v-tab-item>
         Reservations
       </v-tab-item>
       <v-tab-item>
@@ -43,7 +43,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import axios from 'axios'
 import UserOverview from '@/components/admin/user-overview/UserOverview.vue'
 import { RepositoryFactory } from '@/api/repositoryFactory'
 import BaseChart from '@/components/charts/BaseChart.vue'
