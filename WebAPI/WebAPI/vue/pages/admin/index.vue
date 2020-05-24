@@ -49,7 +49,6 @@ import BaseChart from '@/components/charts/BaseChart.vue'
 
 const AdminUserRepository = RepositoryFactory.adminUser
 export default Vue.extend({
-
   layout: 'admin',
   components: { UserOverview, BaseChart },
   data () {
