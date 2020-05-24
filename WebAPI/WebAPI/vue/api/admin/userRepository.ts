@@ -1,7 +1,7 @@
 import Repository from '../repository'
 import { IUser } from '@/types/index'
 
-const resource = '/users'
+const resource = '/admin/users'
 
 export default {
   getUsers () {
