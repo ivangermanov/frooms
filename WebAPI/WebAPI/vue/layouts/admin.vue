@@ -72,6 +72,7 @@
 <script lang="ts">
 
 export default {
+  middleware: ['user', 'admin'],
   data () {
     return {
       drawer: false,

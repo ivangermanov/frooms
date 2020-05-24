@@ -18,5 +18,11 @@ namespace Froom.Data.Repositories.Interfaces
         /// </summary>
         /// <param name="userId"> The ID of the user.</param>
         IQueryable<Notification> GetForUser(Guid userId);
+
+        /// <summary>
+        /// Marks a notification as not new.
+        /// </summary>
+        /// <param name="notificationId"> The ID of the notification.</param>
+        public Task MarkReadAsync(int notificationId);
     }
 }
