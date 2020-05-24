@@ -64,7 +64,6 @@ export default Vue.extend({
     async getUsers () {
       const { data } = await AdminUserRepository.getUsers();
       this.users = data;
-      console.log(this.users);
     }
   }
 })

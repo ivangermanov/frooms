@@ -13,15 +13,27 @@
         mdi-pencil
       </v-icon>
       <v-icon
+        v-if="!item.isBlocked"
         small
+        @click="blockUser(item)"
       >
-        mdi-delete
+        mdi-account-lock
+      </v-icon>
+      <v-icon
+        v-if="item.isBlocked"
+        small
+        @click="unblockUser(item)"
+      >
+        mdi-account-key
       </v-icon>
     </template>
   </v-data-table>
 </template>
 
 <script>
+import { RepositoryFactory } from '@/api/repositoryFactory'
+
+const AdminUserRepository = RepositoryFactory.adminUser
 export default {
   props: {
     users: {
@@ -48,6 +60,18 @@ export default {
     dialog (val) {
       val || this.close()
     }
+  },
+  methods: {
+    async blockUser (user) {
+      const { data } = await AdminUserRepository.blockUser(user.id);
+      user = data;
+      console.log(user);
+    },
+    async unblockUser (user) {
+      const { data } = await AdminUserRepository.unblockUser(user.id);
+      user = data;
+      console.log(user);
+    },
   }
 }
 </script>
