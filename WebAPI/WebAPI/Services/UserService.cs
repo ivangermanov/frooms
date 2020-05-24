@@ -80,7 +80,7 @@ namespace WebAPI.Services
 
         public async Task<UserDto> BlockUserAsync(Guid id)
         {
-            var user = _userRepository.GetById(id);
+            var user = await _userRepository.GetByIdAsync(id);
             user.IsBlocked = true;
             await _userRepository.Update(user);
             return _mapper.Map<UserDto>(user);
@@ -88,7 +88,7 @@ namespace WebAPI.Services
 
         public async Task<UserDto> UnblockUserAsync(Guid id)
         {
-            var user = _userRepository.GetById(id);
+            var user = await _userRepository.GetByIdAsync(id);
             user.IsBlocked = false;
             await _userRepository.Update(user);
             return _mapper.Map<UserDto>(user);

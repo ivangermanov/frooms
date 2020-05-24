@@ -32,14 +32,6 @@ namespace Froom.Data.Repositories
             return _users.Include(u => u.Reservations);
         }
 
-        public User GetById(Guid Id)
-        {
-            return _users
-                .Include(u => u.Reservations)
-                .SingleOrDefault(u => u.Id == Id) ??
-                throw new DoesNotExistException($"User with ID: {Id} does not exist.");
-        }
-
         public async Task<User> GetByIdAsync(Guid Id)
         {
             return await _users
