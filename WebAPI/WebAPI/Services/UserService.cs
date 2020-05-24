@@ -77,5 +77,21 @@ namespace WebAPI.Services
 
             return await _mapper.ProjectTo<UserDto>(users).ToListAsync();
         }
+
+        public async Task<UserDto> BlockUserAsync(Guid id)
+        {
+            var user = _userRepository.GetById(id);
+            user.IsBlocked = true;
+            await _userRepository.Update(user);
+            return _mapper.Map<UserDto>(user);
+        }
+
+        public async Task<UserDto> UnblockUserAsync(Guid id)
+        {
+            var user = _userRepository.GetById(id);
+            user.IsBlocked = false;
+            await _userRepository.Update(user);
+            return _mapper.Map<UserDto>(user);
+        }
     }
 }
