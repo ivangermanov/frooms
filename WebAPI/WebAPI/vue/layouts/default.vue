@@ -72,13 +72,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { IUser } from 'types'
-import { mapMutations } from 'vuex'
-// import { computed } from '@vue/composition-api'
-import { RepositoryFactory } from '@/api/repositoryFactory'
-const UserRepository = RepositoryFactory.user
+import { mapGetters } from 'vuex'
 
 export default Vue.extend({
+  middleware: 'user',
   data () {
     return {
       drawer: false,
@@ -104,27 +101,8 @@ export default Vue.extend({
     }
   },
   computed: {
-    isAdmin () {
-      if (this.$store.state.user.info.role === undefined) {
-        return false
-      }
-      return this.$store.state.user.info.role.includes('admin')
-    }
-  },
-  async created () {
-    const data = await this.getUserData()
-    console.log(data)
-    this.setUser(data)
-  },
-  methods: {
-    async getUserData () {
-      const { data: info }: {data: IUser} = await UserRepository.getUserInfo()
-      const { data: roles }: {data: Array<string>} = await UserRepository.getUserRoles()
-      info.role = roles
-      return info
-    },
-    ...mapMutations({
-      setUser: 'user/setUser'
+    ...mapGetters({
+      isAdmin: 'user/isAdmin'
     })
   }
 })

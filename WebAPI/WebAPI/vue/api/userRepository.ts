@@ -15,5 +15,11 @@ export default {
   },
   getUserRoles () {
     return Repository.get(`${resource}/me/roles`)
+  },
+  getNotifications () {
+    return Repository.get(`${resource}/me/notifications`)
+  },
+  markNotificationRead (notificationId: number) {
+    return Repository.post(`${resource}/me/notifications?notificationId=${notificationId}`)
   }
 }
