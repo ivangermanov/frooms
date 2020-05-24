@@ -64,13 +64,11 @@ export default {
   methods: {
     async blockUser (user) {
       const { data } = await AdminUserRepository.blockUser(user.id);
-      user = data;
-      console.log(user);
+      user.isBlocked = data.isBlocked;
     },
     async unblockUser (user) {
       const { data } = await AdminUserRepository.unblockUser(user.id);
-      user = data;
-      console.log(user);
+      user.isBlocked = data.isBlocked;
     },
   }
 }
