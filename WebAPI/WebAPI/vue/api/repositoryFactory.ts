@@ -5,7 +5,7 @@ import reservationRepository from './reservationRepository'
 import buildingRepository from './buildingRepository'
 import floorRepository from './floorRepository'
 import fontysApiRepository from './fontysApiRepository'
-import adminUserRepository from './admin/UserRepository'
+import adminUserRepository from './admin/userRepository'
 
 const repositories = {
   room: roomRepository,
