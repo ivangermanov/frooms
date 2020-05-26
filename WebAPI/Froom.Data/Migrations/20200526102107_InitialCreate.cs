@@ -35,11 +35,30 @@ namespace Froom.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notification",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<Guid>(nullable: false),
+                    Title = table.Column<string>(nullable: true),
+                    Message = table.Column<string>(nullable: true),
+                    CreatedDate = table.Column<DateTime>(nullable: false, defaultValueSql: "getdate()"),
+                    IsNew = table.Column<bool>(nullable: true, defaultValue: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notification", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    IsBlocked = table.Column<bool>(nullable: false),
                     Role = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -217,11 +236,12 @@ namespace Froom.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "Id", "Name", "Role" },
+                columns: new[] { "Id", "Email", "IsBlocked", "Name", "Role" },
                 values: new object[,]
                 {
-                    { new Guid("4ccb9c19-fdb7-471a-94d3-2748ebea7d15"), "SeedUser", 0 },
-                    { new Guid("5c861938-98ba-41d2-9e24-da3610e34544"), "Ivan Germanov", 1 }
+                    { new Guid("5c861938-98ba-41d2-9e24-da3610e34544"), "i.germanov@student.fontys.nl", false, "Ivan Germanov", 1 },
+                    { new Guid("05847a38-8ea2-4232-966e-512d4159c554"), "y.buzykina@student.fontys.nl", false, "Yevheniia Buzykina", 1 },
+                    { new Guid("ab81a843-3e70-4cd2-9c89-d6b5719c3a6b"), "a.melkonyan@student.fontys.nl", false, "Anjela Melkonyan", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -269,11 +289,6 @@ namespace Froom.Data.Migrations
                     { "4.109", 5, 20, 8, "[{\"X\":-302.783203,\"Y\":45.336702},{\"X\":-321.416016,\"Y\":45.02695},{\"X\":-333.808594,\"Y\":42.488302},{\"X\":-333.896484,\"Y\":22.268764},{\"X\":-321.591797,\"Y\":18.979026},{\"X\":-288.984375,\"Y\":19.311143},{\"X\":-287.666016,\"Y\":22.674847},{\"X\":-287.578125,\"Y\":42.811522},{\"X\":-288.808594,\"Y\":42.682435},{\"X\":-289.072266,\"Y\":47.15984},{\"X\":-287.578125,\"Y\":47.338823},{\"X\":-287.666016,\"Y\":59.175928},{\"X\":-290.214844,\"Y\":59.085739},{\"X\":-295.400391,\"Y\":59.085739},{\"X\":-295.576172,\"Y\":52.855864},{\"X\":-302.783203,\"Y\":52.855864}]" }
                 });
 
-            migrationBuilder.InsertData(
-                table: "Reservation",
-                columns: new[] { "Id", "Duration", "RoomId", "StartTime", "UserId" },
-                values: new object[] { 1, new TimeSpan(0, 1, 0, 0, 0), 1, new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified), new Guid("4ccb9c19-fdb7-471a-94d3-2748ebea7d15") });
-
             migrationBuilder.CreateIndex(
                 name: "IX_BuildingContents_FloorNumber",
                 table: "BuildingContents",
@@ -318,6 +333,9 @@ namespace Froom.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Notification");
+
             migrationBuilder.DropTable(
                 name: "Picture");
 
