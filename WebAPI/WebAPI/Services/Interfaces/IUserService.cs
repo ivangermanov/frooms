@@ -1,4 +1,5 @@
 ﻿using Froom.Data.Dtos;
+using Froom.Data.Entities;
 using Froom.Data.Models.Users;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,16 @@ namespace WebAPI.Services.Interfaces
         /// If nothing is pecified returns all users.
         /// </summary>
         public Task<IEnumerable<UserDto>> GetUserAsync(Guid? id=null, string? name=null);
+
+        /// <summary>
+        /// Blocks the user.
+        /// </summary>
+        public Task<UserDto> BlockUserAsync(Guid id);
+
+        /// <summary>
+        /// Unblocks the user.
+        /// </summary>
+        public Task<UserDto> UnblockUserAsync(Guid id);
 
         /// <summary>
         /// Check if a user exist.
