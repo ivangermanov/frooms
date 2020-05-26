@@ -7,7 +7,8 @@ namespace Froom.Data.Database
 {
     public class FroomContext : DbContext
     {
-        public FroomContext(DbContextOptions<FroomContext> options) : base(options)
+        public FroomContext(DbContextOptions<FroomContext> options)
+            : base(options)
         {
         }
 
@@ -18,9 +19,6 @@ namespace Froom.Data.Database
             modelBuilder.Entity<User>(options =>
             {
                 options.HasKey(u => u.Id);
-
-                // Turn of the automatic generation of PK.
-                // This way so we can create users with their Number from the FontysAPI.
                 options.Property(u => u.Id)
                     .ValueGeneratedNever();
             });
