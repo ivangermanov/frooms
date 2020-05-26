@@ -18,7 +18,7 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item>
-        <user-overview />
+        <user-overview :users="users"/>
       </v-tab-item>
       <v-tab-item>
         Reservations
@@ -44,14 +44,26 @@
 <script lang="ts">
 import Vue from 'vue'
 import UserOverview from '@/components/admin/user-overview/UserOverview.vue'
+import { RepositoryFactory } from '@/api/repositoryFactory'
 import BaseChart from '@/components/charts/BaseChart.vue'
 
+const AdminUserRepository = RepositoryFactory.adminUser
 export default Vue.extend({
   layout: 'admin',
   components: { UserOverview, BaseChart },
   data () {
     return {
-      tab: null
+      tab: null,
+      users: []
+    }
+  },
+  beforeMount () {
+      this.getUsers();
+  },
+  methods: {
+    async getUsers () {
+      const { data } = await AdminUserRepository.getUsers();
+      this.users = data;
     }
   }
 })
