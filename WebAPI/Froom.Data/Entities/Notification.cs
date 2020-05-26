@@ -14,6 +14,6 @@ namespace Froom.Data.Entities
 
         public DateTime CreatedDate { get; set; }
 
-        public bool IsNew { get; set; }
+        public bool? IsNew { get; set; }
     }
 }
