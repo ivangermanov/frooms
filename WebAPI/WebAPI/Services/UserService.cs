@@ -78,6 +78,14 @@ namespace WebAPI.Services
             return await _mapper.ProjectTo<UserDto>(users).ToListAsync();
         }
 
+        public async Task<UserDto> ChangeRoleAsync(Guid id, int role)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+            user.Role = (UserRole)role;
+            await _userRepository.Update(user);
+            return _mapper.Map<UserDto>(user);
+        }
+
         public async Task<UserDto> BlockUserAsync(Guid id)
         {
             var user = await _userRepository.GetByIdAsync(id);
@@ -85,6 +93,7 @@ namespace WebAPI.Services
             await _userRepository.Update(user);
             return _mapper.Map<UserDto>(user);
         }
+        
 
         public async Task<UserDto> UnblockUserAsync(Guid id)
         {

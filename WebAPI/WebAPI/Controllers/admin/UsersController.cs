@@ -44,5 +44,13 @@ namespace WebAPI.Controllers.admin
             var user = await _userService.UnblockUserAsync(userId);
             return Ok(user);
         }
+
+        [HttpPost]
+        [Route("{userId}/changeRole")]
+        public async Task<IActionResult> ChangeRole(Guid userId, int role)
+        {
+            var user = await _userService.ChangeRoleAsync(userId, role);
+            return Ok(user);
+        }
     }
 }
