@@ -11,5 +11,8 @@ export default {
   },
   unblockUser (userId: string) {
     return Repository.post(`${resource}/${userId}/unblock`)
+  },
+  changeRole (userId: string, role: Number) {
+    return Repository.post(`${resource}/${userId}/changeRole?role=${role}`)
   }
 }
