@@ -18,7 +18,7 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item>
-        <user-overview :users="users"/>
+        <user-overview :users="users" />
       </v-tab-item>
       <v-tab-item>
         Reservations
@@ -58,12 +58,12 @@ export default Vue.extend({
     }
   },
   beforeMount () {
-      this.getUsers();
+    this.getUsers()
   },
   methods: {
     async getUsers () {
-      const { data } = await AdminUserRepository.getUsers();
-      this.users = data;
+      const { data } = await AdminUserRepository.getUsers()
+      this.users = data
     }
   }
 })
