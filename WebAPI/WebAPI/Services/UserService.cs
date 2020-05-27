@@ -83,6 +83,20 @@ namespace WebAPI.Services
             var user = await _userRepository.GetByIdAsync(id);
             user.Role = (UserRole)role;
             await _userRepository.Update(user);
+
+            if(user.Role == UserRole.ADMIN)
+            {
+                var notification = new Notification()
+                {
+                    UserId = user.Id,
+                    Title = "Role changed",
+                    Message = "You are now an admin."
+                };
+
+                await _notificationRepository.AddAsync(notification);
+            }
+
+
             return _mapper.Map<UserDto>(user);
         }
 
@@ -91,6 +105,17 @@ namespace WebAPI.Services
             var user = await _userRepository.GetByIdAsync(id);
             user.IsBlocked = true;
             await _userRepository.Update(user);
+
+            var notification = new Notification()
+            {
+                UserId = user.Id,
+                Title = "Profile blocked",
+                Message = "You are now blocked. " +
+                "Contact the administration for more information."
+            };
+
+            await _notificationRepository.AddAsync(notification);
+
             return _mapper.Map<UserDto>(user);
         }
         
@@ -100,6 +125,18 @@ namespace WebAPI.Services
             var user = await _userRepository.GetByIdAsync(id);
             user.IsBlocked = false;
             await _userRepository.Update(user);
+
+            var notification = new Notification()
+            {
+                UserId = user.Id,
+                Title = "Profile unblocked",
+                Message = "Your profile is unblocked. " +
+                "You can make reservations."
+            };
+
+            await _notificationRepository.AddAsync(notification);
+
+
             return _mapper.Map<UserDto>(user);
         }
     }
