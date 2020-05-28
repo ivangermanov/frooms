@@ -18,23 +18,14 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item>
-        <user-overview :users="users"/>
+        <user-overview :users="users" />
       </v-tab-item>
       <v-tab-item>
         Reservations
       </v-tab-item>
       <v-tab-item>
         <v-card class="d-inline-block mx-auto">
-          <v-card-title>
-            Statistics
-          </v-card-title>
-          <v-container>
-            <v-row justify="space-between">
-              <v-col cols="auto">
-                <base-chart />
-              </v-col>
-            </v-row>
-          </v-container>
+          <chart-viewer />
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -44,13 +35,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import UserOverview from '@/components/admin/user-overview/UserOverview.vue'
+import ChartViewer from '@/components/charts/ChartViewer.vue'
 import { RepositoryFactory } from '@/api/repositoryFactory'
-import BaseChart from '@/components/charts/BaseChart.vue'
 
 const AdminUserRepository = RepositoryFactory.adminUser
 export default Vue.extend({
   layout: 'admin',
-  components: { UserOverview, BaseChart },
+  components: { UserOverview, ChartViewer },
   data () {
     return {
       tab: null,
@@ -58,12 +49,12 @@ export default Vue.extend({
     }
   },
   beforeMount () {
-      this.getUsers();
+    this.getUsers()
   },
   methods: {
     async getUsers () {
-      const { data } = await AdminUserRepository.getUsers();
-      this.users = data;
+      const { data } = await AdminUserRepository.getUsers()
+      this.users = data
     }
   }
 })
