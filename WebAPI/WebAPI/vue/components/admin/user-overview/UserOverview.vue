@@ -1,9 +1,9 @@
 <template>
   <v-data-table
-      :headers="headers"
-      :items="users"
-      sort-by="Name"
-      class="elevation-1"
+    :headers="headers"
+    :items="users"
+    sort-by="Name"
+    class="elevation-1"
   >
     <template v-slot:item.actions="{ item }">
       <v-icon
@@ -48,7 +48,7 @@ export default {
         {
           text: 'Name',
           align: 'start',
-          value: 'name',
+          value: 'name'
         },
         { text: 'Email', value: 'email' },
         { text: 'Role', value: 'role' },
@@ -63,13 +63,13 @@ export default {
   },
   methods: {
     async blockUser (user) {
-      const { data } = await AdminUserRepository.blockUser(user.id);
-      user.isBlocked = data.isBlocked;
+      const { data } = await AdminUserRepository.blockUser(user.id)
+      user.isBlocked = data.isBlocked
     },
     async unblockUser (user) {
-      const { data } = await AdminUserRepository.unblockUser(user.id);
-      user.isBlocked = data.isBlocked;
-    },
+      const { data } = await AdminUserRepository.unblockUser(user.id)
+      user.isBlocked = data.isBlocked
+    }
   }
 }
 </script>
