@@ -21,7 +21,7 @@
         <user-overview :users="users" />
       </v-tab-item>
       <v-tab-item>
-        Reservations
+        <reservations-overview />
       </v-tab-item>
       <v-tab-item>
         <v-card class="d-inline-block mx-auto">
@@ -35,13 +35,14 @@
 <script lang="ts">
 import Vue from 'vue'
 import UserOverview from '@/components/admin/user-overview/UserOverview.vue'
+import ReservationsOverview from '@/components/admin/reservations-overview/ReservationsOverview.vue'
 import ChartViewer from '@/components/charts/ChartViewer.vue'
 import { RepositoryFactory } from '@/api/repositoryFactory'
 
 const AdminUserRepository = RepositoryFactory.adminUser
 export default Vue.extend({
   layout: 'admin',
-  components: { UserOverview, ChartViewer },
+  components: { UserOverview, ChartViewer, ReservationsOverview },
   data () {
     return {
       tab: null,
