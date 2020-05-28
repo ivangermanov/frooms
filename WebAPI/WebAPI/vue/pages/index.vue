@@ -2,7 +2,7 @@
   <v-container class="container">
     <v-layout row wrap justify-space-between>
       <v-flex xs12 md7>
-        <reservations-list :overview-list="OverviewList" />
+        <reservations-list />
       </v-flex>
       <v-flex xs12 md4>
         <notifications-list />
