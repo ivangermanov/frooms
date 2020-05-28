@@ -82,7 +82,7 @@ export default Vue.extend({
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'Dashboard',
           to: '/'
         },
         {
@@ -97,7 +97,7 @@ export default Vue.extend({
         }
       ],
       miniVariant: false,
-      title: 'Froom'
+      title: 'Froom Dashboard'
     }
   },
   computed: {
