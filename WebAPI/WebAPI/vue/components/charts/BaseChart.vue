@@ -8,39 +8,48 @@ import { Chart } from 'highcharts-vue'
 export default {
   components: { Chart },
 
+  props: {
+    title: {
+      type: String,
+      required: false,
+      default () {
+        return 'Base Chart Title'
+      }
+    },
+    chartType: {
+      type: String,
+      required: false,
+      default () {
+        return 'column'
+      }
+    },
+    categories: {
+      type: Array,
+      required: true
+    },
+    series: {
+      type: Array,
+      required: true
+    }
+  },
+
   data () {
     return {
       chartOptions: {
         chart: {
-          type: 'column'
+          type: this.chartType
         },
         title: {
-          text: 'Monthly Room Reservations'
-        },
-        subtitle: {
-          text: 'Source: Froom Application'
+          text: this.title
         },
         xAxis: {
-          categories: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec'
-          ],
+          categories: this.categories,
           crosshair: true
         },
         yAxis: {
           min: 0,
           title: {
-            text: 'Reservations made'
+            text: 'Reservation Count'
           }
         },
         plotOptions: {
@@ -49,15 +58,26 @@ export default {
             borderWidth: 0
           }
         },
-        series: [{
-          name: 'Reservations',
-          data: [49, 71, 106, 129, 144, 176, 135, 148, 216, 194, 95, 54]
-
-        }],
+        series: this.series,
         credits: {
           enabled: false
         }
       }
+    }
+  },
+
+  watch: {
+    title (newValue) {
+      this.chartOptions.title.text = newValue
+    },
+    series (newValue) {
+      this.chartOptions.series = newValue
+    },
+    chartType (newValue) {
+      this.chartOptions.chart.type = newValue
+    },
+    categories (newValue) {
+      this.chartOptions.xAxis.categories = newValue
     }
   }
 }
