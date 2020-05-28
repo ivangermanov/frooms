@@ -1,40 +1,29 @@
 <template>
-  <div id="OverviewList">
-    <div class="reservations">
-      <v-card>
-        <v-card-title>
-          Reservations
-          <v-spacer />
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Search reservations"
-            single-line
-            hide-details
-          />
-        </v-card-title>
-        <v-data-table
-          :headers="headers"
-          :items="reservations"
-          :search="search"
-          multi-sort
-          class="elevation-1"
-        />
-      </v-card>
-    </div>
-  </div>
+  <v-card>
+    <v-card-title>
+      Reservations
+      <v-spacer />
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search reservations"
+        single-line
+        hide-details
+      />
+    </v-card-title>
+    <v-data-table
+      :headers="headers"
+      :items="reservations"
+      :search="search"
+      multi-sort
+      class="elevation-1"
+    />
+  </v-card>
 </template>
 
 <script>
-// import { RepositoryFactory } from '@/api/repositoryFactory'
-// import reservationRepository from '../../api/reservationRepository'
-
-// const OverviewReservationsRepository = RepositoryFactory.reservation
 
 export default {
-
-  name: 'OverviewList',
-
   data: () => {
     return {
       search: '',
@@ -48,20 +37,6 @@ export default {
         { text: 'Expired', value: 'Expired' }
 
       ],
-      // reservations: [],
-      // beforeMount()
-      // {
-      //   this.fetchReservations()
-      // },
-
-      // methods:
-      // {
-      //   async fetchReservations()
-      //   {
-      //     const { data } = await reservationRepository.postReservation()
-      //     this.reservations = data
-      //   }
-      // }
       reservations: [
         { Building: 'R1', Room: '2.40', Date: '25-05-2020', StartTime: '12:00', EndTime: '14:00', Duration: '2', Expired: true },
         { Building: 'R1', Room: '2.38', Date: '30-05-2020', StartTime: '11:00', EndTime: '12:00', Duration: '1', Expired: false },
