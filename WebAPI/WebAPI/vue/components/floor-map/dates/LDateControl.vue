@@ -52,14 +52,22 @@ export default Vue.extend({
       return moment().format('YYYY-MM-DD')
     },
     maxDate () {
-      // TODO: calculate based on semester
       return moment().add(3, 'M').format('YYYY-MM-DD')
+    },
+    dateIso () {
+      const date = this.date as string
+      return moment(date).toISOString()
+    }
+  },
+  watch: {
+    dateIso (value) {
+      this.updateDate(value)
     }
   },
   methods: {
-    // updateBuildingName (value: string) {
-    //   this.$emit('update:buildingName', value)
-    // }
+    updateDate (value: string) {
+      this.$emit('update:date', value)
+    }
   }
 })
 </script>
