@@ -33,6 +33,13 @@ namespace Froom.Data.Database
                         Name = "Anjela Melkonyan",
                         Email = "a.melkonyan@student.fontys.nl",
                         Role = UserRole.ADMIN
+                    },
+                    new User
+                    {
+                        Id = new Guid("AC408FF3-2E5D-4975-96A8-83E6E67F9E03"),
+                        Name = "Chan,Jeffrey J.K.B.",
+                        Email = "jeffrey.chan@student.fontys.nl",
+                        Role = UserRole.ADMIN
                     }
                 };
             }
@@ -248,7 +255,7 @@ namespace Froom.Data.Database
                         {
                             new Point {X = -151.347656, Y = -69.349339}, new Point {X = -150.996094, Y = -55.875311},
                             new Point {X = -128.847656, Y = -56.170023}, new Point {X = -128.847656, Y = -69.472969}
-                            
+
                         }
                     },
                     new Room
@@ -337,6 +344,177 @@ namespace Froom.Data.Database
             }
         }
 
+        private static Reservation[] Reservations
+        {
+            get
+            {
+                return new[]
+                {
+                    new Reservation
+                    {
+                        Id = 1,
+                        UserId = Users[0].Id,
+                        RoomId = Rooms[0].Id,
+                        StartTime = new DateTime(2020, 5, 5, 8, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 2,
+                        UserId = Users[0].Id,
+                        RoomId = Rooms[1].Id,
+                        StartTime = new DateTime(2020, 5, 5, 9, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 3,
+                        UserId = Users[0].Id,
+                        RoomId = Rooms[2].Id,
+                        StartTime = new DateTime(2020, 5, 5, 10, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 4,
+                        UserId = Users[0].Id,
+                        RoomId = Rooms[3].Id,
+                        StartTime = new DateTime(2020, 5, 5, 11, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 5,
+                        UserId = Users[0].Id,
+                        RoomId = Rooms[0].Id,
+                        StartTime = new DateTime(2020, 5, 5, 12, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 6,
+                        UserId = Users[0].Id,
+                        RoomId = Rooms[4].Id,
+                        StartTime = new DateTime(2020, 5, 5, 13, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 7,
+                        UserId = Users[1].Id,
+                        RoomId = Rooms[5].Id,
+                        StartTime = new DateTime(2020, 5, 5, 14, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 8,
+                        UserId = Users[1].Id,
+                        RoomId = Rooms[6].Id,
+                        StartTime = new DateTime(2020, 5, 6, 8, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 9,
+                        UserId = Users[1].Id,
+                        RoomId = Rooms[7].Id,
+                        StartTime = new DateTime(2020, 5, 6, 9, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 10,
+                        UserId = Users[1].Id,
+                        RoomId = Rooms[0].Id,
+                        StartTime = new DateTime(2020, 5, 6, 10, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+
+                    new Reservation
+                    {
+                        Id = 11,
+                        UserId = Users[1].Id,
+                        RoomId = Rooms[1].Id,
+                        StartTime = new DateTime(2020, 5, 7, 8, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 12,
+                        UserId = Users[2].Id,
+                        RoomId = Rooms[2].Id,
+                        StartTime = new DateTime(2020, 5, 7, 9, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 13,
+                        UserId = Users[2].Id,
+                        RoomId = Rooms[3].Id,
+                        StartTime = new DateTime(2020, 5, 7, 10, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 14,
+                        UserId = Users[2].Id,
+                        RoomId = Rooms[4].Id,
+                        StartTime = new DateTime(2020, 5, 7, 11, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 15,
+                        UserId = Users[2].Id,
+                        RoomId = Rooms[5].Id,
+                        StartTime = new DateTime(2020, 5, 8, 8, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 16,
+                        UserId = Users[2].Id,
+                        RoomId = Rooms[6].Id,
+                        StartTime = new DateTime(2020, 5, 8, 9, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 17,
+                        UserId = Users[3].Id,
+                        RoomId = Rooms[7].Id,
+                        StartTime = new DateTime(2020, 5, 10, 8, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 18,
+                        UserId = Users[3].Id,
+                        RoomId = Rooms[0].Id,
+                        StartTime = new DateTime(2020, 5, 10, 9, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 19,
+                        UserId = Users[3].Id,
+                        RoomId = Rooms[1].Id,
+                        StartTime = new DateTime(2020, 5, 10, 10, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 20,
+                        UserId = Users[3].Id,
+                        RoomId = Rooms[2].Id,
+                        StartTime = new DateTime(2020, 5, 10, 11, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    }
+                };
+            }
+        }
+
         // Sample data for the seeding
         public static void Seed(this ModelBuilder modelBuilder)
         {
@@ -346,6 +524,7 @@ namespace Froom.Data.Database
             modelBuilder.Entity<Floor>().HasData(Floors);
             modelBuilder.Entity<BuildingContents>().HasData(BuildingFloorRooms_Relationship);
             modelBuilder.Entity<Room>().HasData(Rooms);
+            modelBuilder.Entity<Reservation>().HasData(Reservations);
         }
 
     }
