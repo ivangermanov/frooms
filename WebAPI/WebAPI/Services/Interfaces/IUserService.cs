@@ -50,5 +50,10 @@ namespace WebAPI.Services.Interfaces
         /// Marks a notification as not new.
         /// </summary>
         public Task MarkNotificationRead(int notificationId);
+
+        /// <summary>
+        /// Marks all current notifications as not new.
+        /// </summary>
+        public Task MarkNotificationsRead(Guid userId);
     }
 }

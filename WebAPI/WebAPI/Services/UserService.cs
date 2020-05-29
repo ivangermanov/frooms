@@ -69,6 +69,13 @@ namespace WebAPI.Services
             await _notificationRepository.MarkReadAsync(notificationId);
         }
 
+        public async Task MarkNotificationsRead(Guid userId)
+        {
+            var notifications = _notificationRepository.GetForUser(userId);
+
+            await _notificationRepository.MarkReadForUserAsync(userId);
+        }
+
         public async Task<IEnumerable<UserDto>> GetUserAsync(Guid? id=null, string? name = null)
         {
             var users = _userRepository.GetAll()
