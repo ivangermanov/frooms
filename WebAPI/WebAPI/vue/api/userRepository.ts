@@ -20,6 +20,9 @@ export default {
     return Repository.get(`${resource}/me/notifications`)
   },
   markNotificationRead (notificationId: number) {
-    return Repository.post(`${resource}/me/notifications?notificationId=${notificationId}`)
+    return Repository.post(`${resource}/me/notifications/${notificationId}`)
+  },
+  markNotificationsRead () {
+    return Repository.post(`${resource}/me/notifications`)
   }
 }
