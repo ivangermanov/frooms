@@ -64,11 +64,21 @@ namespace WebAPI.Controllers
             return Ok(notifications);
         }
 
-        [Route("me/notifications")]
+        [Route("me/notifications/{notificationId}")]
         [HttpPost]
         public async Task<IActionResult> MarkNotificationRead(int notificationId)
         {
             await _userService.MarkNotificationRead(notificationId);
+            return Ok();
+        }
+
+        [Route("me/notifications")]
+        [HttpPost]
+        public async Task<IActionResult> MarkNotificationsRead()
+        {
+            var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            await _userService.MarkNotificationsRead(userId);
             return Ok();
         }
     }
