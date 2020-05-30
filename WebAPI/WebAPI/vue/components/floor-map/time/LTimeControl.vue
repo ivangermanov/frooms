@@ -25,6 +25,8 @@
         </template>
         <v-time-picker
           v-model="timeTemp"
+          scrollable
+          :format="'24hr'"
           @click:minute="$refs.menu.save(timeTemp)"
         />
       </v-menu>
