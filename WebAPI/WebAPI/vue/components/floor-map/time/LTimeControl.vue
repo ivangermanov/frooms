@@ -11,7 +11,7 @@
       >
         <template v-slot:activator="{ on }">
           <v-text-field
-            v-model="time"
+            v-model="timeTemp"
             :label="label"
             :dark="false"
             :light="true"
@@ -20,9 +20,13 @@
             readonly
             hide-details="auto"
             v-on="on"
+            @input="value => update(value)"
           />
         </template>
-        <v-time-picker v-model="time" @click:minute="$refs.menu.save(time)" />
+        <v-time-picker
+          v-model="timeTemp"
+          @click:minute="$refs.menu.save(timeTemp)"
+        />
       </v-menu>
     </v-container>
   </div>
@@ -33,18 +37,27 @@ import Vue from 'vue'
 export default Vue.extend({
   props: {
     label: { type: String, default: 'Time' },
-    icon: { type: String, default: 'mdi-clock' }
+    icon: { type: String, default: 'mdi-clock' },
+    time: { type: String, default: '' }
   },
   data () {
     return {
-      time: null,
+      timeTemp: '',
       menu: false
     }
   },
+  watch: {
+    time: {
+      handler (value) {
+        this.timeTemp = value
+      },
+      immediate: true
+    }
+  },
   methods: {
-    // updateBuildingName (value: string) {
-    //   this.$emit('update:buildingName', value)
-    // }
+    update (time: string) {
+      this.$emit('update:time', time)
+    }
   }
 })
 </script>
