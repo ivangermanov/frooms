@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { reactive, ref, toRefs, computed } from '@vue/composition-api'
+import { reactive, ref, toRefs, computed, onUnmounted } from '@vue/composition-api'
 
 export default function useRoomsData () {
   const currentDate = ref(moment())
@@ -58,10 +58,18 @@ export default function useRoomsData () {
     moment(`${data.date} ${data.endTime}`).toISOString()
   )
 
+  let timer: NodeJS.Timeout
   function updateCurrentDate () {
-    // TODO: Make it dynamic with setTimeout or setInterval
-    console.log(currentDate.value)
+    const remaining = (60 - currentDate.value.seconds()) * 1000
+    timer = setTimeout(() => {
+      currentDate.value = moment()
+      updateCurrentDate()
+    }, remaining)
   }
+
+  onUnmounted(() => {
+    clearTimeout(timer)
+  })
 
   updateCurrentDate()
 
