@@ -86,7 +86,7 @@ import LTimeControl from './time/LTimeControl.vue'
 import WithRoomData from './rooms/WithRoomData.vue'
 import useCampusData from '@/composition/use-campus-data'
 import useBuildingData from '@/composition/use-building-data'
-import useFloorMapDates from '@/composition/use-floor-map-dates'
+import useReservationDates from '@/composition/use-reservation-dates'
 
 export default Vue.extend({
   components: {
@@ -124,7 +124,7 @@ export default Vue.extend({
   setup () {
     const campusData = useCampusData()
     const buildingData = useBuildingData()
-    const dates = useFloorMapDates()
+    const dates = useReservationDates()
 
     watch([campusData.campusName], ([campusName]) => {
       buildingData.getBuildings(campusName)
