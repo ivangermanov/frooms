@@ -59,6 +59,12 @@ namespace WebAPI.Services
 
         public async Task<IEnumerable<NotificationDto>> GetNotificationsAsync(Guid userId)
         {
+            var exists = await GetUserAsync(userId);
+            if (exists.Any() == false)
+            {
+                return new List<NotificationDto>();
+            }
+
             var notifications = _notificationRepository.GetForUser(userId);
 
             return await _mapper.ProjectTo<NotificationDto>(notifications).ToListAsync();
@@ -71,8 +77,6 @@ namespace WebAPI.Services
 
         public async Task MarkNotificationsRead(Guid userId)
         {
-            var notifications = _notificationRepository.GetForUser(userId);
-
             await _notificationRepository.MarkReadForUserAsync(userId);
         }
 

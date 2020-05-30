@@ -24,25 +24,36 @@
         </v-btn>
       </v-badge>
     </template>
-    <v-list>
-      <v-list-item
-        v-for="(notification, index) in notifications"
-        :key="index"
-      >
-        <v-list-item-icon v-show="notification.isNew">
-          <v-icon color="red">
-            mdi-new-box
-          </v-icon>
-        </v-list-item-icon>
-        <v-list-item-content>
-          <v-list-item-title v-text="notification.title" />
-          <v-list-item-subtitle v-text="notification.message" />
-        </v-list-item-content>
-        <v-list-item-action>
-          <v-list-item-action-text v-text="notification.createdDate" />
-        </v-list-item-action>
-      </v-list-item>
-    </v-list>
+    <template v-if="notifications.length === 0">
+      <v-list>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>No notifications yet!</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </template>
+    <template v-else>
+      <v-list>
+        <v-list-item
+          v-for="(notification, index) in notifications"
+          :key="index"
+        >
+          <v-list-item-icon v-show="notification.isNew">
+            <v-icon color="red">
+              mdi-new-box
+            </v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title v-text="notification.title" />
+            <v-list-item-subtitle v-text="notification.message" />
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-list-item-action-text v-text="notification.createdDate" />
+          </v-list-item-action>
+        </v-list-item>
+      </v-list>
+    </template>
   </v-menu>
 </template>
 
@@ -73,9 +84,11 @@ export default {
     async fetchNotifications () {
       const { data } = await UserRepository.getNotifications()
       this.notifications = data
-      this.newNotifications = this.notifications.reduce(function (previousValue, currentObject) {
-        return previousValue + (currentObject.isNew ? 1 : 0)
-      }, 0)
+      if (this.notifications.length !== 0) {
+        this.newNotifications = this.notifications.reduce(function (previousValue, currentObject) {
+          return previousValue + (currentObject.isNew ? 1 : 0)
+        }, 0)
+      }
     },
 
     markNotificationsRead () {
