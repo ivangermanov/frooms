@@ -1,14 +1,54 @@
 import moment from 'moment'
-import { reactive, toRefs, computed } from '@vue/composition-api'
+import { reactive, ref, toRefs, computed } from '@vue/composition-api'
 
 export default function useRoomsData () {
-  const date = new Date()
-  const hours = date.getHours()
-  const minutes = date.getMinutes()
+  const currentDate = ref(moment())
+  // TODO: Get start time and end time for reservations from back-end business logic
+  const minTime = moment('9:00', 'HH:mm')
+  const maxTime = moment('17:00', 'HH:mm')
   const data = reactive({
-    date: date.toISOString().substr(0, 10) as string,
-    startTime: `${hours}:${minutes}` as string,
-    endTime: `${hours + 1}:${minutes}` as string
+    date: currentDate.value.format('YYYY-MM-DD') as string,
+    startTime: currentDate.value.format('HH:mm') as string,
+    // TODO: Get max reservation time from back-end business logic
+    endTime: currentDate.value
+      .clone()
+      .add(3, 'hour')
+      .format('HH:mm') as string
+  })
+
+  const minDate = computed(() => {
+    if (currentDate.value.isAfter(maxTime)) {
+      return currentDate.value.clone().add(1, 'day').format('YYYY-MM-DD')
+    }
+    return currentDate.value.format('YYYY-MM-DD')
+  })
+  const maxDate = computed(() =>
+  // TODO: Get months in advance from back-end business logic
+    currentDate.value.add(3, 'M').format('YYYY-MM-DD')
+  )
+
+  const minStart = computed(() => {
+    if (currentDate.value.isAfter(maxTime)) {
+      return minTime.format('HH:mm')
+    }
+    return currentDate.value.format('HH:mm')
+  })
+  const maxStart = computed(() =>
+  // TODO: Get max from back-end business logic
+    maxTime.clone().subtract(1, 'hour').format('HH:mm')
+  )
+
+  const minEnd = computed(() =>
+    // TODO: Get min hours for booking from back-end business logic
+    moment(startDate.value)
+      .add(15, 'minutes')
+      .format('HH:mm')
+  )
+  const maxEnd = computed(() => {
+    if (moment(data.startTime, 'HH-mm').add(3, 'hours').isAfter(maxTime)) {
+      return maxTime.format('HH:mm')
+    }
+    return moment(startDate.value).add(3, 'hours').format('HH:mm')
   })
 
   const startDate = computed(() =>
@@ -18,5 +58,22 @@ export default function useRoomsData () {
     moment(`${data.date} ${data.endTime}`).toISOString()
   )
 
-  return { ...toRefs(data), startDate, endDate }
+  function updateCurrentDate () {
+    // TODO: Make it dynamic with setTimeout or setInterval
+    console.log(currentDate.value)
+  }
+
+  updateCurrentDate()
+
+  return {
+    ...toRefs(data),
+    startDate,
+    endDate,
+    minDate,
+    maxDate,
+    minStart,
+    maxStart,
+    minEnd,
+    maxEnd
+  }
 }
