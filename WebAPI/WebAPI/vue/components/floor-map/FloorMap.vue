@@ -29,16 +29,20 @@
                 :building-name.sync="buildingName"
                 :buildings="buildingNames"
               />
-              <l-date-control :date.sync="date" />
+              <l-date-control :date.sync="date" :min="minDate" :max="maxDate" />
               <l-time-control
                 label="Start time"
                 icon="mdi-clock-time-four"
                 :time.sync="startTime"
+                :min="minStart"
+                :max="maxStart"
               />
               <l-time-control
                 label="End time"
                 icon="mdi-clock-time-nine"
                 :time.sync="endTime"
+                :min="minEnd"
+                :max="maxEnd"
               />
               <l-floors-control
                 :map-object="mapObject"

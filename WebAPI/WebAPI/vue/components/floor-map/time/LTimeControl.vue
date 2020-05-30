@@ -5,7 +5,7 @@
         ref="menu"
         v-model="menu"
         :close-on-content-click="false"
-        :return-value.sync="time"
+        :return-value.sync="timeTemp"
         transition="scale-transition"
         offset-y
       >
@@ -20,11 +20,12 @@
             readonly
             hide-details="auto"
             v-on="on"
-            @input="value => update(value)"
           />
         </template>
         <v-time-picker
           v-model="timeTemp"
+          :min="min"
+          :max="max"
           scrollable
           :format="'24hr'"
           @click:minute="$refs.menu.save(timeTemp)"
@@ -36,11 +37,14 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import moment from 'moment'
 export default Vue.extend({
   props: {
     label: { type: String, default: 'Time' },
     icon: { type: String, default: 'mdi-clock' },
-    time: { type: String, default: '' }
+    time: { type: String, default: '' },
+    min: { type: String, default: '' },
+    max: { type: String, default: '' }
   },
   data () {
     return {
@@ -52,13 +56,34 @@ export default Vue.extend({
     time: {
       handler (value) {
         this.timeTemp = value
+        this.setTime()
       },
       immediate: true
+    },
+    timeTemp: {
+      handler () {
+        this.update()
+      },
+      immediate: true
+    },
+    min () {
+      this.setTime()
+    },
+    max () {
+      this.setTime()
     }
   },
   methods: {
-    update (time: string) {
-      this.$emit('update:time', time)
+    update () {
+      this.$emit('update:time', this.timeTemp)
+    },
+    setTime () {
+      const min = moment(this.min, 'HH:mm')
+      const max = moment(this.max, 'HH:mm')
+      const current = moment(this.timeTemp, 'HH:mm')
+      if (current.isAfter(max) || current.isBefore(min)) {
+        this.timeTemp = min.format('HH:mm')
+      }
     }
   }
 })
