@@ -58,7 +58,6 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetUserNotifications()
         {
             var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
             var notifications = await _userService.GetNotificationsAsync(userId);
 
             return Ok(notifications);
