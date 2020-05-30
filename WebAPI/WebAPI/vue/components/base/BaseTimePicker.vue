@@ -18,8 +18,9 @@
     <v-time-picker
       v-if="modal"
       :value="time"
-      format="24hr"
+      :format="'24hr'"
       full-width
+      scrollable
       @click:hour="updateHour"
       @click:minute="updateMinute"
     >
