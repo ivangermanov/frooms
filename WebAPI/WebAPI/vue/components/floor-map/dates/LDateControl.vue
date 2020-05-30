@@ -13,7 +13,6 @@
           <v-text-field
             v-model="date"
             label="Date"
-
             :dark="false"
             :light="true"
             :dense="true"
@@ -23,7 +22,14 @@
             v-on="on"
           />
         </template>
-        <v-date-picker v-model="date" :min="minDate" :max="maxDate" no-title scrollable>
+        <v-date-picker
+          v-model="dateTemp"
+          :min="minDate"
+          :max="maxDate"
+          no-title
+          scrollable
+          @input="(value) => update(value)"
+        >
           <v-spacer />
           <v-btn text color="primary" @click="menu = false">
             Cancel
@@ -41,10 +47,13 @@
 import Vue from 'vue'
 import moment from 'moment'
 export default Vue.extend({
+  props: {
+    date: { type: String, default: new Date().toISOString().substr(0, 10) }
+  },
   data () {
     return {
-      date: new Date().toISOString().substr(0, 10),
-      menu: false
+      menu: false,
+      dateTemp: ''
     }
   },
   computed: {
@@ -52,21 +61,19 @@ export default Vue.extend({
       return moment().format('YYYY-MM-DD')
     },
     maxDate () {
-      return moment().add(3, 'M').format('YYYY-MM-DD')
-    },
-    dateIso () {
-      const date = this.date as string
-      return moment(date).toISOString()
+      return moment()
+        .add(3, 'M')
+        .format('YYYY-MM-DD')
     }
   },
   watch: {
-    dateIso (value) {
-      this.updateDate(value)
+    date (value) {
+      this.dateTemp = value
     }
   },
   methods: {
-    updateDate (value: string) {
-      this.$emit('update:date', value)
+    update (date: string) {
+      this.$emit('update:date', date)
     }
   }
 })

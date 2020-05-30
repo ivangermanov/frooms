@@ -1,16 +1,14 @@
 <template>
   <client-only>
-    <l-map
-      ref="map"
-      :options="mapOptions"
-      style="height: 100vh; z-index: 0;"
-    >
+    <l-map ref="map" :options="mapOptions" style="height: 100vh; z-index: 0;">
       <l-control-zoom position="topright" />
 
       <with-room-data
         :campus-name="campusName"
         :building-name="buildingName"
         :floor-number="floorNumber"
+        :start-date="startDate"
+        :end-date="endDate"
       >
         <template
           v-slot="{
@@ -29,11 +27,19 @@
               />
               <l-building-control
                 :building-name.sync="buildingName"
-                :buildings="buildings.map(building => building.name)"
+                :buildings="buildingNames"
               />
-              <l-date-control />
-              <l-time-control :label="`Start time`" icon="mdi-clock-time-four" />
-              <l-time-control :label="`End time`" icon="mdi-clock-time-nine" />
+              <l-date-control :date.sync="date" />
+              <l-time-control
+                label="Start time"
+                icon="mdi-clock-time-four"
+                :time.sync="startTime"
+              />
+              <l-time-control
+                label="End time"
+                icon="mdi-clock-time-nine"
+                :time.sync="endTime"
+              />
               <l-floors-control
                 :map-object="mapObject"
                 :campus-names="campusNames"
@@ -41,7 +47,7 @@
                 :floors="floors"
                 :floor-number.sync="floorNumber"
                 position="bottomright"
-                @fetchedFloors="(value) => floorImagesReady = value"
+                @fetchedFloors="value => (floorImagesReady = value)"
               />
             </l-control>
             <fragment v-if="floorImagesReady">
@@ -76,6 +82,7 @@ import LTimeControl from './time/LTimeControl.vue'
 import WithRoomData from './rooms/WithRoomData.vue'
 import useCampusData from '@/composition/use-campus-data'
 import useBuildingData from '@/composition/use-building-data'
+import useFloorMapDates from '@/composition/use-floor-map-dates'
 
 export default Vue.extend({
   components: {
@@ -113,15 +120,13 @@ export default Vue.extend({
   setup () {
     const campusData = useCampusData()
     const buildingData = useBuildingData()
+    const dates = useFloorMapDates()
 
-    watch(
-      [campusData.campusName],
-      ([campusName]) => {
-        buildingData.getBuildings(campusName)
-      }
-    )
+    watch([campusData.campusName], ([campusName]) => {
+      buildingData.getBuildings(campusName)
+    })
 
-    return { ...toRefs(campusData), ...toRefs(buildingData) }
+    return { ...toRefs(campusData), ...toRefs(buildingData), ...toRefs(dates) }
   },
   mounted () {
     this.$nextTick(() => {
