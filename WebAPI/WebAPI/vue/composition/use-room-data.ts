@@ -52,14 +52,13 @@ export default function useRoomData (
   }
 
   async function getRooms () {
-    const { data: json } = await RoomRepository.getFloormapRooms(
+    const { data: rooms }: { data: IFloormapRoomDTO[] } = await RoomRepository.getFloormapRooms(
       props.campusName,
       props.buildingName,
       props.floorNumber,
       props.startDate,
       props.endDate
     )
-    const rooms: IFloormapRoomDTO[] = json
     const newRooms = {} as { [key: string]: IFloormapRoomDTO }
     const newRoomLayers = {} as { [key: string]: GeoJSON.Feature }
 

@@ -8,5 +8,6 @@ export class FloormapRoomDTO implements IFloormapRoomDTO {
   floorNumber: string = '';
   floorOrder: number = 0;
   points: IPoint[] = [];
+  isAvailable: boolean = true;
   capacity?: number;
 }
