@@ -24,5 +24,11 @@ namespace Froom.Data.Repositories.Interfaces
         /// </summary>
         /// <param name="notificationId"> The ID of the notification.</param>
         public Task MarkReadAsync(int notificationId);
+
+        /// <summary>
+        /// Marks all notifications as not new for a user.
+        /// </summary>
+        /// <param name="userId"> The ID of the user.</param>
+        public Task MarkReadForUserAsync(Guid userId);
     }
 }

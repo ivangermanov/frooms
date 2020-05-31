@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import NotificationsList from '~/components/base/NotificationsList.vue'
+import NotificationsList from '~/components/notifications/NotificationsList.vue'
 import ReservationsList from '~/components/reservations/ReservationsList.vue'
 
 export default Vue.extend({
