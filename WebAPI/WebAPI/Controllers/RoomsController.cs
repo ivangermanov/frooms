@@ -23,7 +23,6 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{campus}/{buildingName}/{floor}")]
         public async Task<IActionResult> GetFloormapRooms(string? campus, string? buildingName, string? floor, DateTime? fromDate,
             DateTime? toDate)
         {
