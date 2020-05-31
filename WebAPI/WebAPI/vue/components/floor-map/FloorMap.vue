@@ -1,74 +1,76 @@
 <template>
-  <client-only>
-    <l-map ref="map" :options="mapOptions" style="height: 100vh; z-index: 0;">
-      <l-control-zoom position="topright" />
+  <div style="height: 100%">
+    <client-only>
+      <l-map ref="map" :options="mapOptions" style="height: 100%; z-index: 0;">
+        <l-control-zoom position="topright" />
 
-      <with-room-data
-        :campus-name="campusName"
-        :building-name="buildingName"
-        :floor-number="floorNumber"
-        :start-date="startDate"
-        :end-date="endDate"
-      >
-        <template
-          v-slot="{
-            roomLayers,
-            floors,
-            postShape,
-            putShapes,
-            deleteShapes
-          }"
+        <with-room-data
+          :campus-name="campusName"
+          :building-name="buildingName"
+          :floor-number="floorNumber"
+          :start-date="startDate"
+          :end-date="endDate"
         >
-          <fragment v-if="mapObject">
-            <l-control position="topleft" class="topleft-control-panel">
-              <l-campus-control
-                :campus-name.sync="campusName"
-                :campuses="campusNames"
-              />
-              <l-building-control
-                :building-name.sync="buildingName"
-                :buildings="buildingNames"
-              />
-              <l-date-control :date.sync="date" :min="minDate" :max="maxDate" />
-              <l-time-control
-                label="Start time"
-                icon="mdi-clock-time-four"
-                :time.sync="startTime"
-                :min="minStart"
-                :max="maxStart"
-              />
-              <l-time-control
-                label="End time"
-                icon="mdi-clock-time-nine"
-                :time.sync="endTime"
-                :min="minEnd"
-                :max="maxEnd"
-              />
-              <l-floors-control
-                :map-object="mapObject"
-                :campus-names="campusNames"
-                :buildings="buildings"
-                :floors="floors"
-                :floor-number.sync="floorNumber"
-                position="bottomright"
-                @fetchedFloors="value => (floorImagesReady = value)"
-              />
-            </l-control>
-            <fragment v-if="floorImagesReady">
-              <l-draw
-                position="topright"
-                :map-object="mapObject"
-                :fetched-layers="roomLayers"
-                @addLayer="postShape"
-                @editLayers="putShapes"
-                @deleteLayers="deleteShapes"
-              />
+          <template
+            v-slot="{
+              roomLayers,
+              floors,
+              postShape,
+              putShapes,
+              deleteShapes
+            }"
+          >
+            <fragment v-if="mapObject">
+              <l-control position="topleft" class="topleft-control-panel">
+                <l-campus-control
+                  :campus-name.sync="campusName"
+                  :campuses="campusNames"
+                />
+                <l-building-control
+                  :building-name.sync="buildingName"
+                  :buildings="buildingNames"
+                />
+                <l-date-control :date.sync="date" :min="minDate" :max="maxDate" />
+                <l-time-control
+                  label="Start time"
+                  icon="mdi-clock-time-four"
+                  :time.sync="startTime"
+                  :min="minStart"
+                  :max="maxStart"
+                />
+                <l-time-control
+                  label="End time"
+                  icon="mdi-clock-time-nine"
+                  :time.sync="endTime"
+                  :min="minEnd"
+                  :max="maxEnd"
+                />
+                <l-floors-control
+                  :map-object="mapObject"
+                  :campus-names="campusNames"
+                  :buildings="buildings"
+                  :floors="floors"
+                  :floor-number.sync="floorNumber"
+                  position="bottomright"
+                  @fetchedFloors="value => (floorImagesReady = value)"
+                />
+              </l-control>
+              <fragment v-if="floorImagesReady">
+                <l-draw
+                  position="topright"
+                  :map-object="mapObject"
+                  :fetched-layers="roomLayers"
+                  @addLayer="postShape"
+                  @editLayers="putShapes"
+                  @deleteLayers="deleteShapes"
+                />
+              </fragment>
             </fragment>
-          </fragment>
-        </template>
-      </with-room-data>
-    </l-map>
-  </client-only>
+          </template>
+        </with-room-data>
+      </l-map>
+    </client-only>
+  </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
@@ -123,6 +125,7 @@ export default Vue.extend({
   },
   setup () {
     const campusData = useCampusData()
+    // TODO: Could extract date and time to a with-date-and-time HOC wrapper
     const buildingData = useBuildingData()
     const dates = useReservationDates()
 
