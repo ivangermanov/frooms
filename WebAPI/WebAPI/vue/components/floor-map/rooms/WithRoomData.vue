@@ -13,7 +13,9 @@ export default Vue.extend({
   props: {
     campusName: { default: null, type: String },
     buildingName: { default: null, type: String },
-    floorNumber: { default: null, type: String }
+    floorNumber: { default: null, type: String },
+    startDate: { default: null, type: String },
+    endDate: { default: null, type: String }
   },
   setup (props, context) {
     const data = useRoomData(props)
