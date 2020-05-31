@@ -43,7 +43,8 @@ export function IRoomToGeoJSONFeature (room: IFloormapRoomDTO): GeoJSON.Feature 
   const feature: GeoJSON.Feature = {
     properties: {
       number: room.number,
-      capacity: room.capacity
+      capacity: room.capacity,
+      isAvailable: room.isAvailable
     },
     type: 'Feature',
     geometry

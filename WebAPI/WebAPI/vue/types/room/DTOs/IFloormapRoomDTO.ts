@@ -7,5 +7,6 @@ export interface IFloormapRoomDTO {
   floorNumber: string;
   floorOrder: number;
   points: IPoint[];
+  isAvailable: boolean;
   capacity?: number;
 }
