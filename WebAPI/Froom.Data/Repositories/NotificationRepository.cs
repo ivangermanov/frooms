@@ -40,5 +40,15 @@ namespace Froom.Data.Repositories
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task MarkReadForUserAsync(Guid userId)
+        {
+            var notifications = _notifications
+                .Where(x => x.UserId == userId);
+
+            await notifications.ForEachAsync(x => x.IsNew = false);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

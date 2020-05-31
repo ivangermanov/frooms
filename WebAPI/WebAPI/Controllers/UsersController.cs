@@ -58,17 +58,26 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetUserNotifications()
         {
             var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
             var notifications = await _userService.GetNotificationsAsync(userId);
 
             return Ok(notifications);
         }
 
-        [Route("me/notifications")]
+        [Route("me/notifications/{notificationId}")]
         [HttpPost]
         public async Task<IActionResult> MarkNotificationRead(int notificationId)
         {
             await _userService.MarkNotificationRead(notificationId);
+            return Ok();
+        }
+
+        [Route("me/notifications")]
+        [HttpPost]
+        public async Task<IActionResult> MarkNotificationsRead()
+        {
+            var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            await _userService.MarkNotificationsRead(userId);
             return Ok();
         }
     }
