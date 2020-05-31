@@ -5,15 +5,14 @@
         ref="menu"
         v-model="menu"
         :close-on-content-click="false"
-        :return-value.sync="date"
+        :return-value.sync="dateTemp"
         transition="scale-transition"
         offset-y
       >
         <template v-slot:activator="{ on }">
           <v-text-field
-            v-model="date"
+            v-model="dateTemp"
             label="Date"
-
             :dark="false"
             :light="true"
             :dense="true"
@@ -23,12 +22,18 @@
             v-on="on"
           />
         </template>
-        <v-date-picker v-model="date" :min="minDate" :max="maxDate" no-title scrollable>
+        <v-date-picker
+          v-model="dateTemp"
+          :min="min"
+          :max="max"
+          no-title
+          scrollable
+        >
           <v-spacer />
           <v-btn text color="primary" @click="menu = false">
             Cancel
           </v-btn>
-          <v-btn text color="primary" @click="$refs.menu.save(date)">
+          <v-btn text color="primary" @click="$refs.menu.save(dateTemp)">
             OK
           </v-btn>
         </v-date-picker>
@@ -40,26 +45,52 @@
 <script lang="ts">
 import Vue from 'vue'
 import moment from 'moment'
+
 export default Vue.extend({
+  props: {
+    date: { type: String, default: '' },
+    min: { type: String, default: '' },
+    max: { type: String, default: '' }
+  },
   data () {
     return {
-      date: new Date().toISOString().substr(0, 10),
-      menu: false
+      menu: false,
+      dateTemp: ''
     }
   },
-  computed: {
-    minDate () {
-      return moment().format('YYYY-MM-DD')
+  watch: {
+    date: {
+      handler (value) {
+        this.dateTemp = value
+        this.setDate()
+      },
+      immediate: true
     },
-    maxDate () {
-      // TODO: calculate based on semester
-      return moment().add(3, 'M').format('YYYY-MM-DD')
+    dateTemp: {
+      handler () {
+        this.update()
+      },
+      immediate: true
+    },
+    min () {
+      this.setDate()
+    },
+    max () {
+      this.setDate()
     }
   },
   methods: {
-    // updateBuildingName (value: string) {
-    //   this.$emit('update:buildingName', value)
-    // }
+    update () {
+      this.$emit('update:date', this.dateTemp)
+    },
+    setDate () {
+      const min = moment(this.min)
+      const max = moment(this.max)
+      const current = moment(this.dateTemp)
+      if (current.isAfter(max) || current.isBefore(min)) {
+        this.dateTemp = min.format('YYYY-MM-DD')
+      }
+    }
   }
 })
 </script>

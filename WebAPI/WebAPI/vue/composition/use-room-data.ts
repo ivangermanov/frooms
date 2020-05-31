@@ -18,6 +18,8 @@ export default function useRoomData (
     campusName?: string;
     buildingName?: string;
     floorNumber?: string;
+    startDate?: string;
+    endDate?: string;
   } = {}
 ) {
   const data = reactive({
@@ -27,6 +29,7 @@ export default function useRoomData (
   })
 
   async function getFloors () {
+    // TODO: Make IFloor TypeScript interface
     const {
       data: json
     }: { data: Array<any> } = await FloorRepository.getFloors(
@@ -49,10 +52,12 @@ export default function useRoomData (
   }
 
   async function getRooms () {
-    const { data: json } = await RoomRepository.getRooms(
+    const { data: json } = await RoomRepository.getFloormapRooms(
       props.campusName,
       props.buildingName,
-      props.floorNumber
+      props.floorNumber,
+      props.startDate,
+      props.endDate
     )
     const rooms: IRoomDTO[] = json
     const newRooms = {} as { [key: string]: IRoomDTO }

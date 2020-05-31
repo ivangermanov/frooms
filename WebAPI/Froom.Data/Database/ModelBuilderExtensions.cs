@@ -71,76 +71,76 @@ namespace Froom.Data.Database
                         CampusName = "EHV",
                         Address = "Unknown"
                     },
-                    new Building
-                    {
-                        Id = 2,
-                        Name = "R3R4",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 3,
-                        Name = "R5",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 4,
-                        Name = "EK",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 5,
-                        Name = "ER",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 6,
-                        Name = "ES",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 7,
-                        Name = "S1",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 8,
-                        Name = "S2",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 9,
-                        Name = "S3",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 10,
-                        Name = "TF",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 11,
-                        Name = "TQ",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    }
+                    //new Building
+                    //{
+                    //    Id = 2,
+                    //    Name = "R3R4",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 3,
+                    //    Name = "R5",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 4,
+                    //    Name = "EK",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 5,
+                    //    Name = "ER",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 6,
+                    //    Name = "ES",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 7,
+                    //    Name = "S1",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 8,
+                    //    Name = "S2",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 9,
+                    //    Name = "S3",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 10,
+                    //    Name = "TF",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 11,
+                    //    Name = "TQ",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //}
                 };
             }
         }

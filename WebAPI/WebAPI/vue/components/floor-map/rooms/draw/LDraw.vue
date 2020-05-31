@@ -51,7 +51,9 @@ export default Vue.extend({
   computed: {
     isAdmin (): Boolean {
       const info: IUser = this.$store.state.user.info
-      if (!info.role) { return true }
+      if (!info.role) {
+        return true
+      }
       return info.role.some(role => role === 'admin')
     }
   },
@@ -67,9 +69,10 @@ export default Vue.extend({
     this.mapObject.removeLayer(this.allLayers)
   },
   methods: {
-    drawLayers (layers: { [key: string]: GeoJSON.Feature}) {
+    drawLayers (layers: { [key: string]: GeoJSON.Feature }) {
       const allLayers = this.allLayers
       allLayers.clearLayers()
+      // console.log(allLayers, layers)
 
       allLayers.eachLayer((layer: any) => {
         const geoJSON: GeoJSON.Feature = (layer as any).toGeoJSON()
