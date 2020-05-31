@@ -77,15 +77,21 @@ const UserRepository = RepositoryFactory.user
 export default {
   data: () => ({
     notifications: [],
-    loading: true
+    loading: true,
+    timer: ''
   }),
 
   beforeMount () {
     this.fetchNotifications()
+    this.timer = setInterval(this.fetchNotifications, 5000)
   },
 
   mounted () {
     this.loading = true
+  },
+
+  beforeDestroy () {
+    clearInterval(this.timer)
   },
 
   methods: {

@@ -25,6 +25,7 @@
       </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      <notifications-menu />
       <div class="d-flex mr-4">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
@@ -73,8 +74,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
+import NotificationsMenu from '~/components/notifications/NotificationsMenu.vue'
 
 export default Vue.extend({
+  components: {
+    NotificationsMenu
+  },
   middleware: 'user',
   data () {
     return {
