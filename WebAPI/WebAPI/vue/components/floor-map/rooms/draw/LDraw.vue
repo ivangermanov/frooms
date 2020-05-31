@@ -26,12 +26,13 @@ import 'leaflet-draw/dist/leaflet.draw-src.css'
 
 const availableColor = 'green'
 const unavailableColor = 'red'
+const weight = 1
 
 function getColor (feature: any): PathOptions {
   switch (feature.properties?.isAvailable) {
-    case true: return { color: availableColor }
-    case false: return { color: unavailableColor }
-    default: return { color: availableColor }
+    case true: return { color: availableColor, weight }
+    case false: return { color: unavailableColor, weight }
+    default: return { color: availableColor, weight }
   }
 }
 
