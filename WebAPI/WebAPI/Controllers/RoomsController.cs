@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetFloormapRooms(string? campus, string? buildingName, string? floor, DateTime? fromDate,
             DateTime? toDate)
         {
-            var rooms = await _roomService.GetRooms(campus, buildingName, floor);
+            var rooms = await _roomService.GetFloormapRooms(campus, buildingName, floor, fromDate, toDate);
             return Ok(rooms);
         }
 
