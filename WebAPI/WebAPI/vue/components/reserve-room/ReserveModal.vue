@@ -101,9 +101,7 @@ const ReservationRepository = RepositoryFactory.reservation
 const FloorRepository = RepositoryFactory.floor
 
 export default {
-
   components: { Loader, RoomFilter, PickRoom, ConfirmReservation },
-
   data () {
     return {
       data: {

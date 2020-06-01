@@ -123,7 +123,6 @@ L.Popup.include({
         ruler.innerHTML = inputField.innerHTML
 
         if (ruler.offsetWidth + 20 > inputFieldDiv.clientWidth) {
-          console.log('expand now')
           inputField.style.width = thisStandIn._inputField.style.width = ruler.offsetWidth + 10 + 'px'
           thisStandIn.update()
         }
