@@ -8,9 +8,9 @@ namespace Froom.Data.Dtos
 
         public RoomDto Room { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public TimeSpan Duration { get; set; }
+        public DateTime EndDate { get; set; }
 
         public bool Expired { get; set; }
 

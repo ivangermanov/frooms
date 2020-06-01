@@ -26,8 +26,8 @@ namespace Froom.Data.Entities
                 return true;
 
             return !Reservations
-                .Any(r => DateTime.Compare(r.StartTime, toDate ?? DateTime.MaxValue) < 0 &&
-                          DateTime.Compare(fromDate ?? DateTime.MinValue, r.StartTime.Add(r.Duration)) < 0);
+                .Any(r => DateTime.Compare(r.StartDate, toDate ?? DateTime.MaxValue) < 0 &&
+                          DateTime.Compare(fromDate ?? DateTime.MinValue, r.EndDate) < 0);
         }
     }
 
