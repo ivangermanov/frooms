@@ -46,7 +46,7 @@ namespace WebAPI.Services
                 Message = $"{reservation.Room.Details.BuildingName}_" +
                     $"{reservation.Room.Number}, " +
                     $"{reservation.Room.Details.CampusName} " +
-                    $"for {reservation.StartTime: MM/dd/yy H:mm}"
+                    $"for {reservation.StartDate: MM/dd/yy H:mm}"
             };
 
             await _notificationRepository.AddAsync(notification);
@@ -65,9 +65,9 @@ namespace WebAPI.Services
             var reservations = _reservationRepository.GetForUser(userId).Select(e => new ReservationDto
             {
                 Room = _mapper.Map<RoomDto>(e.Room),
-                StartTime = e.StartTime,
-                Duration = e.Duration,
-                Expired = (e.StartTime + e.Duration < DateTime.Now) ? true : false
+                StartDate = e.StartDate,
+                EndDate = e.EndDate,
+                Expired = e.IsExpired()
             });
 
             return await reservations.ToListAsync();

@@ -355,80 +355,80 @@ namespace Froom.Data.Database
                         Id = 1,
                         UserId = Users[0].Id,
                         RoomId = Rooms[0].Id,
-                        StartTime = new DateTime(2020, 5, 5, 8, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 5, 8, 0, 0),
+                        EndDate = new DateTime(2020, 5, 5, 8, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 2,
                         UserId = Users[0].Id,
                         RoomId = Rooms[1].Id,
-                        StartTime = new DateTime(2020, 5, 5, 9, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 5, 9, 0, 0),
+                        EndDate = new DateTime(2020, 5, 5, 9, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 3,
                         UserId = Users[0].Id,
                         RoomId = Rooms[2].Id,
-                        StartTime = new DateTime(2020, 5, 5, 10, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 5, 10, 0, 0),
+                        EndDate = new DateTime(2020, 5, 5, 10, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 4,
                         UserId = Users[0].Id,
                         RoomId = Rooms[3].Id,
-                        StartTime = new DateTime(2020, 5, 5, 11, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 5, 11, 0, 0),
+                        EndDate = new DateTime(2020, 5, 5, 11, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 5,
                         UserId = Users[0].Id,
                         RoomId = Rooms[0].Id,
-                        StartTime = new DateTime(2020, 5, 5, 12, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 5, 12, 0, 0),
+                        EndDate = new DateTime(2020, 5, 5, 12, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 6,
                         UserId = Users[0].Id,
                         RoomId = Rooms[4].Id,
-                        StartTime = new DateTime(2020, 5, 5, 13, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 5, 13, 0, 0),
+                        EndDate = new DateTime(2020, 5, 5, 13, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 7,
                         UserId = Users[1].Id,
                         RoomId = Rooms[5].Id,
-                        StartTime = new DateTime(2020, 5, 5, 14, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 5, 14, 0, 0),
+                        EndDate = new DateTime(2020, 5, 5, 14, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 8,
                         UserId = Users[1].Id,
                         RoomId = Rooms[6].Id,
-                        StartTime = new DateTime(2020, 5, 6, 8, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 6, 8, 0, 0),
+                        EndDate = new DateTime(2020, 5, 6, 8, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 9,
                         UserId = Users[1].Id,
                         RoomId = Rooms[7].Id,
-                        StartTime = new DateTime(2020, 5, 6, 9, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 6, 9, 0, 0),
+                        EndDate = new DateTime(2020, 5, 6, 9, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 10,
                         UserId = Users[1].Id,
                         RoomId = Rooms[0].Id,
-                        StartTime = new DateTime(2020, 5, 6, 10, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 6, 10, 0, 0),
+                        EndDate = new DateTime(2020, 5, 6, 10, 30, 0),
                     },
 
                     new Reservation
@@ -436,80 +436,80 @@ namespace Froom.Data.Database
                         Id = 11,
                         UserId = Users[1].Id,
                         RoomId = Rooms[1].Id,
-                        StartTime = new DateTime(2020, 5, 7, 8, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 7, 8, 0, 0),
+                        EndDate = new DateTime(2020, 5, 7, 8, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 12,
                         UserId = Users[2].Id,
                         RoomId = Rooms[2].Id,
-                        StartTime = new DateTime(2020, 5, 7, 9, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 7, 9, 0, 0),
+                        EndDate = new DateTime(2020, 5, 7, 9, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 13,
                         UserId = Users[2].Id,
                         RoomId = Rooms[3].Id,
-                        StartTime = new DateTime(2020, 5, 7, 10, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 7, 10, 0, 0),
+                        EndDate = new DateTime(2020, 5, 7, 10, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 14,
                         UserId = Users[2].Id,
                         RoomId = Rooms[4].Id,
-                        StartTime = new DateTime(2020, 5, 7, 11, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 7, 11, 0, 0),
+                        EndDate = new DateTime(2020, 5, 7, 11, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 15,
                         UserId = Users[2].Id,
                         RoomId = Rooms[5].Id,
-                        StartTime = new DateTime(2020, 5, 8, 8, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 8, 8, 0, 0),
+                        EndDate = new DateTime(2020, 5, 8, 8, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 16,
                         UserId = Users[2].Id,
                         RoomId = Rooms[6].Id,
-                        StartTime = new DateTime(2020, 5, 8, 9, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 8, 9, 0, 0),
+                        EndDate = new DateTime(2020, 5, 8, 9, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 17,
                         UserId = Users[3].Id,
                         RoomId = Rooms[7].Id,
-                        StartTime = new DateTime(2020, 5, 10, 8, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 10, 8, 0, 0),
+                        EndDate = new DateTime(2020, 5, 10, 8, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 18,
                         UserId = Users[3].Id,
                         RoomId = Rooms[0].Id,
-                        StartTime = new DateTime(2020, 5, 10, 9, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 10, 9, 0, 0),
+                        EndDate = new DateTime(2020, 5, 10, 9, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 19,
                         UserId = Users[3].Id,
                         RoomId = Rooms[1].Id,
-                        StartTime = new DateTime(2020, 5, 10, 10, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 10, 10, 0, 0),
+                        EndDate = new DateTime(2020, 5, 10, 10, 30, 0),
                     },
                     new Reservation
                     {
                         Id = 20,
                         UserId = Users[3].Id,
                         RoomId = Rooms[2].Id,
-                        StartTime = new DateTime(2020, 5, 10, 11, 0, 0),
-                        Duration = new TimeSpan(0, 30, 0)
+                        StartDate = new DateTime(2020, 5, 10, 11, 0, 0),
+                        EndDate = new DateTime(2020, 5, 10, 11, 30, 0),
                     }
                 };
             }
