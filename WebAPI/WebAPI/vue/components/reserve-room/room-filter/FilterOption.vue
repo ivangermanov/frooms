@@ -54,75 +54,63 @@
   </v-row>
 </template>
 
-<script>
-import { toRefs, reactive } from '@vue/composition-api'
+<script lang="ts">
+import { ref, toRefs, reactive, watch, computed, defineComponent, PropType } from '@vue/composition-api'
 import BaseTimePicker from '@/components/base/BaseTimePicker.vue'
 import BaseDatePicker from '@/components/base/BaseDatePicker.vue'
 import BaseDropDownSelector from '@/components/base/BaseDropdownSelector.vue'
 import useReservationDates from '@/composition/use-reservation-dates'
 
-export default {
+export default defineComponent({
   components: { BaseDatePicker, BaseDropDownSelector, BaseTimePicker },
 
   props: {
     campuses: {
-      type: Array,
+      type: Array as PropType<Array<any>>,
       required: true,
-      default () {
-        return []
-      }
+      default: () => []
     }
   },
-
-  data () {
-    return {
-      selectedCampusName: '',
-      selectedBuildingName: ''
-    }
-  },
-  setup () {
+  setup ({ campuses }, { emit }) {
     const dates = useReservationDates()
     const { startDate, endDate, ...rest } = toRefs(dates)
+    const selectedCampusName = ref('')
+    const selectedBuildingName = ref('')
     const reservationDetails = reactive({
-      campus: null,
-      building: null,
+      campus: null as any,
+      building: null as any,
       room: null,
       startDate,
       endDate
     })
 
-    return { reservationDetails, ...toRefs(rest) }
-  },
-  computed: {
-    campusNames () {
-      return this.campuses.map((campus) => { return campus.name })
-    },
+    function updateReservationDetailsEvent () {
+      emit('update-reservation-details', reservationDetails)
+    }
 
-    buildingNames () {
-      if (this.reservationDetails.campus === null) {
+    const campusNames = computed(() => campuses.map((campus: any) => campus.name))
+    const buildingNames = computed(() => {
+      if (reservationDetails.campus === null) {
         return []
       }
+      return reservationDetails.campus.buildings.map((building: any) => building.name)
+    })
 
-      return this.reservationDetails.campus.buildings.map((building) => { return building.name })
-    }
-  },
+    watch(selectedCampusName, (name) => {
+      if (!name) { return }
+      reservationDetails.campus = campuses.filter(campus => campus.name === name)[0]
+      updateReservationDetailsEvent()
+    })
+    watch(selectedBuildingName, (name) => {
+      if (!name) { return }
+      reservationDetails.building = reservationDetails.campus.buildings.filter((building: any) => building.name === name)[0]
+      updateReservationDetailsEvent()
+    })
 
-  watch: {
-    selectedCampusName () {
-      this.reservationDetails.campus = this.campuses.filter((campus) => { return campus.name === this.selectedCampusName })[0]
-      this.updateReservationDetailsEvent()
-    },
+    watch(() => [reservationDetails.startDate, reservationDetails.endDate],
+      () => { updateReservationDetailsEvent() })
 
-    selectedBuildingName () {
-      this.reservationDetails.building = this.reservationDetails.campus.buildings.filter((building) => { return building.name === this.selectedBuildingName })[0]
-      this.updateReservationDetailsEvent()
-    }
-  },
-
-  methods: {
-    updateReservationDetailsEvent () {
-      this.$emit('update-reservation-details', this.reservationDetails)
-    }
+    return { ...toRefs(rest as any), reservationDetails, campusNames, buildingNames, selectedCampusName, selectedBuildingName }
   }
-}
+})
 </script>
