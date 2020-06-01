@@ -87,7 +87,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import RoomFilter from './room-filter/RoomFilter.vue'
 import PickRoom from './pick-room/PickRoom.vue'
 import ConfirmReservation from './confirm-reservation/ConfirmReservation.vue'
@@ -137,19 +136,6 @@ export default {
 
     reservationDetailsAreReady () {
       return this.roomFilterOptionsAreReady && (this.reservationDetails.room != null || this.currentStep === 1)
-    },
-
-    duration () {
-      if (this.reservationDetailsAreReady) {
-        const totalSeconds = this.reservationDetails.endDate.diff(this.reservationDetails.startDate, 'seconds')
-        const momentDuration = moment.duration(totalSeconds, 'seconds')
-        const hours = momentDuration.hours()
-        const minutes = momentDuration.minutes()
-
-        return `${this.padTime(hours)}:${this.padTime(minutes)}`
-      }
-
-      return '00:00'
     }
   },
 
@@ -192,8 +178,8 @@ export default {
           this.reservationDetails.campus.name,
           this.reservationDetails.building.name,
           this.reservationDetails.floor.number,
-          this.reservationDetails.startDate.toISOString(true),
-          this.reservationDetails.endDate.toISOString(true)
+          this.reservationDetails.startDate,
+          this.reservationDetails.endDate
         )
         this.data.rooms = data
         this.reservationDetails.room = null
@@ -221,8 +207,8 @@ export default {
         {
           userId: currentUserId,
           roomId: this.reservationDetails.room.id,
-          startTime: this.reservationDetails.startDate.toISOString(true),
-          duration: this.duration
+          startDate: this.reservationDetails.startDate,
+          endDate: this.reservationDetails.endDate
         }
       )
     },

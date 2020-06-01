@@ -38,10 +38,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import moment from 'moment'
+
 export default Vue.extend({
   props: {
-    label: { type: String, default: 'Time' },
     icon: { type: String, default: 'mdi-clock' },
+    label: { type: String, default: 'Time' },
     time: { type: String, default: '' },
     min: { type: String, default: '' },
     max: { type: String, default: '' }
@@ -77,6 +78,7 @@ export default Vue.extend({
     update () {
       this.$emit('update:time', this.timeTemp)
     },
+    // TODO: This logic is also used in several places and is a candidate for composition API
     setTime () {
       const min = moment(this.min, 'HH:mm')
       const max = moment(this.max, 'HH:mm')
