@@ -24,7 +24,7 @@ export default function useRoomsData () {
   })
   const maxDate = computed(() =>
   // TODO: Get months in advance from back-end business logic
-    currentDate.value.add(3, 'M').format('YYYY-MM-DD')
+    currentDate.value.clone().add(3, 'M').format('YYYY-MM-DD')
   )
 
   const minStart = computed(() => {
