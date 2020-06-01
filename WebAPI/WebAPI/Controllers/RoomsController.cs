@@ -22,25 +22,11 @@ namespace WebAPI.Controllers
             _fontysApi = fontysApi;
         }
 
-        // TODO: Remove, only for testing
         [HttpGet]
-        [Authorize(Roles = "admin")]
-        [Route("user")]
-        public async Task<IActionResult> GetUser()
+        public async Task<IActionResult> GetFloormapRooms(string? campus, string? buildingName, string? floor, DateTime? fromDate,
+            DateTime? toDate)
         {
-            //var result = await _fontysApi.GetUserInfo();
-            var result2 = await _fontysApi.GetBuildings();
-            // var result3 = await _fontysApi.GetBuildingsNearby();
-            //var result4 = await _fontysApi.GetLocationCurrent();
-            //var result5 = await _fontysApi.GetPermissionsScopes();
-            //var result6 = await _fontysApi.GetPermissionsRoles();
-            return Ok(result2);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetRooms(string? campus, string? buildingName, string? floor)
-        {
-            var rooms = await _roomService.GetRooms(campus, buildingName, floor);
+            var rooms = await _roomService.GetFloormapRooms(campus, buildingName, floor, fromDate, toDate);
             return Ok(rooms);
         }
 

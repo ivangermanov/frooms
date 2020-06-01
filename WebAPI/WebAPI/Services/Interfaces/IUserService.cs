@@ -31,6 +31,11 @@ namespace WebAPI.Services.Interfaces
         public Task<UserDto> UnblockUserAsync(Guid id);
 
         /// <summary>
+        /// Changes the role of the user.
+        /// </summary>
+        public Task<UserDto> ChangeRoleAsync(Guid id, int role);
+
+        /// <summary>
         /// Check if a user exist.
         /// If the user does not exist, create it.
         /// </summary>
@@ -45,5 +50,10 @@ namespace WebAPI.Services.Interfaces
         /// Marks a notification as not new.
         /// </summary>
         public Task MarkNotificationRead(int notificationId);
+
+        /// <summary>
+        /// Marks all current notifications as not new.
+        /// </summary>
+        public Task MarkNotificationsRead(Guid userId);
     }
 }

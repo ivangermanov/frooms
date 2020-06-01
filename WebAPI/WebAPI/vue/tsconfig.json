@@ -29,6 +29,7 @@
         "@nuxt/vue-app",
         "@nuxtjs/vuetify",
         "@nuxtjs/axios",
+        "@nuxtjs/moment",
         "nuxt-leaflet"
       ]
     },

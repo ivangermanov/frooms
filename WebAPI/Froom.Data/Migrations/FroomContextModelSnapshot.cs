@@ -265,7 +265,7 @@ namespace Froom.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getdate()");
 
-                    b.Property<bool>("IsNew")
+                    b.Property<bool?>("IsNew")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
@@ -282,17 +282,6 @@ namespace Froom.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Notification");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsNew = true,
-                            Message = "Seeded notification text.",
-                            Title = "Seeded Notification",
-                            UserId = new Guid("91dd26e6-2c14-42c1-ac7d-c00457d0bc0e")
-                        });
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Picture", b =>
@@ -374,10 +363,162 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Duration = new TimeSpan(0, 1, 0, 0, 0),
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
                             RoomId = 1,
-                            StartTime = new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified),
-                            UserId = new Guid("91dd26e6-2c14-42c1-ac7d-c00457d0bc0e")
+                            StartTime = new DateTime(2020, 5, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("5c861938-98ba-41d2-9e24-da3610e34544")
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 2,
+                            StartTime = new DateTime(2020, 5, 5, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("5c861938-98ba-41d2-9e24-da3610e34544")
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 3,
+                            StartTime = new DateTime(2020, 5, 5, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("5c861938-98ba-41d2-9e24-da3610e34544")
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 4,
+                            StartTime = new DateTime(2020, 5, 5, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("5c861938-98ba-41d2-9e24-da3610e34544")
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 1,
+                            StartTime = new DateTime(2020, 5, 5, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("5c861938-98ba-41d2-9e24-da3610e34544")
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 5,
+                            StartTime = new DateTime(2020, 5, 5, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("5c861938-98ba-41d2-9e24-da3610e34544")
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 6,
+                            StartTime = new DateTime(2020, 5, 5, 14, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("05847a38-8ea2-4232-966e-512d4159c554")
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 7,
+                            StartTime = new DateTime(2020, 5, 6, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("05847a38-8ea2-4232-966e-512d4159c554")
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 8,
+                            StartTime = new DateTime(2020, 5, 6, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("05847a38-8ea2-4232-966e-512d4159c554")
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 1,
+                            StartTime = new DateTime(2020, 5, 6, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("05847a38-8ea2-4232-966e-512d4159c554")
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 2,
+                            StartTime = new DateTime(2020, 5, 7, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("05847a38-8ea2-4232-966e-512d4159c554")
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 3,
+                            StartTime = new DateTime(2020, 5, 7, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("ab81a843-3e70-4cd2-9c89-d6b5719c3a6b")
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 4,
+                            StartTime = new DateTime(2020, 5, 7, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("ab81a843-3e70-4cd2-9c89-d6b5719c3a6b")
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 5,
+                            StartTime = new DateTime(2020, 5, 7, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("ab81a843-3e70-4cd2-9c89-d6b5719c3a6b")
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 6,
+                            StartTime = new DateTime(2020, 5, 8, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("ab81a843-3e70-4cd2-9c89-d6b5719c3a6b")
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 7,
+                            StartTime = new DateTime(2020, 5, 8, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("ab81a843-3e70-4cd2-9c89-d6b5719c3a6b")
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 8,
+                            StartTime = new DateTime(2020, 5, 10, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("ac408ff3-2e5d-4975-96a8-83e6e67f9e03")
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 1,
+                            StartTime = new DateTime(2020, 5, 10, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("ac408ff3-2e5d-4975-96a8-83e6e67f9e03")
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 2,
+                            StartTime = new DateTime(2020, 5, 10, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("ac408ff3-2e5d-4975-96a8-83e6e67f9e03")
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            RoomId = 3,
+                            StartTime = new DateTime(2020, 5, 10, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("ac408ff3-2e5d-4975-96a8-83e6e67f9e03")
                         });
                 });
 
@@ -497,14 +638,6 @@ namespace Froom.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("91dd26e6-2c14-42c1-ac7d-c00457d0bc0e"),
-                            Email = "seeduser@gmail.com",
-                            IsBlocked = false,
-                            Name = "SeedUser",
-                            Role = 0
-                        },
-                        new
-                        {
                             Id = new Guid("5c861938-98ba-41d2-9e24-da3610e34544"),
                             Email = "i.germanov@student.fontys.nl",
                             IsBlocked = false,
@@ -517,6 +650,22 @@ namespace Froom.Data.Migrations
                             Email = "y.buzykina@student.fontys.nl",
                             IsBlocked = false,
                             Name = "Yevheniia Buzykina",
+                            Role = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("ab81a843-3e70-4cd2-9c89-d6b5719c3a6b"),
+                            Email = "a.melkonyan@student.fontys.nl",
+                            IsBlocked = false,
+                            Name = "Anjela Melkonyan",
+                            Role = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("ac408ff3-2e5d-4975-96a8-83e6e67f9e03"),
+                            Email = "jeffrey.chan@student.fontys.nl",
+                            IsBlocked = false,
+                            Name = "Chan,Jeffrey J.K.B.",
                             Role = 1
                         });
                 });

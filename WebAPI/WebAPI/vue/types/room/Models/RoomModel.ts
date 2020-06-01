@@ -1,4 +1,3 @@
-import { EShape } from '../EShape'
 import { IPoint } from '../IPoint'
 import { IRoomModel } from './IRoomModel'
 
@@ -9,6 +8,5 @@ export class RoomModel implements IRoomModel {
   floorNumber: string = '';
   floorOrder: number = 0;
   points: IPoint[] = [];
-  shape: EShape = EShape.POLYGON;
   capacity?: number;
 }

@@ -5,13 +5,13 @@
         ref="menu"
         v-model="menu"
         :close-on-content-click="false"
-        :return-value.sync="time"
+        :return-value.sync="timeTemp"
         transition="scale-transition"
         offset-y
       >
         <template v-slot:activator="{ on }">
           <v-text-field
-            v-model="time"
+            v-model="timeTemp"
             :label="label"
             :dark="false"
             :light="true"
@@ -22,7 +22,14 @@
             v-on="on"
           />
         </template>
-        <v-time-picker v-model="time" @click:minute="$refs.menu.save(time)" />
+        <v-time-picker
+          v-model="timeTemp"
+          :min="min"
+          :max="max"
+          scrollable
+          :format="'24hr'"
+          @click:minute="$refs.menu.save(timeTemp)"
+        />
       </v-menu>
     </v-container>
   </div>
@@ -30,21 +37,54 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import moment from 'moment'
 export default Vue.extend({
   props: {
     label: { type: String, default: 'Time' },
-    icon: { type: String, default: 'mdi-clock' }
+    icon: { type: String, default: 'mdi-clock' },
+    time: { type: String, default: '' },
+    min: { type: String, default: '' },
+    max: { type: String, default: '' }
   },
   data () {
     return {
-      time: null,
+      timeTemp: '',
       menu: false
     }
   },
+  watch: {
+    time: {
+      handler (value) {
+        this.timeTemp = value
+        this.setTime()
+      },
+      immediate: true
+    },
+    timeTemp: {
+      handler () {
+        this.update()
+      },
+      immediate: true
+    },
+    min () {
+      this.setTime()
+    },
+    max () {
+      this.setTime()
+    }
+  },
   methods: {
-    // updateBuildingName (value: string) {
-    //   this.$emit('update:buildingName', value)
-    // }
+    update () {
+      this.$emit('update:time', this.timeTemp)
+    },
+    setTime () {
+      const min = moment(this.min, 'HH:mm')
+      const max = moment(this.max, 'HH:mm')
+      const current = moment(this.timeTemp, 'HH:mm')
+      if (current.isAfter(max) || current.isBefore(min)) {
+        this.timeTemp = min.format('HH:mm')
+      }
+    }
   }
 })
 </script>

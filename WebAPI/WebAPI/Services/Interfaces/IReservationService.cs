@@ -26,5 +26,11 @@ namespace WebAPI.Services.Interfaces
         /// <param name="userId">The unique number of the user.</param>
         /// <returns></returns>
         public Task<IEnumerable<ReservationDto>> GetReservationsForUser(Guid userId);
+
+        /// <summary>
+        /// Retrieves all reservations (Admin usage)
+        /// </summary>
+        /// <returns></returns>
+        public Task<IEnumerable<ReservationDto>> GetAllReservations();
     }
 }

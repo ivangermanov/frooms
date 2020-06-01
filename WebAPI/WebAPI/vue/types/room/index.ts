@@ -1,5 +1,4 @@
-export { RoomDTO, IRoomDTO } from './DTOs'
+export { RoomDTO, IRoomDTO, IFloormapRoomDTO } from './DTOs'
 export { RoomModel, IRoomModel } from './Models'
-export { EShape } from './EShape'
 export { IPoint } from './IPoint'
 export { CreateIRoomModel, IRoomToGeoJSONFeature } from './functions'

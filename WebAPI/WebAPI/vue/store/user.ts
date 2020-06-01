@@ -23,6 +23,9 @@ export const mutations = {
 
 export const getters = {
   isAdmin: (state: any) => {
-    return state.info.role.includes('admin')
+    if (state.info.role) {
+      return state.info.role.includes('admin')
+    }
+    return false
   }
 }
