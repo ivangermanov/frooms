@@ -10,11 +10,11 @@
       />
     </v-card-title>
     <v-data-table
-    :headers="headers"
-    :items="users"
+      :headers="headers"
+      :items="users"
       :search="search"
-    sort-by="Name"
-    class="elevation-1"
+      sort-by="Name"
+      class="elevation-1"
     >
       <template v-slot:top>
         <v-dialog v-model="dialog" max-width="350px">
@@ -85,7 +85,6 @@ export default {
       search: '',
       selectedUserIndex: Number,
       selectedUserRole: Number,
-      },
       headers: [
         {
           text: 'Name',
