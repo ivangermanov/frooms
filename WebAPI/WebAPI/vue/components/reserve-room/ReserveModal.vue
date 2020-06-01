@@ -187,9 +187,9 @@ export default {
     },
 
     async fetchFloors () {
+      // TODO: Empty floors better be filtered out
       const { data } = await FloorRepository.getFloors(this.reservationDetails.building.name)
       this.data.floors = data
-      this.reservationDetails.floor = null
       await this.fetchRooms()
     },
 
@@ -218,7 +218,6 @@ export default {
       this.reservationDetails.building = value.building
       this.reservationDetails.startDate = value.startDate
       this.reservationDetails.endDate = value.endDate
-
       if (this.roomFilterOptionsAreReady) {
         this.fetchFloors()
       }
