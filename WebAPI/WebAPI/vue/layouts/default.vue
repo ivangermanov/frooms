@@ -91,12 +91,12 @@ export default Vue.extend({
           to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
+          icon: 'mdi-map',
           title: 'Floor map',
           to: '/floor-map'
         },
         {
-          icon: 'mdi-briefcase-search',
+          icon: 'mdi-calendar',
           title: 'Reserve a room',
           to: '/reserve-room'
         }
