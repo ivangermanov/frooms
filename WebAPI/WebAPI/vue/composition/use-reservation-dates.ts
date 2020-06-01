@@ -2,6 +2,7 @@ import moment from 'moment'
 import { reactive, ref, toRefs, computed, onUnmounted } from '@vue/composition-api'
 
 export default function useRoomsData () {
+  // TODO: Local time needs to be retrieved from back-end or set as GMT +1 (Netherlands)
   const currentDate = ref(moment())
   // TODO: Get start time and end time for reservations from back-end business logic
   const minTime = moment('9:00', 'HH:mm')
@@ -28,35 +29,31 @@ export default function useRoomsData () {
   )
 
   const minStart = computed(() => {
-    if (currentDate.value.isAfter(maxTime)) {
+    if (startDateMoment.value.isAfter(maxTime) || startDateMoment.value.isBefore(minTime)) {
       return minTime.format('HH:mm')
     }
     return currentDate.value.format('HH:mm')
   })
   const maxStart = computed(() =>
   // TODO: Get max from back-end business logic
-    maxTime.clone().subtract(1, 'hour').format('HH:mm')
+    maxTime.clone().subtract(15, 'minutes').format('HH:mm')
   )
 
-  const minEnd = computed(() =>
+  const minEnd = computed(() => {
     // TODO: Get min hours for booking from back-end business logic
-    moment(startDate.value)
-      .add(15, 'minutes')
-      .format('HH:mm')
+    const startOffset = moment(data.startTime, 'HH-mm').add(15, 'minutes')
+    return startOffset.isAfter(maxTime) ? maxTime.format('HH:mm') : startOffset.format('HH:mm')
+  }
   )
   const maxEnd = computed(() => {
-    if (moment(data.startTime, 'HH-mm').add(3, 'hours').isAfter(maxTime)) {
-      return maxTime.format('HH:mm')
-    }
-    return moment(startDate.value).add(3, 'hours').format('HH:mm')
+    const startOffset = moment(data.startTime, 'HH-mm').add(3, 'hours')
+    return startOffset.isAfter(maxTime) ? maxTime.format('HH:mm') : startOffset.format('HH:mm')
   })
 
-  const startDate = computed(() =>
-    moment(`${data.date} ${data.startTime}`).toISOString()
-  )
-  const endDate = computed(() =>
-    moment(`${data.date} ${data.endTime}`).toISOString()
-  )
+  const startDateMoment = computed(() => moment(`${data.date} ${data.startTime}`))
+  const startDate = computed(() => startDateMoment.value.toISOString())
+  const endDateMoment = computed(() => moment(`${data.date} ${data.endTime}`))
+  const endDate = computed(() => endDateMoment.value.toISOString())
 
   let timer: NodeJS.Timeout
   function updateCurrentDate () {
