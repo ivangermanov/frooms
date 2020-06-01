@@ -15,9 +15,9 @@ namespace WebAPI.Services
     /// <inheritdoc cref="IRoomService" />
     public class RoomService : IRoomService
     {
-        private readonly IRoomRepository _roomRepository;
         private readonly IBuildingContentsRepository _detailsRepository;
         private readonly IMapper _mapper;
+        private readonly IRoomRepository _roomRepository;
 
         public RoomService(
             IRoomRepository roomRepository,
@@ -29,14 +29,24 @@ namespace WebAPI.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? building, string? floor)
+        public async Task<IEnumerable<FloorMapRoomDTO>> GetFloormapRooms(string? campus, string? building,
+            string? floor, DateTime? fromDate,
+            DateTime? toDate)
         {
-            var rooms = _roomRepository.GetAll()
+            var rooms = await _roomRepository.GetAll()
                 .Where(r => string.IsNullOrEmpty(campus) || r.Details.Building.CampusName.Equals(campus))
                 .Where(r => string.IsNullOrEmpty(building) || r.Details.BuildingName.Equals(building))
-                .Where(r => string.IsNullOrEmpty(floor) || r.Details.FloorNumber == floor);
+                .Where(r => string.IsNullOrEmpty(floor) || r.Details.FloorNumber == floor).ToListAsync();
 
-            return await _mapper.ProjectTo<RoomDto>(rooms).ToListAsync();
+            var dto = new List<FloorMapRoomDTO>(rooms.Count);
+            foreach (var room in rooms)
+            {
+                var mapped = _mapper.Map<FloorMapRoomDTO>(room);
+                mapped.IsAvailable = room.IsAvailable(fromDate, toDate);
+                dto.Add(mapped);
+            }
+
+            return dto;
         }
 
         public async Task<IEnumerable<RoomDto>> GetAvailableRooms(
@@ -51,7 +61,6 @@ namespace WebAPI.Services
 
             if (fromDate > toDate)
                 throw new ArgumentException("The start DateTime cannot be after the end DateTime.");
-
             var rooms = await _roomRepository.GetAll()
                 .Where(r => r.Details.Building.CampusName == campus &&
                             r.Details.BuildingName == building &&
@@ -77,7 +86,7 @@ namespace WebAPI.Services
             foreach (var room in rooms)
                 dbRooms.Add(await _roomRepository.GetEntityAsync(room));
 
-            foreach(var room in dbRooms)
+            foreach (var room in dbRooms)
             {
                 var model = rooms.Where(x => x.Number == room.Number && x.DetailsId == room.DetailsId).Single();
 
@@ -105,9 +114,7 @@ namespace WebAPI.Services
             var detailsId = new Dictionary<PostRoomModel, int>();
 
             foreach (var m in models.ToList())
-            {
                 detailsId.Add(m, await _detailsRepository.GetIdAsync(m.CampusName, m.BuildingName, m.FloorNumber));
-            }
 
             return detailsId;
         }
@@ -117,9 +124,7 @@ namespace WebAPI.Services
             var detailsId = new Dictionary<DeleteRoomModel, int>();
 
             foreach (var m in models.ToList())
-            {
                 detailsId.Add(m, await _detailsRepository.GetIdAsync(m.CampusName, m.BuildingName, m.FloorNumber));
-            }
 
             return detailsId;
         }

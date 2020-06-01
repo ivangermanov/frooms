@@ -31,7 +31,8 @@ namespace Froom.Data.Repositories
         {
             return _reservations
                 .Include(r => r.User)
-                .Include(r => r.Room);
+                .Include(r => r.Room)
+                    .ThenInclude(room => room.Details);
         }
 
         public Task<Reservation> GetByIdAsync(int id)

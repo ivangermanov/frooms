@@ -14,7 +14,8 @@ namespace WebAPI.Services.Interfaces
         /// <param name="campus">The name of the campus.</param>
         /// <param name="building">The name of the building.</param>
         /// <param name="floor">The number of the floor. If null, the rooms for the whole building are returned.</param>
-        public Task<IEnumerable<RoomDto>> GetRooms(string? campus, string? building, string? floor);
+        public Task<IEnumerable<FloorMapRoomDTO>> GetFloormapRooms(string? campus, string? building, string? floor, DateTime? fromDate,
+        DateTime? toDate);
 
         /// <summary>
         /// Returns the rooms without reservations for a period of time.

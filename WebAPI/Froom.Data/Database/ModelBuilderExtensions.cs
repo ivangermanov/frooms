@@ -7,21 +7,12 @@ namespace Froom.Data.Database
 {
     public static class ModelBuilderExtensions
     {
-        private static readonly Guid userId = Guid.NewGuid();
-
         private static User[] Users
         {
             get
             {
                 return new[]
                 {
-                    new User
-                    {
-                        Id = userId,
-                        Name = "SeedUser",
-                        Email = "seeduser@gmail.com",
-                        Role = UserRole.USER
-                    },
                     new User
                     {
                         Id = new Guid("5c861938-98ba-41d2-9e24-da3610e34544"),
@@ -34,6 +25,20 @@ namespace Froom.Data.Database
                         Id = new Guid("05847a38-8ea2-4232-966e-512d4159c554"),
                         Name = "Yevheniia Buzykina",
                         Email = "y.buzykina@student.fontys.nl",
+                        Role = UserRole.ADMIN
+                    },
+                    new User
+                    {
+                        Id = new Guid("ab81a843-3e70-4cd2-9c89-d6b5719c3a6b"),
+                        Name = "Anjela Melkonyan",
+                        Email = "a.melkonyan@student.fontys.nl",
+                        Role = UserRole.ADMIN
+                    },
+                    new User
+                    {
+                        Id = new Guid("AC408FF3-2E5D-4975-96A8-83E6E67F9E03"),
+                        Name = "Chan,Jeffrey J.K.B.",
+                        Email = "jeffrey.chan@student.fontys.nl",
                         Role = UserRole.ADMIN
                     }
                 };
@@ -66,76 +71,76 @@ namespace Froom.Data.Database
                         CampusName = "EHV",
                         Address = "Unknown"
                     },
-                    new Building
-                    {
-                        Id = 2,
-                        Name = "R3R4",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 3,
-                        Name = "R5",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 4,
-                        Name = "EK",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 5,
-                        Name = "ER",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 6,
-                        Name = "ES",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 7,
-                        Name = "S1",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 8,
-                        Name = "S2",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 9,
-                        Name = "S3",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 10,
-                        Name = "TF",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    },
-                    new Building
-                    {
-                        Id = 11,
-                        Name = "TQ",
-                        CampusName = "EHV",
-                        Address = "Unknown"
-                    }
+                    //new Building
+                    //{
+                    //    Id = 2,
+                    //    Name = "R3R4",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 3,
+                    //    Name = "R5",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 4,
+                    //    Name = "EK",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 5,
+                    //    Name = "ER",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 6,
+                    //    Name = "ES",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 7,
+                    //    Name = "S1",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 8,
+                    //    Name = "S2",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 9,
+                    //    Name = "S3",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 10,
+                    //    Name = "TF",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //},
+                    //new Building
+                    //{
+                    //    Id = 11,
+                    //    Name = "TQ",
+                    //    CampusName = "EHV",
+                    //    Address = "Unknown"
+                    //}
                 };
             }
         }
@@ -250,7 +255,7 @@ namespace Froom.Data.Database
                         {
                             new Point {X = -151.347656, Y = -69.349339}, new Point {X = -150.996094, Y = -55.875311},
                             new Point {X = -128.847656, Y = -56.170023}, new Point {X = -128.847656, Y = -69.472969}
-                            
+
                         }
                     },
                     new Room
@@ -348,28 +353,163 @@ namespace Froom.Data.Database
                     new Reservation
                     {
                         Id = 1,
-                        UserId = userId,
-                        RoomId = 1,
-                        StartTime = DateTime.Parse("2020-05-05 08:45:00"),
-                        Duration = TimeSpan.Parse("001:00:00")
-                    }
-                };
-            }
-        }
-
-        public static Notification[] Notifications
-        {
-            get
-            {
-                return new[]
-                {
-                    new Notification
+                        UserId = Users[0].Id,
+                        RoomId = Rooms[0].Id,
+                        StartTime = new DateTime(2020, 5, 5, 8, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
                     {
-                        Id = 1,
-                        UserId = userId,
-                        Title = "Seeded Notification",
-                        Message = "Seeded notification text.",
-                        IsNew = true
+                        Id = 2,
+                        UserId = Users[0].Id,
+                        RoomId = Rooms[1].Id,
+                        StartTime = new DateTime(2020, 5, 5, 9, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 3,
+                        UserId = Users[0].Id,
+                        RoomId = Rooms[2].Id,
+                        StartTime = new DateTime(2020, 5, 5, 10, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 4,
+                        UserId = Users[0].Id,
+                        RoomId = Rooms[3].Id,
+                        StartTime = new DateTime(2020, 5, 5, 11, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 5,
+                        UserId = Users[0].Id,
+                        RoomId = Rooms[0].Id,
+                        StartTime = new DateTime(2020, 5, 5, 12, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 6,
+                        UserId = Users[0].Id,
+                        RoomId = Rooms[4].Id,
+                        StartTime = new DateTime(2020, 5, 5, 13, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 7,
+                        UserId = Users[1].Id,
+                        RoomId = Rooms[5].Id,
+                        StartTime = new DateTime(2020, 5, 5, 14, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 8,
+                        UserId = Users[1].Id,
+                        RoomId = Rooms[6].Id,
+                        StartTime = new DateTime(2020, 5, 6, 8, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 9,
+                        UserId = Users[1].Id,
+                        RoomId = Rooms[7].Id,
+                        StartTime = new DateTime(2020, 5, 6, 9, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 10,
+                        UserId = Users[1].Id,
+                        RoomId = Rooms[0].Id,
+                        StartTime = new DateTime(2020, 5, 6, 10, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+
+                    new Reservation
+                    {
+                        Id = 11,
+                        UserId = Users[1].Id,
+                        RoomId = Rooms[1].Id,
+                        StartTime = new DateTime(2020, 5, 7, 8, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 12,
+                        UserId = Users[2].Id,
+                        RoomId = Rooms[2].Id,
+                        StartTime = new DateTime(2020, 5, 7, 9, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 13,
+                        UserId = Users[2].Id,
+                        RoomId = Rooms[3].Id,
+                        StartTime = new DateTime(2020, 5, 7, 10, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 14,
+                        UserId = Users[2].Id,
+                        RoomId = Rooms[4].Id,
+                        StartTime = new DateTime(2020, 5, 7, 11, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 15,
+                        UserId = Users[2].Id,
+                        RoomId = Rooms[5].Id,
+                        StartTime = new DateTime(2020, 5, 8, 8, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 16,
+                        UserId = Users[2].Id,
+                        RoomId = Rooms[6].Id,
+                        StartTime = new DateTime(2020, 5, 8, 9, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 17,
+                        UserId = Users[3].Id,
+                        RoomId = Rooms[7].Id,
+                        StartTime = new DateTime(2020, 5, 10, 8, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 18,
+                        UserId = Users[3].Id,
+                        RoomId = Rooms[0].Id,
+                        StartTime = new DateTime(2020, 5, 10, 9, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 19,
+                        UserId = Users[3].Id,
+                        RoomId = Rooms[1].Id,
+                        StartTime = new DateTime(2020, 5, 10, 10, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
+                    },
+                    new Reservation
+                    {
+                        Id = 20,
+                        UserId = Users[3].Id,
+                        RoomId = Rooms[2].Id,
+                        StartTime = new DateTime(2020, 5, 10, 11, 0, 0),
+                        Duration = new TimeSpan(0, 30, 0)
                     }
                 };
             }
@@ -385,7 +525,6 @@ namespace Froom.Data.Database
             modelBuilder.Entity<BuildingContents>().HasData(BuildingFloorRooms_Relationship);
             modelBuilder.Entity<Room>().HasData(Rooms);
             modelBuilder.Entity<Reservation>().HasData(Reservations);
-            modelBuilder.Entity<Notification>().HasData(Notifications);
         }
 
     }

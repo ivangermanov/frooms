@@ -6,8 +6,7 @@ import {
   Draw,
   Map,
   Polyline,
-  geoJSON,
-  Popup
+  geoJSON
 } from 'leaflet'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw-src.css'
@@ -80,6 +79,7 @@ export default Vue.extend({
 
       map.on(Draw.Event.CREATED, (e) => {
         const layer: Polyline = e.layer
+        // TODO: Make popup with fewer clicks required to get the job done
         const content = 'Enter room number'
         layer.bindPopup(content, {
           editable: true,

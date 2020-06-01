@@ -18,11 +18,23 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapMutations } from 'vuex'
-import { Map, geoJSON, GeoJSON } from 'leaflet'
+import { Map, geoJSON, GeoJSON, PathOptions } from 'leaflet'
 import { IUser } from 'types'
 import LDrawControl from './LDrawControl.vue'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw-src.css'
+
+const availableColor = 'green'
+const unavailableColor = 'red'
+const weight = 1
+
+function getColor (feature: any): PathOptions {
+  switch (feature.properties?.isAvailable) {
+    case true: return { color: availableColor, weight }
+    case false: return { color: unavailableColor, weight }
+    default: return { color: availableColor, weight }
+  }
+}
 
 export default Vue.extend({
   components: {
@@ -45,13 +57,15 @@ export default Vue.extend({
   },
   data () {
     return {
-      allLayers: geoJSON()
+      allLayers: geoJSON(undefined, { style: getColor })
     }
   },
   computed: {
     isAdmin (): Boolean {
       const info: IUser = this.$store.state.user.info
-      if (!info.role) { return true }
+      if (!info.role) {
+        return true
+      }
       return info.role.some(role => role === 'admin')
     }
   },
@@ -67,18 +81,18 @@ export default Vue.extend({
     this.mapObject.removeLayer(this.allLayers)
   },
   methods: {
-    drawLayers (layers: { [key: string]: GeoJSON.Feature}) {
+    drawLayers (layers: { [key: string]: GeoJSON.Feature }) {
       const allLayers = this.allLayers
       allLayers.clearLayers()
 
       allLayers.eachLayer((layer: any) => {
-        const geoJSON: GeoJSON.Feature = (layer as any).toGeoJSON()
-        const number = geoJSON.properties?.number
+        const geoJson: GeoJSON.Feature = (layer as any).toGeoJSON()
+        const number = geoJson.properties?.number
 
         if (number && layers[number]) {
           allLayers.removeLayer(layer)
-          Object.assign(geoJSON, layers[number])
-          allLayers.addData(geoJSON)
+          Object.assign(geoJson, layers[number])
+          allLayers.addData(geoJson)
           delete layers[number]
         }
       })

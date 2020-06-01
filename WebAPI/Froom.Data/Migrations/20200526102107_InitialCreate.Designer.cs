@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Froom.Data.Migrations
 {
     [DbContext(typeof(FroomContext))]
-    [Migration("20200516094423_AddNotification")]
-    partial class AddNotification
+    [Migration("20200526102107_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -267,7 +267,15 @@ namespace Froom.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getdate()");
 
+                    b.Property<bool?>("IsNew")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
@@ -276,15 +284,6 @@ namespace Froom.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Notification");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Message = "SeededNotification",
-                            UserId = new Guid("2e54132b-2059-4f11-b316-e97026657f24")
-                        });
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Picture", b =>
@@ -361,16 +360,6 @@ namespace Froom.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Reservation");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Duration = new TimeSpan(0, 1, 0, 0, 0),
-                            RoomId = 1,
-                            StartTime = new DateTime(2020, 5, 5, 8, 45, 0, 0, DateTimeKind.Unspecified),
-                            UserId = new Guid("2e54132b-2059-4f11-b316-e97026657f24")
-                        });
                 });
 
             modelBuilder.Entity("Froom.Data.Entities.Room", b =>
@@ -470,6 +459,12 @@ namespace Froom.Data.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -483,14 +478,26 @@ namespace Froom.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2e54132b-2059-4f11-b316-e97026657f24"),
-                            Name = "SeedUser",
-                            Role = 0
+                            Id = new Guid("5c861938-98ba-41d2-9e24-da3610e34544"),
+                            Email = "i.germanov@student.fontys.nl",
+                            IsBlocked = false,
+                            Name = "Ivan Germanov",
+                            Role = 1
                         },
                         new
                         {
-                            Id = new Guid("5c861938-98ba-41d2-9e24-da3610e34544"),
-                            Name = "Ivan Germanov",
+                            Id = new Guid("05847a38-8ea2-4232-966e-512d4159c554"),
+                            Email = "y.buzykina@student.fontys.nl",
+                            IsBlocked = false,
+                            Name = "Yevheniia Buzykina",
+                            Role = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("ab81a843-3e70-4cd2-9c89-d6b5719c3a6b"),
+                            Email = "a.melkonyan@student.fontys.nl",
+                            IsBlocked = false,
+                            Name = "Anjela Melkonyan",
                             Role = 1
                         });
                 });

@@ -1,4 +1,3 @@
-import { EShape } from '../EShape'
 import { IPoint } from '../IPoint'
 
 export interface IRoomModel {
@@ -7,6 +6,5 @@ export interface IRoomModel {
   campusName: string;
   floorNumber: string;
   points: IPoint[];
-  shape: EShape;
   capacity?: number;
 }

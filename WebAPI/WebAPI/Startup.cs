@@ -138,6 +138,8 @@ namespace WebAPI
 
             services.AddScoped<INotificationRepository, NotificationRepository>();
 
+            services.AddTransient<IChartService, ChartService>();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers()
                 .AddNewtonsoftJson(options =>

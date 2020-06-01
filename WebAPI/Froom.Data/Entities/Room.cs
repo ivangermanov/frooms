@@ -7,7 +7,7 @@ namespace Froom.Data.Entities
     public class Room
     {
         public int Id { get; set; }
-        
+
         public string Number { get; set; }
 
         public int DetailsId { get; set; }
@@ -20,15 +20,14 @@ namespace Froom.Data.Entities
 
         public ICollection<Point> Points { get; set; }
 
-        public bool IsAvailable(DateTime fromDate, DateTime toDate)
+        public bool IsAvailable(DateTime? fromDate, DateTime? toDate)
         {
             if (Reservations is null || Reservations.Count == 0)
                 return true;
 
             return !Reservations
-                .Where(r => (DateTime.Compare(r.StartTime, fromDate) >= 0 && DateTime.Compare(r.StartTime, toDate) <= 0) ||
-                            (DateTime.Compare(r.StartTime.Add(r.Duration), fromDate) >= 0 && DateTime.Compare(r.StartTime.Add(r.Duration), toDate) <= 0))
-                .Any();
+                .Any(r => DateTime.Compare(r.StartTime, toDate ?? DateTime.MaxValue) < 0 &&
+                          DateTime.Compare(fromDate ?? DateTime.MinValue, r.StartTime.Add(r.Duration)) < 0);
         }
     }
 
