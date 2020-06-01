@@ -102,6 +102,13 @@ const FloorRepository = RepositoryFactory.floor
 
 export default {
   components: { Loader, RoomFilter, PickRoom, ConfirmReservation },
+  props: {
+    externalReservationDetails: {
+      type: Object,
+      required: false,
+      default: () => {}
+    }
+  },
   data () {
     return {
       data: {
