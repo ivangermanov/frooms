@@ -47,7 +47,7 @@ namespace WebAPI.Controllers.admin
 
         [HttpPost]
         [Route("{userId}/changeRole")]
-        public async Task<IActionResult> ChangeRole(Guid userId, int role)
+        public async Task<IActionResult> ChangeRole(Guid userId, UserRole role)
         {
             var user = await _userService.ChangeRoleAsync(userId, role);
             return Ok(user);

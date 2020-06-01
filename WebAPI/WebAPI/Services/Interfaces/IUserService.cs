@@ -33,7 +33,7 @@ namespace WebAPI.Services.Interfaces
         /// <summary>
         /// Changes the role of the user.
         /// </summary>
-        public Task<UserDto> ChangeRoleAsync(Guid id, int role);
+        public Task<UserDto> ChangeRoleAsync(Guid id, UserRole role);
 
         /// <summary>
         /// Check if a user exist.

@@ -72,6 +72,7 @@
 import { RepositoryFactory } from '@/api/repositoryFactory'
 
 const AdminUserRepository = RepositoryFactory.adminUser
+
 export default {
   props: {
     users: {
