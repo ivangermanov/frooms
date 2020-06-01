@@ -127,9 +127,7 @@ export default {
       this.dialog = false
     },
     async save () {
-      console.log(this.selectedUserRole)
       if (this.selectedUserRole !== this.users[this.selectedUserIndex].role) {
-        console.log(this.selectedUserRole)
         const { data } = await AdminUserRepository.changeRole(this.users[this.selectedUserIndex].id, this.selectedUserRole)
         Object.assign(this.users[this.selectedUserIndex], data)
       }
