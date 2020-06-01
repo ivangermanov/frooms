@@ -30,7 +30,7 @@
               <v-icon class="pr-2">
                 mdi-theme-light-dark
               </v-icon>
-              <v-switch v-model="$vuetify.theme.dark" class="switch" :hint="`Dark mode`" />
+              <v-switch v-model="$vuetify.theme.dark" class="switch" />
             </span>
           </template>
           <span>Dark mode</span>
