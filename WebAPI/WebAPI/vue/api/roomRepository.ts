@@ -7,9 +7,12 @@ export default {
   getFloormapRooms (campusName?: string, buildingName?: string, floor?: string, fromDate?: string,
     toDate?: string) {
     return Repository.get(
-      `${resource}/${campusName}/${buildingName}/${floor}`,
+      `${resource}`,
       {
         params: {
+          campusName,
+          buildingName,
+          floor,
           fromDate,
           toDate
         }

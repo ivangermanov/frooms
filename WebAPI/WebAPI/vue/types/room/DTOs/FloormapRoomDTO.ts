@@ -1,12 +1,13 @@
 import { IPoint } from '../IPoint'
-import { IRoomModel } from './IRoomModel'
+import { IFloormapRoomDTO } from './IFloormapRoomDTO'
 
-export class RoomModel implements IRoomModel {
+export class FloormapRoomDTO implements IFloormapRoomDTO {
   number: string = '';
   buildingName: string = '';
   campusName: string = '';
   floorNumber: string = '';
   floorOrder: number = 0;
   points: IPoint[] = [];
+  isAvailable: boolean = true;
   capacity?: number;
 }
