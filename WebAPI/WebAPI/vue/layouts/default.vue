@@ -20,9 +20,6 @@
     </v-navigation-drawer>
     <v-app-bar dense app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
-      </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <notifications-menu />
@@ -33,7 +30,7 @@
               <v-icon class="pr-2">
                 mdi-theme-light-dark
               </v-icon>
-              <v-switch v-model="$vuetify.theme.dark" class="switch pr-4" :hint="`Dark mode`" />
+              <v-switch v-model="$vuetify.theme.dark" class="switch" :hint="`Dark mode`" />
             </span>
           </template>
           <span>Dark mode</span>
@@ -42,8 +39,8 @@
       <v-tooltip v-if="isAdmin" bottom>
         <template v-slot:activator="{ on }">
           <span class="d-flex" v-on="on">
-            <v-icon>mdi-view-dashboard</v-icon>
             <v-btn to="/admin">
+              <v-icon class="pr-2">mdi-view-dashboard</v-icon>
               Admin
             </v-btn>
           </span>
@@ -52,10 +49,10 @@
       </v-tooltip>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <span class="d-flex" v-on="on">
-            <v-icon>mdi-logout</v-icon>
+          <span class="d-flex ml-2" v-on="on">
             <a href="/api/logout">
               <v-btn>
+                <v-icon class="pr-2">mdi-logout</v-icon>
                 Logout
               </v-btn>
             </a>

@@ -89,10 +89,10 @@ namespace WebAPI.Services
             return await _mapper.ProjectTo<UserDto>(users).ToListAsync();
         }
 
-        public async Task<UserDto> ChangeRoleAsync(Guid id, int role)
+        public async Task<UserDto> ChangeRoleAsync(Guid id, UserRole role)
         {
             var user = await _userRepository.GetByIdAsync(id);
-            user.Role = (UserRole)role;
+            user.Role = role;
             await _userRepository.Update(user);
 
             if(user.Role == UserRole.ADMIN)
