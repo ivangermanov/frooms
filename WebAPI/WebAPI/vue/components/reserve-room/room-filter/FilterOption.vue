@@ -73,7 +73,7 @@ export default defineComponent({
   },
   setup ({ campuses }, { emit }) {
     const dates = useReservationDates()
-    const { startDate, endDate, ...rest } = toRefs(dates)
+    const { startDate, endDate, ...rest } = dates
     const selectedCampusName = ref('')
     const selectedBuildingName = ref('')
     const reservationDetails = reactive({
