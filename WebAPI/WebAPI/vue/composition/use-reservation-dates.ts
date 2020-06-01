@@ -51,9 +51,9 @@ export default function useRoomsData () {
   })
 
   const startDateMoment = computed(() => moment(`${data.date} ${data.startTime}`))
-  const startDate = computed(() => startDateMoment.value.toISOString())
+  const startDate = computed(() => startDateMoment.value.toISOString(true))
   const endDateMoment = computed(() => moment(`${data.date} ${data.endTime}`))
-  const endDate = computed(() => endDateMoment.value.toISOString())
+  const endDate = computed(() => endDateMoment.value.toISOString(true))
 
   let timer: NodeJS.Timeout
   function updateCurrentDate () {
