@@ -50,8 +50,8 @@ export default Vue.extend({
     )
 
     watch(
-      () => [props.campusName, props.buildingName, props.floorNumber],
-      ([campusName, buildingName, floorNumber]) => {
+      () => [props.campusName, props.buildingName, props.floorNumber, props.startDate, props.endDate],
+      ([campusName, buildingName, floorNumber, _startDate, _endDate]) => {
         if (
           campusName !== null &&
           buildingName !== null &&

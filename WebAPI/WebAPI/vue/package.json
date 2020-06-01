@@ -38,7 +38,7 @@
     "@nuxtjs/eslint-config-typescript": "^2.0.0",
     "@nuxtjs/vuetify": "^1.11.2",
     "@types/leaflet": "^1.5.12",
-    "@types/lodash": "^4.14.153",
+    "@types/lodash": "^4.14.154",
     "@vue/test-utils": "^1.0.3",
     "babel-jest": "^26.0.1",
     "eslint": "^7.1.0",

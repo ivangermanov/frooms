@@ -1,18 +1,16 @@
-import { IRoomDTO } from './DTOs/IRoomDTO'
-import { EShape } from './EShape'
+import { IFloormapRoomDTO } from './DTOs/IFloormapRoomDTO'
 import { IPoint } from './IPoint'
-import { RoomDTO } from './DTOs/RoomDTO'
+import { FloormapRoomDTO } from './DTOs/FloormapRoomDTO'
 
-const GeoJSONToIRoom = (feature: GeoJSON.Feature, shape: EShape): IRoomDTO => {
+const GeoJSONToIFloormapRoom = (feature: GeoJSON.Feature): IFloormapRoomDTO => {
   const coordinates = (feature.geometry as GeoJSON.Polygon).coordinates.flat()
   const points: IPoint[] = coordinates.map(coord => ({
     x: coord[0],
     y: coord[1]
   }))
 
-  const room = new RoomDTO()
+  const room = new FloormapRoomDTO()
   room.number = feature.properties!.number
-  room.shape = shape
   room.points = points
 
   return room
@@ -22,9 +20,8 @@ export function CreateIRoomModel (feature: GeoJSON.Feature,
   floorNumber: string,
   buildingName: string,
   campusName: string,
-  shape: EShape = EShape.POLYGON,
   capacity: number = 0) {
-  const room = GeoJSONToIRoom(feature, shape)
+  const room = GeoJSONToIFloormapRoom(feature)
   room.buildingName = buildingName
   room.campusName = campusName
   room.floorNumber = floorNumber
@@ -33,7 +30,7 @@ export function CreateIRoomModel (feature: GeoJSON.Feature,
   return room
 }
 
-export function IRoomToGeoJSONFeature (room: IRoomDTO): GeoJSON.Feature {
+export function IRoomToGeoJSONFeature (room: IFloormapRoomDTO): GeoJSON.Feature {
   const coordinates: GeoJSON.Position[][] = [
     room.points.map(point => [point.x, point.y])
   ]
@@ -46,7 +43,8 @@ export function IRoomToGeoJSONFeature (room: IRoomDTO): GeoJSON.Feature {
   const feature: GeoJSON.Feature = {
     properties: {
       number: room.number,
-      capacity: room.capacity
+      capacity: room.capacity,
+      isAvailable: room.isAvailable
     },
     type: 'Feature',
     geometry

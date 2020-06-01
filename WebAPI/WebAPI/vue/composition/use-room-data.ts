@@ -1,7 +1,7 @@
 import { reactive, toRefs } from '@vue/composition-api'
 import { GeoJSON } from 'leaflet'
 import {
-  IRoomDTO,
+  IFloormapRoomDTO,
   IRoomModel,
   CreateIRoomModel,
   IRoomToGeoJSONFeature,
@@ -23,7 +23,7 @@ export default function useRoomData (
   } = {}
 ) {
   const data = reactive({
-    rooms: {} as { [key: string]: IRoomDTO },
+    rooms: {} as { [key: string]: IFloormapRoomDTO },
     floors: [] as IFloor[],
     roomLayers: {} as { [key: string]: GeoJSON.Feature }
   })
@@ -52,15 +52,14 @@ export default function useRoomData (
   }
 
   async function getRooms () {
-    const { data: json } = await RoomRepository.getFloormapRooms(
+    const { data: rooms }: { data: IFloormapRoomDTO[] } = await RoomRepository.getFloormapRooms(
       props.campusName,
       props.buildingName,
       props.floorNumber,
       props.startDate,
       props.endDate
     )
-    const rooms: IRoomDTO[] = json
-    const newRooms = {} as { [key: string]: IRoomDTO }
+    const newRooms = {} as { [key: string]: IFloormapRoomDTO }
     const newRoomLayers = {} as { [key: string]: GeoJSON.Feature }
 
     rooms.forEach((room) => {
