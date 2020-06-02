@@ -4,7 +4,7 @@
       Room Filter
     </v-card-title>
     <v-card-text>
-      <filter-option :campuses="campuses" @update-reservation-details="updateReservationDetailsEvent" />
+      <filter-option :campuses="campuses" :initial="initial" @update-reservation-details="updateReservationDetailsEvent" />
     </v-card-text>
   </v-card>
 </template>
@@ -22,6 +22,11 @@ export default {
       default () {
         return []
       }
+    },
+    initial: {
+      type: Object,
+      required: true,
+      default: () => {}
     }
   },
 

@@ -35,6 +35,7 @@
               >
                 <room-filter
                   :campuses="data.campuses"
+                  :initial="externalReservationDetails"
                   @update-reservation-details="updateReservationDetailsEvent"
                 />
               </v-stepper-content>
@@ -45,8 +46,10 @@
                 <pick-room
                   :rooms="data.rooms"
                   :selected-room="reservationDetails.room"
+                  :initial-room="externalReservationDetails.room"
                   :floors="data.floors"
                   :selected-floor.sync="reservationDetails.floor"
+                  :initial-floor="externalReservationDetails.floor"
                   @update-selected-room="updateSelectedRoom"
                   @fetch-rooms="fetchRooms"
                 />
@@ -76,7 +79,7 @@
               Previous
             </v-btn>
 
-            <v-btn text to="/">
+            <v-btn text @click="$emit('close');">
               Cancel
             </v-btn>
           </div>
@@ -106,7 +109,14 @@ export default {
     externalReservationDetails: {
       type: Object,
       required: false,
-      default: () => {}
+      default: () => ({
+        campus: null,
+        building: null,
+        floor: '',
+        room: null,
+        startDate: null,
+        endDate: null
+      })
     }
   },
   data () {
@@ -130,7 +140,6 @@ export default {
       }
     }
   },
-
   computed: {
     roomFilterOptionsAreReady () {
       return this.reservationDetails.campus != null &&
@@ -143,13 +152,11 @@ export default {
       return this.roomFilterOptionsAreReady && (this.reservationDetails.room != null || this.currentStep === 1)
     }
   },
-
   mounted () {
     this.loading = true
     this.dialog = false
     this.fetchCampuses()
   },
-
   methods: {
     nextStep () {
       if (this.currentStep < this.steps) {
@@ -157,18 +164,13 @@ export default {
       } else {
         this.postReservation()
         this.dialog = false
-        this.$router.push({
-          path: '/'
-        })
       }
     },
-
     previousStep () {
       if (this.currentStep > 1) {
         this.currentStep -= 1
       }
     },
-
     async fetchCampuses () {
       const { data } = await CampusRepository.getCampuses()
       this.data.campuses = data
@@ -176,7 +178,6 @@ export default {
       this.loading = false
       this.dialog = true
     },
-
     async fetchRooms () {
       if (this.roomFilterOptionsAreReady && this.reservationDetails.floor != null) {
         const { data } = await RoomRepository.getAvailableRooms(
@@ -190,14 +191,12 @@ export default {
         this.reservationDetails.room = null
       }
     },
-
     async fetchFloors () {
       // TODO: Empty floors better be filtered out
       const { data } = await FloorRepository.getFloors(this.reservationDetails.building.name)
       this.data.floors = data
       await this.fetchRooms()
     },
-
     async postReservation () {
       const currentUserId = this.$store.state.user.info.sub
       const currentUserName = this.$store.state.user.info.name
@@ -217,7 +216,6 @@ export default {
         }
       )
     },
-
     updateReservationDetailsEvent (value) {
       this.reservationDetails.campus = value.campus
       this.reservationDetails.building = value.building
@@ -227,11 +225,9 @@ export default {
         this.fetchFloors()
       }
     },
-
     updateSelectedRoom (value) {
       this.reservationDetails.room = value
     },
-
     padTime (time) {
       return time < 10 ? `0${time}` : `${time}`
     }

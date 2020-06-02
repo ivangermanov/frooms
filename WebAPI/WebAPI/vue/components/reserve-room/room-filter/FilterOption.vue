@@ -55,6 +55,7 @@
 </template>
 
 <script lang="ts">
+import moment from 'moment'
 import { ref, toRefs, reactive, watch, computed, defineComponent, PropType } from '@vue/composition-api'
 import BaseTimePicker from '@/components/base/BaseTimePicker.vue'
 import BaseDatePicker from '@/components/base/BaseDatePicker.vue'
@@ -69,14 +70,20 @@ export default defineComponent({
       type: Array as PropType<Array<any>>,
       required: true,
       default: () => []
+    },
+    initial: {
+      type: Object,
+      required: true,
+      default: () => {}
     }
   },
-  setup ({ campuses }, { emit }) {
+  setup (props, { emit }) {
     const dates = useReservationDates()
     const { startDate, endDate, ...rest } = dates
-    const selectedCampusName = ref('')
-    const selectedBuildingName = ref('')
-    const reservationDetails = reactive({
+
+    const selectedCampusName = ref(props.initial.campus || '')
+    const selectedBuildingName = ref(props.initial.building || '')
+    const details = reactive({
       campus: null as any,
       building: null as any,
       room: null,
@@ -85,32 +92,45 @@ export default defineComponent({
     })
 
     function updateReservationDetailsEvent () {
-      emit('update-reservation-details', reservationDetails)
+      emit('update-reservation-details', details)
     }
 
-    const campusNames = computed(() => campuses.map((campus: any) => campus.name))
+    const campusNames = computed(() => props.campuses.map((campus: any) => campus.name))
     const buildingNames = computed(() => {
-      if (reservationDetails.campus === null) {
+      if (!details.campus) {
         return []
       }
-      return reservationDetails.campus.buildings.map((building: any) => building.name)
+      return details.campus.buildings.map((building: any) => building.name)
     })
 
     watch(selectedCampusName, (name) => {
       if (!name) { return }
-      reservationDetails.campus = campuses.filter(campus => campus.name === name)[0]
+      details.campus = props.campuses.filter(campus => campus.name === name)[0]
       updateReservationDetailsEvent()
     })
     watch(selectedBuildingName, (name) => {
       if (!name) { return }
-      reservationDetails.building = reservationDetails.campus.buildings.filter((building: any) => building.name === name)[0]
+      details.building = details.campus.buildings.filter((building: any) => building.name === name)[0]
       updateReservationDetailsEvent()
     })
 
-    watch(() => [reservationDetails.startDate, reservationDetails.endDate],
-      () => { updateReservationDetailsEvent() })
+    watch(() => [details.startDate, details.endDate],
+      () => {
+        updateReservationDetailsEvent()
+      })
 
-    return { ...toRefs(rest as any), reservationDetails, campusNames, buildingNames, selectedCampusName, selectedBuildingName }
+    watch(() => props.initial.startDate, (startDate) => {
+      if (startDate) {
+        rest.startTime.value = moment(startDate).format('HH:mm')
+      }
+    })
+    watch(() => props.initial.endDate, (endDate) => {
+      if (endDate) {
+        rest.endTime.value = moment(endDate).format('HH:mm')
+      }
+    })
+
+    return { ...toRefs(rest as any), campusNames, buildingNames, selectedCampusName, selectedBuildingName }
   }
 })
 </script>

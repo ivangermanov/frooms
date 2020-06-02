@@ -44,10 +44,18 @@ import BaseDropDownSelector from '@/components/base/BaseDropdownSelector.vue'
 import FloorMap from '@/components/floor-map/FloorMap.vue'
 
 export default {
-
   components: { FloorMap, BaseDropDownSelector },
-
   props: {
+    initialFloor: {
+      required: false,
+      type: String,
+      default: ''
+    },
+    initialRoom: {
+      required: false,
+      type: String,
+      default: ''
+    },
     selectedFloor: {
       type: Object,
       default () {
@@ -69,7 +77,6 @@ export default {
       required: true
     }
   },
-
   data () {
     return {
       selectedRoomIndex: undefined,
@@ -77,42 +84,39 @@ export default {
       selectedFloorNumber: ''
     }
   },
-
   computed: {
     floorNumbers () {
       return this.floors.map(f => f.number)
     }
   },
-
   watch: {
+    initialFloor: {
+      handler (value) {
+        this.selectedFloorNumber = value
+      },
+      immediate: true
+    },
+    floors () {
+      this.updateSelectedFloor()
+    },
     rooms () {
       this.selectedRoomIndex = undefined
     },
-
     selectedRoomIndex () {
       if (this.selectedRoomIndex !== undefined) {
         this.currentRoom = this.rooms[this.selectedRoomIndex]
         this.updateSelectedRoom()
       }
-    },
-
-    selectedFloorNumber () {
-      this.updateSelectedFloor(this.getSelectedFloor())
     }
   },
-
   methods: {
     updateSelectedRoom () {
       this.$emit('update-selected-room', this.currentRoom)
     },
-
-    updateSelectedFloor (value) {
-      this.$emit('update:selected-floor', value)
+    updateSelectedFloor () {
+      const selected = this.floors.filter(f => f.number === this.selectedFloorNumber)[0]
+      this.$emit('update:selected-floor', selected)
       this.$emit('fetch-rooms')
-    },
-
-    getSelectedFloor () {
-      return this.floors.filter(f => f.number === this.selectedFloorNumber)[0]
     }
   }
 }

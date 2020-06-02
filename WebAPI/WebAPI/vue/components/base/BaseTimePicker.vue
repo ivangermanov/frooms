@@ -28,8 +28,6 @@
 </template>
 
 <script>
-import moment from 'moment'
-
 export default {
   props: {
     icon: { type: String, default: 'mdi-clock' },
@@ -49,7 +47,6 @@ export default {
     time: {
       handler (value) {
         this.timeTemp = value
-        this.setTime()
       },
       immediate: true
     },
@@ -58,26 +55,11 @@ export default {
         this.update()
       },
       immediate: true
-    },
-    min () {
-      this.setTime()
-    },
-    max () {
-      this.setTime()
     }
   },
   methods: {
     update () {
       this.$emit('update:time', this.timeTemp)
-    },
-    // TODO: This logic is also used in several places and is a candidate for composition API
-    setTime () {
-      const min = moment(this.min, 'HH:mm')
-      const max = moment(this.max, 'HH:mm')
-      const current = moment(this.timeTemp, 'HH:mm')
-      if (current.isAfter(max) || current.isBefore(min)) {
-        this.timeTemp = min.format('HH:mm')
-      }
     }
   }
 }
