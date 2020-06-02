@@ -5,6 +5,7 @@
   >
     <v-toolbar
       color="primary"
+      dark
     >
       <v-toolbar-title>Notifications</v-toolbar-title>
     </v-toolbar>
