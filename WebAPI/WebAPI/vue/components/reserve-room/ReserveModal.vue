@@ -46,7 +46,7 @@
                 <pick-room
                   :rooms="data.rooms"
                   :selected-room="reservationDetails.room"
-                  :initial-room="externalReservationDetails.room"
+                  :initial-room-number="externalReservationDetails.room"
                   :floors="data.floors"
                   :selected-floor.sync="reservationDetails.floor"
                   :initial-floor="externalReservationDetails.floor"
@@ -189,7 +189,6 @@ export default {
           this.reservationDetails.endDate
         )
         this.data.rooms = data
-        this.reservationDetails.room = null
       }
     },
     async fetchFloors () {

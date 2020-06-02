@@ -51,7 +51,7 @@ export default {
       type: String,
       default: ''
     },
-    initialRoom: {
+    initialRoomNumber: {
       required: false,
       type: String,
       default: ''
@@ -87,6 +87,9 @@ export default {
   computed: {
     floorNumbers () {
       return this.floors.map(f => f.number)
+    },
+    initialRoomIndex () {
+      return this.rooms.findIndex(room => room.number === this.initialRoomNumber)
     }
   },
   watch: {
@@ -96,11 +99,14 @@ export default {
       },
       immediate: true
     },
+    initialRoomIndex: {
+      handler (value) {
+        this.selectedRoomIndex = value
+      },
+      immediate: true
+    },
     floors () {
       this.updateSelectedFloor()
-    },
-    rooms () {
-      this.selectedRoomIndex = undefined
     },
     selectedRoomIndex () {
       if (this.selectedRoomIndex !== undefined) {
