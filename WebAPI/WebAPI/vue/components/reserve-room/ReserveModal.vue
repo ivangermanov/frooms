@@ -164,6 +164,7 @@ export default {
       } else {
         this.postReservation()
         this.dialog = false
+        this.$emit('close')
       }
     },
     previousStep () {

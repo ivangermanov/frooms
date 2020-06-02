@@ -53,12 +53,18 @@ export default Vue.extend({
     position: {
       type: String,
       required: true
+    },
+    selectedRoom: {
+      type: String,
+      required: false,
+      default: null
+
     }
   },
   data () {
     return {
       allLayers: null as unknown as GeoJSON,
-      selectedRoom: null
+      selectedRoomTemp: null
     }
   },
   computed: {
@@ -71,6 +77,12 @@ export default Vue.extend({
     }
   },
   watch: {
+    selectedRoom: {
+      handler (value) {
+        this.selectedRoomTemp = value
+      },
+      immediate: true
+    },
     fetchedLayers (layers: { [key: string]: GeoJSON.Feature }) {
       this.drawLayers(layers)
     }
@@ -87,8 +99,8 @@ export default Vue.extend({
       layer.on('click', () => {
         console.log(feature.properties)
         if (feature.properties.isAvailable) {
-          this.selectedRoom = feature.properties.number
-          this.$emit('select-room', this.selectedRoom)
+          this.selectedRoomTemp = feature.properties.number
+          this.$emit('select-room', this.selectedRoomTemp)
         }
       })
     },
