@@ -7,7 +7,7 @@
         <with-room-data
           :campus-name="reservationDetails.campus"
           :building-name="reservationDetails.building"
-          :floor-number="floorNumber"
+          :floor-number="reservationDetails.floor"
           :start-date="reservationDetails.startDate"
           :end-date="reservationDetails.endDate"
         >
@@ -50,7 +50,7 @@
                   :campus-names="campusNames"
                   :buildings="buildings"
                   :floors="floors"
-                  :floor-number.sync="floorNumber"
+                  :floor-number.sync="reservationDetails.floor"
                   position="bottomright"
                   @fetchedFloors="value => (floorImagesReady = value)"
                 />
@@ -71,8 +71,12 @@
         </with-room-data>
       </l-map>
     </client-only>
-    <portal v-if="reservationDetails.room" to="modals">
-      <reserve-modal />
+    <portal to="modals">
+      <reserve-modal
+        v-if="reservationDetails.room"
+        :external-reservation-details="reservationDetails"
+        @close="reservationDetails.room = null"
+      />
     </portal>
   </div>
 </template>
@@ -120,7 +124,6 @@ export default Vue.extend({
         maxZoom: 4,
         zoomControl: false
       },
-      floorNumber: null,
       floorImagesReady: false
     }
   },

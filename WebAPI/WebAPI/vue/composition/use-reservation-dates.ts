@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { reactive, ref, toRefs, computed, onUnmounted } from '@vue/composition-api'
+import { reactive, ref, toRefs, computed, onUnmounted, watch } from '@vue/composition-api'
 
 export default function useRoomsData () {
   // TODO: Local time needs to be retrieved from back-end or set as GMT +1 (Netherlands)
@@ -54,6 +54,24 @@ export default function useRoomsData () {
   const startDate = computed(() => startDateMoment.value.toISOString(true))
   const endDateMoment = computed(() => moment(`${data.date} ${data.endTime}`))
   const endDate = computed(() => endDateMoment.value.toISOString(true))
+
+  watch([startDate, minStart, maxStart], () => {
+    const min = moment(minStart.value, 'HH:mm')
+    const max = moment(maxStart.value, 'HH:mm')
+    const current = moment(data.startTime, 'HH:mm')
+    if (current.isAfter(max) || current.isBefore(min)) {
+      data.startTime = min.format('HH:mm')
+    }
+  })
+
+  watch([endDate, minEnd, maxEnd], () => {
+    const min = moment(minEnd.value, 'HH:mm')
+    const max = moment(maxEnd.value, 'HH:mm')
+    const current = moment(data.endTime, 'HH:mm')
+    if (current.isAfter(max) || current.isBefore(min)) {
+      data.endTime = min.format('HH:mm')
+    }
+  })
 
   let timer: NodeJS.Timeout
   function updateCurrentDate () {

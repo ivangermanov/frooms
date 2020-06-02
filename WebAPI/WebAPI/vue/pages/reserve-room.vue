@@ -1,7 +1,7 @@
 <template>
   <div>
     <portal to="modals">
-      <reserve-modal />
+      <reserve-modal @close="$router.back()" />
     </portal>
   </div>
 </template>
