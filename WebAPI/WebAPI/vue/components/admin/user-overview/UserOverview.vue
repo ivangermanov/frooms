@@ -11,7 +11,7 @@
     </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="users"
+      :items="mungedUsers"
       :search="search"
       sort-by="Name"
       class="elevation-1"
@@ -23,8 +23,8 @@
               <span class="headline"> Edit the roles</span>
             </v-card-title>
             <v-radio-group v-model="selectedUserRole" class="ml-8" :mandatory="true">
-              <v-radio label="User" class="mb-4" color="primary" :value="0" />
               <v-radio label="Admin" color="primary" :value="1" />
+              <v-radio label="User" class="mb-4" color="primary" :value="0" />
             </v-radio-group>
             <v-card-actions>
               <v-spacer />
@@ -37,9 +37,6 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-      </template>
-      <template v-slot:item.role="{ item }">
-        <span>{{ formattedUserRole(item.role) }}</span>
       </template>
       <template v-slot:item.actions="{ item }">
         <v-icon
@@ -93,9 +90,20 @@ export default {
           value: 'name'
         },
         { text: 'Email', value: 'email' },
-        { text: 'Role', value: 'role' },
+        { text: 'Role', value: 'sortable_role' },
         { text: 'Actions', value: 'actions', sortable: false }
       ]
+    }
+  },
+  computed: {
+    mungedUsers () {
+      return this.users.map((v) => {
+        return {
+          ...v,
+          sortable_role: this.formattedUserRole(v.role),
+          index: this.users.indexOf(v)
+        }
+      })
     }
   },
   watch: {
@@ -117,7 +125,7 @@ export default {
       }
     },
     editUser (user) {
-      this.selectedUserIndex = this.users.indexOf(user)
+      this.selectedUserIndex = user.index
       this.selectedUserRole = user.role
       this.dialog = true
     },
@@ -128,9 +136,7 @@ export default {
       this.dialog = false
     },
     async save () {
-      console.log(this.selectedUserRole)
       if (this.selectedUserRole !== this.users[this.selectedUserIndex].role) {
-        console.log(this.selectedUserRole)
         const { data } = await AdminUserRepository.changeRole(this.users[this.selectedUserIndex].id, this.selectedUserRole)
         Object.assign(this.users[this.selectedUserIndex], data)
       }
