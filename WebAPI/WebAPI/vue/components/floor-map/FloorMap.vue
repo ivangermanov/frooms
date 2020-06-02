@@ -60,6 +60,7 @@
                   position="topright"
                   :map-object="mapObject"
                   :fetched-layers="roomLayers"
+                  :selected-room="reservationDetails.room"
                   @select-room="value => reservationDetails.room = value"
                   @addLayer="postShape"
                   @editLayers="putShapes"
