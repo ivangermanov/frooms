@@ -10,6 +10,7 @@ export const state = () => ({
     preferred_username: undefined,
     profile: undefined,
     role: undefined,
+    isBlocked: undefined,
     sub: undefined,
     updated_at: undefined
   } as IUser

@@ -16,6 +16,9 @@ export default {
   getUserRoles () {
     return Repository.get(`${resource}/me/roles`)
   },
+  checkIfBlocked () {
+    return Repository.get(`${resource}/me/blocked`)
+  },
   getNotifications () {
     return Repository.get(`${resource}/me/notifications`)
   },
