@@ -21,7 +21,7 @@
 </template>
 
 <script>
-
+import moment from 'moment'
 export default {
   components: { },
 
@@ -38,13 +38,13 @@ export default {
   computed: {
     reservationDetailsItems () {
       return [
-        { name: 'Name', value: this.$store.state.user.info.name != undefined ? this.$store.state.user.info.name : '' },
+        { name: 'Name', value: this.$store.state.user.info.name ? this.$store.state.user.info.name : '' },
         { name: 'Campus', value: this.reservationDetails.campus != null ? this.reservationDetails.campus.name : '' },
         { name: 'Building', value: this.reservationDetails.building != null ? this.reservationDetails.building.name : '' },
         { name: 'Floor', value: this.reservationDetails.room != null ? this.reservationDetails.room.floorNumber : '' },
         { name: 'Room', value: this.reservationDetails.room != null ? this.reservationDetails.room.number : '' },
-        { name: 'Start Date', value: this.reservationDetails.startDate != null ? this.reservationDetails.startDate.format('YYYY-MM-DD HH:mm') : '' },
-        { name: 'End Date', value: this.reservationDetails.endDate != null ? this.reservationDetails.endDate.format('YYYY-MM-DD HH:mm') : '' }
+        { name: 'Start Date', value: this.reservationDetails.startDate != null ? moment(this.reservationDetails.startDate).format('YYYY-MM-DD HH:mm') : '' },
+        { name: 'End Date', value: this.reservationDetails.endDate != null ? moment(this.reservationDetails.endDate).format('YYYY-MM-DD HH:mm') : '' }
       ]
     }
   }

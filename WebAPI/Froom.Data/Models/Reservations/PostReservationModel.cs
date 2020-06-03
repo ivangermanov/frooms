@@ -8,8 +8,8 @@ namespace Froom.Data.Models.Reservations
 
         public int RoomId { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public TimeSpan Duration { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

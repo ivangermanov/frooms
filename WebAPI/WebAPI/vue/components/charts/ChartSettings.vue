@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import DatePicker from '@/components/base/BaseDatePickerText.vue'
 
 export default {

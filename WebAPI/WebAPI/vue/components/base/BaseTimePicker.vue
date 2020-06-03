@@ -2,98 +2,64 @@
   <v-dialog
     :ref="`dialog-time-picker-${_uid}`"
     v-model="modal"
-    :return-value.sync="time"
+    :return-value.sync="timeTemp"
     width="290px"
   >
     <template v-slot:activator="{ on }">
       <v-text-field
-        :value="time"
+        v-model="timeTemp"
         :label="label"
-        prepend-icon="mdi-clock-outline"
+        :prepend-icon="icon"
         readonly
-        :rules="rules"
         v-on="on"
       />
     </template>
     <v-time-picker
       v-if="modal"
-      :value="time"
+      v-model="timeTemp"
+      :min="min"
+      :max="max"
+      scrollable
       :format="'24hr'"
       full-width
-      scrollable
-      @click:hour="updateHour"
-      @click:minute="updateMinute"
-    >
-      <v-spacer />
-      <v-btn text color="primary" @click="modal = false">
-        Cancel
-      </v-btn>
-      <v-btn text color="primary" @click="$refs[`dialog-time-picker-${_uid}`].save(time)">
-        OK
-      </v-btn>
-    </v-time-picker>
+      @click:minute="$refs[`dialog-time-picker-${_uid}`].save(timeTemp)"
+    />
   </v-dialog>
 </template>
 
 <script>
-
 export default {
   props: {
-    time: {
-      type: String,
-      required: true
-    },
-    label: {
-      type: String,
-      required: false,
-      default () {
-        return 'Pick a time'
-      }
-    },
-    rules: {
-      type: Array,
-      required: false,
-      default () {
-        return []
-      }
-    }
+    icon: { type: String, default: 'mdi-clock' },
+    label: { type: String, default: 'Pick a time' },
+    time: { type: String, default: '' },
+    min: { type: String, default: '' },
+    max: { type: String, default: '' }
   },
 
   data () {
     return {
       modal: false,
-      hour: null,
-      minute: null
+      timeTemp: ''
     }
   },
-
-  computed: {
-    timeIsReady () {
-      return this.hour != null && this.minute != null
+  watch: {
+    time: {
+      handler (value) {
+        this.timeTemp = value
+      },
+      immediate: true
+    },
+    timeTemp: {
+      handler () {
+        this.update()
+      },
+      immediate: true
     }
   },
-
   methods: {
-    padNumber (number) {
-      return number < 10 ? `0${number}` : `${number}`
-    },
-
-    updateHour (value) {
-      this.hour = this.padNumber(value)
-      if (this.timeIsReady) {
-        this.updateTime()
-      }
-    },
-
-    updateMinute (value) {
-      this.minute = this.padNumber(value)
-      if (this.timeIsReady) {
-        this.updateTime()
-      }
-    },
-
-    updateTime () {
-      this.$emit('update:time', `${this.hour}:${this.minute}`)
+    update () {
+      this.$emit('update:time', this.timeTemp)
     }
   }
 }

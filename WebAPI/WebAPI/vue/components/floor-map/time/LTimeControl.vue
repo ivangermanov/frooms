@@ -37,11 +37,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import moment from 'moment'
+
 export default Vue.extend({
   props: {
-    label: { type: String, default: 'Time' },
     icon: { type: String, default: 'mdi-clock' },
+    label: { type: String, default: 'Time' },
     time: { type: String, default: '' },
     min: { type: String, default: '' },
     max: { type: String, default: '' }
@@ -56,7 +56,6 @@ export default Vue.extend({
     time: {
       handler (value) {
         this.timeTemp = value
-        this.setTime()
       },
       immediate: true
     },
@@ -65,25 +64,11 @@ export default Vue.extend({
         this.update()
       },
       immediate: true
-    },
-    min () {
-      this.setTime()
-    },
-    max () {
-      this.setTime()
     }
   },
   methods: {
     update () {
       this.$emit('update:time', this.timeTemp)
-    },
-    setTime () {
-      const min = moment(this.min, 'HH:mm')
-      const max = moment(this.max, 'HH:mm')
-      const current = moment(this.timeTemp, 'HH:mm')
-      if (current.isAfter(max) || current.isBefore(min)) {
-        this.timeTemp = min.format('HH:mm')
-      }
     }
   }
 })

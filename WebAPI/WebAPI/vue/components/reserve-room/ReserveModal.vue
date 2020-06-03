@@ -35,6 +35,7 @@
               >
                 <room-filter
                   :campuses="data.campuses"
+                  :initial="externalReservationDetails"
                   @update-reservation-details="updateReservationDetailsEvent"
                 />
               </v-stepper-content>
@@ -45,8 +46,10 @@
                 <pick-room
                   :rooms="data.rooms"
                   :selected-room="reservationDetails.room"
+                  :initial-room-number="externalReservationDetails.room"
                   :floors="data.floors"
                   :selected-floor.sync="reservationDetails.floor"
+                  :initial-floor="externalReservationDetails.floor"
                   @update-selected-room="updateSelectedRoom"
                   @fetch-rooms="fetchRooms"
                 />
@@ -76,7 +79,7 @@
               Previous
             </v-btn>
 
-            <v-btn text to="/">
+            <v-btn text @click="$emit('close');">
               Cancel
             </v-btn>
           </div>
@@ -87,7 +90,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import RoomFilter from './room-filter/RoomFilter.vue'
 import PickRoom from './pick-room/PickRoom.vue'
 import ConfirmReservation from './confirm-reservation/ConfirmReservation.vue'
@@ -102,9 +104,26 @@ const ReservationRepository = RepositoryFactory.reservation
 const FloorRepository = RepositoryFactory.floor
 
 export default {
-
   components: { Loader, RoomFilter, PickRoom, ConfirmReservation },
-
+  props: {
+    externalReservationDetails: {
+      type: Object,
+      required: false,
+      default: () => ({
+        campus: null,
+        building: null,
+        floor: '',
+        room: null,
+        startDate: null,
+        endDate: null
+      })
+    },
+    skip: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
   data () {
     return {
       data: {
@@ -126,58 +145,42 @@ export default {
       }
     }
   },
-
   computed: {
     roomFilterOptionsAreReady () {
-      return this.reservationDetails.campus != null &&
-      this.reservationDetails.building != null &&
-      this.reservationDetails.startDate != null &&
-      this.reservationDetails.endDate != null
+      return !!this.reservationDetails.campus &&
+      !!this.reservationDetails.building &&
+      !!this.reservationDetails.startDate &&
+      !!this.reservationDetails.endDate
     },
-
     reservationDetailsAreReady () {
-      return this.roomFilterOptionsAreReady && (this.reservationDetails.room != null || this.currentStep === 1)
-    },
-
-    duration () {
-      if (this.reservationDetailsAreReady) {
-        const totalSeconds = this.reservationDetails.endDate.diff(this.reservationDetails.startDate, 'seconds')
-        const momentDuration = moment.duration(totalSeconds, 'seconds')
-        const hours = momentDuration.hours()
-        const minutes = momentDuration.minutes()
-
-        return `${this.padTime(hours)}:${this.padTime(minutes)}`
-      }
-
-      return '00:00'
+      return this.roomFilterOptionsAreReady && (!!this.reservationDetails.room || this.currentStep === 1)
     }
   },
-
+  watch: {
+    reservationDetailsAreReady (value) {
+      if (value) { this.currentStep = this.steps }
+    }
+  },
   mounted () {
     this.loading = true
     this.dialog = false
     this.fetchCampuses()
   },
-
   methods: {
-    nextStep () {
+    async nextStep () {
       if (this.currentStep < this.steps) {
         this.currentStep += 1
       } else {
-        this.postReservation()
+        await this.postReservation()
         this.dialog = false
-        this.$router.push({
-          path: '/'
-        })
+        this.$emit('close')
       }
     },
-
     previousStep () {
       if (this.currentStep > 1) {
         this.currentStep -= 1
       }
     },
-
     async fetchCampuses () {
       const { data } = await CampusRepository.getCampuses()
       this.data.campuses = data
@@ -185,32 +188,29 @@ export default {
       this.loading = false
       this.dialog = true
     },
-
     async fetchRooms () {
-      if (this.roomFilterOptionsAreReady && this.reservationDetails.floor != null) {
+      if (this.roomFilterOptionsAreReady && this.reservationDetails.floor) {
         const { data } = await RoomRepository.getAvailableRooms(
           this.reservationDetails.campus.name,
           this.reservationDetails.building.name,
           this.reservationDetails.floor.number,
-          this.reservationDetails.startDate.toISOString(true),
-          this.reservationDetails.endDate.toISOString(true)
+          this.reservationDetails.startDate,
+          this.reservationDetails.endDate
         )
         this.data.rooms = data
-        this.reservationDetails.room = null
       }
     },
-
     async fetchFloors () {
+      // TODO: Empty floors better be filtered out
       const { data } = await FloorRepository.getFloors(this.reservationDetails.building.name)
       this.data.floors = data
-      this.reservationDetails.floor = null
       await this.fetchRooms()
     },
-
     async postReservation () {
       const currentUserId = this.$store.state.user.info.sub
       const currentUserName = this.$store.state.user.info.name
       const currentUserEmail = this.$store.state.user.info.email
+
       await UserRepository.findOrCreateUser({
         id: currentUserId,
         name: currentUserName,
@@ -221,27 +221,23 @@ export default {
         {
           userId: currentUserId,
           roomId: this.reservationDetails.room.id,
-          startTime: this.reservationDetails.startDate.toISOString(true),
-          duration: this.duration
+          startDate: this.reservationDetails.startDate,
+          endDate: this.reservationDetails.endDate
         }
       )
     },
-
     updateReservationDetailsEvent (value) {
       this.reservationDetails.campus = value.campus
       this.reservationDetails.building = value.building
       this.reservationDetails.startDate = value.startDate
       this.reservationDetails.endDate = value.endDate
-
       if (this.roomFilterOptionsAreReady) {
         this.fetchFloors()
       }
     },
-
     updateSelectedRoom (value) {
       this.reservationDetails.room = value
     },
-
     padTime (time) {
       return time < 10 ? `0${time}` : `${time}`
     }
