@@ -21,7 +21,7 @@
         <user-overview :users="users" />
       </v-tab-item>
       <v-tab-item>
-        <reservations-overview />
+        <reservations-overview :reservations="reservations" />
       </v-tab-item>
       <v-tab-item>
         <v-card class="d-inline-block mx-auto">
@@ -34,28 +34,42 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import moment from 'moment'
 import UserOverview from '@/components/admin/user-overview/UserOverview.vue'
 import ReservationsOverview from '@/components/admin/reservations-overview/ReservationsOverview.vue'
 import ChartViewer from '@/components/charts/ChartViewer.vue'
 import { RepositoryFactory } from '@/api/repositoryFactory'
 
 const AdminUserRepository = RepositoryFactory.adminUser
+const AdminReservationRepository = RepositoryFactory.adminReservation
+
 export default Vue.extend({
   layout: 'admin',
   components: { UserOverview, ChartViewer, ReservationsOverview },
   data () {
     return {
       tab: null,
-      users: []
+      users: [],
+      reservations: []
     }
   },
   beforeMount () {
     this.getUsers()
+    this.getAllReservationsForAdmin()
   },
   methods: {
     async getUsers () {
       const { data } = await AdminUserRepository.getUsers()
       this.users = data
+    },
+    async getAllReservationsForAdmin () {
+      const { data } = await AdminReservationRepository.getAllReservations()
+      console.log(data)
+      this.reservations = data.map((reservation:any) => {
+        reservation.startingDate = moment(reservation.startingTime).format('DD/MM/YYYY')
+        reservation.startingTime = moment(reservation.startingTime).format('HH:MM:SS')
+        return reservation
+      })
     }
   }
 })
