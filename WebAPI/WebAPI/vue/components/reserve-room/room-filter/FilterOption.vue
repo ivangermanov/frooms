@@ -73,8 +73,7 @@ export default defineComponent({
     },
     initial: {
       type: Object,
-      required: true,
-      default: () => {}
+      required: true
     }
   },
   setup (props, { emit }) {
