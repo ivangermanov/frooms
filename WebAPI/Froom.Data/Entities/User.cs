@@ -17,6 +17,7 @@ namespace Froom.Data.Entities
         public string Email { get; set; }
 
         public bool IsBlocked { get; set; }
+
         public UserRole Role { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; }
