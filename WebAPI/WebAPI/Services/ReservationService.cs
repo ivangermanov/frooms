@@ -72,13 +72,12 @@ namespace WebAPI.Services
 
             return await reservations.ToListAsync();
         }
+
         public async Task<IEnumerable<ReservationDto>> GetAllReservations()
         {
             var reservations = _reservationRepository.GetAll();
 
             return await _mapper.ProjectTo<ReservationDto>(reservations).ToListAsync();
         }
-
-
     }
 }
