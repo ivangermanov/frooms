@@ -1,5 +1,6 @@
 ﻿using Froom.Data.Models.Reservations;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -56,6 +57,14 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> PostReservation(PostReservationModel model)
         {
+            var user = await _userService.GetUserAsync(model.UserId);
+
+            if (user.Single(x => x.Id == model.UserId).IsBlocked)
+            {
+                return Forbid("Your profile is blocked and the reservation cannot be made." +
+                    " Please contact the system's admin.");
+            }
+
             await _reservationService.AddReservationAsync(model);
             return Ok();
         }
