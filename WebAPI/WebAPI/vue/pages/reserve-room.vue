@@ -23,7 +23,11 @@
             </v-card-title>
 
             <v-card-text>
-              Your profile is blocked and you cannot make reservations. Please contact your system administrator.
+              Your profile is blocked and you cannot make reservations. <br>
+              Please contact your system administrator or mail
+              <a href="mailto: info@froom.fontys.nl?subject=Unblock request">
+                info@froom.fontys.nl
+              </a>
             </v-card-text>
 
             <v-divider />
