@@ -114,18 +114,22 @@ namespace WebAPI.Services
         public async Task<UserDto> BlockUserAsync(Guid id)
         {
             var user = await _userRepository.GetByIdAsync(id);
-            user.IsBlocked = true;
-            await _userRepository.Update(user);
 
-            var notification = new Notification()
+            if(user.Role != UserRole.ADMIN)
             {
-                UserId = user.Id,
-                Title = "Profile blocked",
-                Message = "You are now blocked. " +
-                "Contact the administration for more information."
-            };
+                user.IsBlocked = true;
+                await _userRepository.Update(user);
 
-            await _notificationRepository.AddAsync(notification);
+                var notification = new Notification()
+                {
+                    UserId = user.Id,
+                    Title = "Profile blocked",
+                    Message = "You are now blocked. " +
+                    "Contact the administration for more information."
+                };
+
+                await _notificationRepository.AddAsync(notification);
+            }
 
             return _mapper.Map<UserDto>(user);
         }
