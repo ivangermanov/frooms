@@ -25,8 +25,7 @@ export default {
     },
     initial: {
       type: Object,
-      required: true,
-      default: () => {}
+      required: true
     }
   },
 
