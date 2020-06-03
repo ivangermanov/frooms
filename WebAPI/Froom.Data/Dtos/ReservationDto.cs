@@ -4,6 +4,7 @@ namespace Froom.Data.Dtos
 {
     public class ReservationDto
     {
+        public int Id { get; set; }
         public UserDto User { get; set; }
 
         public RoomDto Room { get; set; }

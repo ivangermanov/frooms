@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Froom.Data.Models.Reservations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Services.Interfaces;
@@ -10,6 +11,7 @@ namespace WebAPI.Controllers.admin
 {
     [Route("api/admin/reservations")]
     [ApiController]
+ 
     [Authorize(Roles = "admin")]
     public class ReservationController : ControllerBase
     {
@@ -24,6 +26,14 @@ namespace WebAPI.Controllers.admin
         {
             var result = await _reservationService.GetAllReservations();
             return Ok(result);
+        }
+
+        [HttpDelete]
+        [Route("{reservationId}")]
+        public async Task<IActionResult> DeleteReservation(int reservationId)
+        {
+            await _reservationService.DeleteReservation(reservationId);
+            return Ok();
         }
     }
 }

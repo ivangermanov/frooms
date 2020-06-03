@@ -79,5 +79,12 @@ namespace WebAPI.Services
 
             return await _mapper.ProjectTo<ReservationDto>(reservations).ToListAsync();
         }
+
+        public async Task DeleteReservation(int idOfReservationToDeleteData)
+        {
+            var reservationToDelete = await _reservationRepository.GetByIdAsync(idOfReservationToDeleteData);
+
+            await _reservationRepository.RemoveAsync(reservationToDelete);
+        }
     }
 }

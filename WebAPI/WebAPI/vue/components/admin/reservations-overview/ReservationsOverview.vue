@@ -2,8 +2,6 @@
   <v-card>
     <v-list subheader>
       <v-card-title>
-        <!-- Reservations List
-        <v-spacer /> -->
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
@@ -14,65 +12,65 @@
       </v-card-title>
       <v-data-table
         v-if="typeof reservations != undefined && typeof reservationsHeaders != undefined"
-        v-model="selected"
-        :single-select="singleSelect"
         :headers="reservationsHeaders"
         :items="reservations"
         :search="search"
         multi-sort
-        item-key="id"
-        show-select
         class="elevation-1"
-      />
-      <template v-slot:top>
-        <v-switch v-model="singleSelect" label="Single select" class="pa-3" />
-      </template>
+      >
+        <template v-slot:item.actions="{ item }">
+          <v-icon
+            small
+            class="mr-2"
+            @click="deleteReservation(item)"
+          >
+            mdi-delete
+          </v-icon>
+        </template>
+      </v-data-table>
     </v-list>
   </v-card>
 </template>
 
 <script>
-import moment from 'moment'
 import { RepositoryFactory } from '@/api/repositoryFactory'
 
 const AdminReservationRepository = RepositoryFactory.adminReservation
 
 export default {
-
+  props: {
+    reservations: {
+      type: Array,
+      required: true
+    }
+  },
   data () {
     return {
       search: '',
-      selected: [],
-      singleSelect: false,
-      reservations: undefined,
       reservationsHeaders: [
-        { text: 'Index', value: 'id' },
         { text: 'User', value: 'user.name' },
         { text: 'Building', value: 'room.buildingName' },
         { text: 'Room', value: 'room.number' },
         { text: 'Start Date', value: 'startingDate' },
         { text: 'Start Time', value: 'startingTime' },
         { text: 'Duration', value: 'duration' },
-        { text: 'Expired', value: 'expired' }
+        { text: 'Expired', value: 'expired' },
+        { text: 'Actions', value: 'actions', sortable: false }
 
       ]
     }
   },
 
-  mounted () {
-    this.fetchReservations()
-  },
-
   methods: {
-    async fetchReservations () {
-      const { data } = await AdminReservationRepository.getAllReservations()
-      this.reservations = data
-      this.reservations.map((x, index) => {
-        x.id = index
-        x.startingDate = moment(x.startingTime).format('DD/MM/YYYY')
-        x.startingTime = moment(x.startingTime).format('HH:MM:SS')
-        return x
-      })
+
+    deleteReservation (reservation) {
+      const index = this.reservations.indexOf(reservation)
+      const choice = confirm('Are you sure you want to delete this item?')
+
+      if (choice === true) {
+        AdminReservationRepository.deleteReservation(reservation.id)
+        this.reservations.splice(index, 1)
+      }
     }
 
   }
