@@ -1,5 +1,5 @@
 import Repository from '../repository'
-import { UserRoles } from '@/types/index'
+import { UserRole } from '@/types/index'
 
 const resource = '/admin/users'
 
@@ -13,7 +13,7 @@ export default {
   unblockUser (userId: string) {
     return Repository.post(`${resource}/${userId}/unblock`)
   },
-  changeRole (userId: string, role: UserRoles) {
+  changeRole (userId: string, role: UserRole) {
     return Repository.post(`${resource}/${userId}/changeRole?role=${role}`)
   }
 }
