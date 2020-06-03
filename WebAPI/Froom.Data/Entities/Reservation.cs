@@ -14,13 +14,10 @@ namespace Froom.Data.Entities
 
         public Room Room { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public TimeSpan Duration { get; set; }
+        public DateTime EndDate { get; set; }
 
-        public bool IsExpired()
-        {
-            return (this.StartTime + this.Duration < DateTime.Now) ? true : false;
-        }
+        public bool IsExpired() => DateTime.Compare(this.EndDate, DateTime.Now) > 0;
     }
 }

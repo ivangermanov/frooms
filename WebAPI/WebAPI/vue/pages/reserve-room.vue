@@ -1,7 +1,7 @@
 <template>
   <div v-if="isBlocked === false">
     <portal to="modals">
-      <reserve-modal />
+      <reserve-modal @close="$router.back()" />
     </portal>
   </div>
   <div v-else>

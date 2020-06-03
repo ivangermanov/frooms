@@ -31,8 +31,8 @@ namespace WebAPI.Services
             var reservations = await _reservationRepository.GetAll().ToListAsync();
 
             var chartData = reservations
-                .Where(r => !start.HasValue || DateTime.Compare(r.StartTime, Convert.ToDateTime(start)) >= 0)
-                .Where(r => !end.HasValue || DateTime.Compare(r.StartTime.Add(r.Duration), Convert.ToDateTime(end)) <= 0)
+                .Where(r => !start.HasValue || DateTime.Compare(r.StartDate, Convert.ToDateTime(start)) >= 0)
+                .Where(r => !end.HasValue || DateTime.Compare(r.EndDate, Convert.ToDateTime(end)) <= 0)
                 .GroupBy(r => r.User.Name)
                 .Select(g => new
                 {
@@ -71,8 +71,8 @@ namespace WebAPI.Services
             var reservations = await _reservationRepository.GetAll().ToListAsync();
 
             var chartData = reservations
-                .Where(r => !start.HasValue || DateTime.Compare(r.StartTime, Convert.ToDateTime(start)) >= 0)
-                .Where(r => !end.HasValue || DateTime.Compare(r.StartTime.Add(r.Duration), Convert.ToDateTime(end)) <= 0)
+                .Where(r => !start.HasValue || DateTime.Compare(r.StartDate, Convert.ToDateTime(start)) >= 0)
+                .Where(r => !end.HasValue || DateTime.Compare(r.EndDate, Convert.ToDateTime(end)) <= 0)
                 .GroupBy(r => r.Room.Details.BuildingName)
                 .Select(g => new
                 {
@@ -111,9 +111,9 @@ namespace WebAPI.Services
             var reservations = await _reservationRepository.GetAll().ToListAsync();
 
             var chartData = reservations
-                .Where(r => !start.HasValue || DateTime.Compare(r.StartTime, Convert.ToDateTime(start)) >= 0)
-                .Where(r => !end.HasValue || DateTime.Compare(r.StartTime.Add(r.Duration), Convert.ToDateTime(end)) <= 0)
-                .GroupBy(r => r.StartTime.Date)
+                .Where(r => !start.HasValue || DateTime.Compare(r.StartDate, Convert.ToDateTime(start)) >= 0)
+                .Where(r => !end.HasValue || DateTime.Compare(r.EndDate, Convert.ToDateTime(end)) <= 0)
+                .GroupBy(r => r.StartDate.Date)
                 .Select(g => new
                 {
                     g.Key,

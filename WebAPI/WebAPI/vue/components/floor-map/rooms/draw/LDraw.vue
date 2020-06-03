@@ -18,7 +18,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapMutations } from 'vuex'
-import { Map, geoJSON, GeoJSON, PathOptions } from 'leaflet'
+import { Map, geoJSON, GeoJSON, PathOptions, Layer } from 'leaflet'
 import { IUser } from 'types'
 import LDrawControl from './LDrawControl.vue'
 import 'leaflet-draw'
@@ -53,11 +53,18 @@ export default Vue.extend({
     position: {
       type: String,
       required: true
+    },
+    selectedRoom: {
+      type: String,
+      required: false,
+      default: null
+
     }
   },
   data () {
     return {
-      allLayers: geoJSON(undefined, { style: getColor })
+      allLayers: null as unknown as GeoJSON,
+      selectedRoomTemp: null
     }
   },
   computed: {
@@ -70,17 +77,32 @@ export default Vue.extend({
     }
   },
   watch: {
+    selectedRoom: {
+      handler (value) {
+        this.selectedRoomTemp = value
+      },
+      immediate: true
+    },
     fetchedLayers (layers: { [key: string]: GeoJSON.Feature }) {
       this.drawLayers(layers)
     }
   },
   beforeMount () {
+    this.allLayers = geoJSON(undefined, { style: getColor, onEachFeature: this.onRoomClick })
     this.mapObject.addLayer(this.allLayers)
   },
   beforeDestroy () {
     this.mapObject.removeLayer(this.allLayers)
   },
   methods: {
+    onRoomClick (feature: GeoJSON.Feature<GeoJSON.Geometry, any>, layer: Layer) {
+      layer.on('click', () => {
+        if (feature.properties.isAvailable) {
+          this.selectedRoomTemp = feature.properties.number
+          this.$emit('select-room', this.selectedRoomTemp)
+        }
+      })
+    },
     drawLayers (layers: { [key: string]: GeoJSON.Feature }) {
       const allLayers = this.allLayers
       allLayers.clearLayers()

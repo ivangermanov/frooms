@@ -5,11 +5,11 @@
         <l-control-zoom position="topright" />
 
         <with-room-data
-          :campus-name="campusName"
-          :building-name="buildingName"
-          :floor-number="floorNumber"
-          :start-date="startDate"
-          :end-date="endDate"
+          :campus-name="reservationDetails.campus"
+          :building-name="reservationDetails.building"
+          :floor-number="reservationDetails.floor"
+          :start-date="reservationDetails.startDate"
+          :end-date="reservationDetails.endDate"
         >
           <template
             v-slot="{
@@ -23,11 +23,11 @@
             <fragment v-if="mapObject">
               <l-control position="topleft" class="topleft-control-panel">
                 <l-campus-control
-                  :campus-name.sync="campusName"
+                  :campus-name.sync="reservationDetails.campus"
                   :campuses="campusNames"
                 />
                 <l-building-control
-                  :building-name.sync="buildingName"
+                  :building-name.sync="reservationDetails.building"
                   :buildings="buildingNames"
                 />
                 <l-date-control :date.sync="date" :min="minDate" :max="maxDate" />
@@ -50,7 +50,7 @@
                   :campus-names="campusNames"
                   :buildings="buildings"
                   :floors="floors"
-                  :floor-number.sync="floorNumber"
+                  :floor-number.sync="reservationDetails.floor"
                   position="bottomright"
                   @fetchedFloors="value => (floorImagesReady = value)"
                 />
@@ -60,6 +60,8 @@
                   position="topright"
                   :map-object="mapObject"
                   :fetched-layers="roomLayers"
+                  :selected-room="reservationDetails.room"
+                  @select-room="value => reservationDetails.room = value"
                   @addLayer="postShape"
                   @editLayers="putShapes"
                   @deleteLayers="deleteShapes"
@@ -70,6 +72,13 @@
         </with-room-data>
       </l-map>
     </client-only>
+    <portal to="modals">
+      <reserve-modal
+        v-if="reservationDetails.room"
+        :external-reservation-details="reservationDetails"
+        @close="reservationDetails.room = null"
+      />
+    </portal>
   </div>
 </template>
 <script lang="ts">
@@ -78,7 +87,7 @@ import Vue from 'vue'
 import { CRS, Map } from 'leaflet'
 import { LMap, LControlZoom, LControl } from 'vue2-leaflet'
 
-import { toRefs, watch } from '@vue/composition-api'
+import { toRefs, watch, reactive } from '@vue/composition-api'
 import LDraw from './rooms/draw/LDraw.vue'
 import LFloorsControl from './rooms/floors/LFloorsControl.vue'
 import LCampusControl from './campuses/LCampusControl.vue'
@@ -86,10 +95,12 @@ import LBuildingControl from './buildings/LBuildingControl.vue'
 import LDateControl from './dates/LDateControl.vue'
 import LTimeControl from './time/LTimeControl.vue'
 import WithRoomData from './rooms/WithRoomData.vue'
+import ReserveModal from '@/components/reserve-room/ReserveModal.vue'
 import useCampusData from '@/composition/use-campus-data'
 import useBuildingData from '@/composition/use-building-data'
 import useReservationDates from '@/composition/use-reservation-dates'
 
+// @ts-ignore
 export default Vue.extend({
   components: {
     LMap,
@@ -101,7 +112,8 @@ export default Vue.extend({
     LDateControl,
     LTimeControl,
     LFloorsControl,
-    WithRoomData
+    WithRoomData,
+    ReserveModal
   },
   data () {
     return {
@@ -113,7 +125,6 @@ export default Vue.extend({
         maxZoom: 4,
         zoomControl: false
       },
-      floorNumber: null,
       floorImagesReady: false
     }
   },
@@ -124,16 +135,25 @@ export default Vue.extend({
     }
   },
   setup () {
-    const campusData = useCampusData()
+    const { campusName, ...restCampus } = useCampusData()
     // TODO: Could extract date and time to a with-date-and-time HOC wrapper
-    const buildingData = useBuildingData()
-    const dates = useReservationDates()
+    const { buildingName, ...restBuildings } = useBuildingData()
+    const { startDate, endDate, ...restDates } = useReservationDates()
 
-    watch([campusData.campusName], ([campusName]) => {
-      buildingData.getBuildings(campusName)
+    const reservationDetails = reactive({
+      campus: campusName,
+      building: buildingName,
+      floor: null,
+      room: null,
+      startDate,
+      endDate
     })
 
-    return { ...toRefs(campusData), ...toRefs(buildingData), ...toRefs(dates) }
+    watch([campusName], ([campusName]) => {
+      restBuildings.getBuildings(campusName)
+    })
+
+    return { reservationDetails, ...toRefs(restCampus as any), ...toRefs(restBuildings as any), ...toRefs(restDates as any) }
   },
   mounted () {
     this.$nextTick(() => {
