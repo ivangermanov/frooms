@@ -50,7 +50,7 @@
           mdi-pencil
         </v-icon>
         <v-icon
-          v-if="!item.isBlocked"
+          v-if="!item.isBlocked && item.role === 0"
           small
           @click="blockUser(item)"
         >
