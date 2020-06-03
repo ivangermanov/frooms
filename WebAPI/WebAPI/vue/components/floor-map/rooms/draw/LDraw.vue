@@ -97,7 +97,6 @@ export default Vue.extend({
   methods: {
     onRoomClick (feature: GeoJSON.Feature<GeoJSON.Geometry, any>, layer: Layer) {
       layer.on('click', () => {
-        console.log(feature.properties)
         if (feature.properties.isAvailable) {
           this.selectedRoomTemp = feature.properties.number
           this.$emit('select-room', this.selectedRoomTemp)

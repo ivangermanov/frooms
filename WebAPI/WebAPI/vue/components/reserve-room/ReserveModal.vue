@@ -117,6 +117,11 @@ export default {
         startDate: null,
         endDate: null
       })
+    },
+    skip: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data () {
@@ -142,14 +147,18 @@ export default {
   },
   computed: {
     roomFilterOptionsAreReady () {
-      return this.reservationDetails.campus != null &&
-      this.reservationDetails.building != null &&
-      this.reservationDetails.startDate != null &&
-      this.reservationDetails.endDate != null
+      return !!this.reservationDetails.campus &&
+      !!this.reservationDetails.building &&
+      !!this.reservationDetails.startDate &&
+      !!this.reservationDetails.endDate
     },
-
     reservationDetailsAreReady () {
-      return this.roomFilterOptionsAreReady && (this.reservationDetails.room != null || this.currentStep === 1)
+      return this.roomFilterOptionsAreReady && (!!this.reservationDetails.room || this.currentStep === 1)
+    }
+  },
+  watch: {
+    reservationDetailsAreReady (value) {
+      if (value) { this.currentStep = this.steps }
     }
   },
   mounted () {
@@ -158,11 +167,11 @@ export default {
     this.fetchCampuses()
   },
   methods: {
-    nextStep () {
+    async nextStep () {
       if (this.currentStep < this.steps) {
         this.currentStep += 1
       } else {
-        this.postReservation()
+        await this.postReservation()
         this.dialog = false
         this.$emit('close')
       }
@@ -180,7 +189,7 @@ export default {
       this.dialog = true
     },
     async fetchRooms () {
-      if (this.roomFilterOptionsAreReady && this.reservationDetails.floor != null) {
+      if (this.roomFilterOptionsAreReady && this.reservationDetails.floor) {
         const { data } = await RoomRepository.getAvailableRooms(
           this.reservationDetails.campus.name,
           this.reservationDetails.building.name,
@@ -201,6 +210,7 @@ export default {
       const currentUserId = this.$store.state.user.info.sub
       const currentUserName = this.$store.state.user.info.name
       const currentUserEmail = this.$store.state.user.info.email
+
       await UserRepository.findOrCreateUser({
         id: currentUserId,
         name: currentUserName,
