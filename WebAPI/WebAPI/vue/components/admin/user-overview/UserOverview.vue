@@ -97,11 +97,11 @@ export default {
   },
   computed: {
     mungedUsers () {
-      return this.users.map((v) => {
+      return this.users.map((v, i) => {
         return {
           ...v,
-          sortable_role: this.formattedUserRole(v.role),
-          index: this.users.indexOf(v)
+          sortable_role: this.formatUserRole(v.role),
+          index: i
         }
       })
     }
@@ -126,10 +126,11 @@ export default {
     },
     editUser (user) {
       this.selectedUserIndex = user.index
+      console.log(this.selectedUserIndex)
       this.selectedUserRole = user.role
       this.dialog = true
     },
-    formattedUserRole (role) {
+    formatUserRole (role) {
       return role === 1 ? 'Admin' : 'User'
     },
     close () {
