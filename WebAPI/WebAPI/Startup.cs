@@ -159,7 +159,7 @@ namespace WebAPI
 
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "FROOM API"); });
 
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
 
