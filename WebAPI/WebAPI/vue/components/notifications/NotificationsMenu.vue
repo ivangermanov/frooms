@@ -3,6 +3,8 @@
     :close-on-click="closeOnClick"
     :offset-y="offsetY"
     transition="scale-transition"
+    max-height="400"
+    max-width="400"
   >
     <template v-slot:activator="{ on }">
       <v-badge

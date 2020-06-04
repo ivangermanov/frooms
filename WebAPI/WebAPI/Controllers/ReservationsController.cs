@@ -1,8 +1,10 @@
-﻿using Froom.Data.Models.Reservations;
+﻿using Froom.Data.Dtos;
+using Froom.Data.Exceptions;
+using Froom.Data.Models.Reservations;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -29,12 +31,10 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetAllReservationsPerCurrentUser()
         {
             var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var exists = await _userService.GetUserAsync(userId);
-            if (exists.Any() == false)
-            {
-                return Ok(null);
-            }
-            var reservations = await _reservationService.GetReservationsForUser(userId);
+
+            var user = await _userService.GetUserByIdAsync(userId);
+            var reservations = user is null ? null : await _reservationService.GetReservationsForUser(userId);
+
             return Ok(reservations);
         }
 
@@ -57,13 +57,14 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> PostReservation(PostReservationModel model)
         {
-            var user = await _userService.GetUserAsync(model.UserId);
+            var user = await _userService.GetUserByIdAsync(model.UserId);
 
-            if (user.Single(x => x.Id == model.UserId).IsBlocked)
-            {
+            if (user is null)
+                return BadRequest();
+
+            if (user.IsBlocked)
                 return Forbid("Your profile is blocked and the reservation cannot be made." +
-                    " Please contact the system's admin.");
-            }
+                " Please contact the system's admin.");
 
             await _reservationService.AddReservationAsync(model);
             return Ok();
