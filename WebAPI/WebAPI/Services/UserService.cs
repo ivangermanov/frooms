@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Froom.Data.Dtos;
 using Froom.Data.Entities;
+using Froom.Data.Exceptions;
 using Froom.Data.Models.Users;
 using Froom.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -48,22 +49,20 @@ namespace WebAPI.Services
 
         public async Task<UserDto> FindOrCreateUserAsync(PostUserModel model)
         {
-            var user = (await GetUserAsync(model.Id)).FirstOrDefault();
-            if(user == null)
-            {
+            var user = await GetUserByIdAsync(model.Id);
+
+            if (user is null)
                 user = await AddUserAsync(model);
-            }
 
             return user;
         }
 
         public async Task<IEnumerable<NotificationDto>> GetNotificationsAsync(Guid userId)
         {
-            var exists = await GetUserAsync(userId);
-            if (exists.Any() == false)
-            {
+            var user = await GetUserByIdAsync(userId);
+
+            if (user is null)
                 return new List<NotificationDto>();
-            }
 
             var notifications = _notificationRepository.GetForUser(userId);
 
@@ -80,12 +79,22 @@ namespace WebAPI.Services
             await _notificationRepository.MarkReadForUserAsync(userId);
         }
 
-        public async Task<IEnumerable<UserDto>> GetUserAsync(Guid? id=null, string? name = null)
+        public async Task<UserDto> GetUserByIdAsync(Guid id)
         {
-            var users = _userRepository.GetAll()
-                .Where(e => id == null || e.Id.Equals(id))
-                .Where(e => string.IsNullOrEmpty(name) || e.Name.Equals(name));
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(id);
+                return _mapper.Map<UserDto>(user);
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
+        public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
+        {
+            var users = _userRepository.GetAll();
             return await _mapper.ProjectTo<UserDto>(users).ToListAsync();
         }
 
