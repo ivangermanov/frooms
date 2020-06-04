@@ -36,7 +36,7 @@
                 <room-filter
                   :campuses="data.campuses"
                   :initial="externalReservationDetails"
-                  @update-reservation-details="updateReservationDetailsEvent"
+                  @update-reservation-details="updateReservationDetails"
                 />
               </v-stepper-content>
 
@@ -44,15 +44,15 @@
                 :step="2"
               >
                 <pick-room
-                  :rooms="data.rooms"
-                  :selected-room="reservationDetails.room"
-                  :initial-room-number="externalReservationDetails.room"
                   :floors="data.floors"
+                  :rooms="data.rooms"
+                  :initial-floor-number="externalReservationDetails.floor"
+                  :initial-room-number="externalReservationDetails.room"
                   :selected-floor.sync="reservationDetails.floor"
-                  :initial-floor="externalReservationDetails.floor"
-                  @update-selected-room="updateSelectedRoom"
-                  @fetch-rooms="fetchRooms"
-                />
+                  :selected-room.sync="reservationDetails.room"
+                >
+                  />
+                </pick-room>
               </v-stepper-content>
 
               <v-stepper-content
@@ -135,6 +135,7 @@ export default {
       dialog: false,
       currentStep: 1,
       steps: 3,
+      skipTemp: false,
       reservationDetails: {
         campus: null,
         building: null,
@@ -157,8 +158,28 @@ export default {
     }
   },
   watch: {
+    skip: {
+      handler (value) {
+        this.skipTemp = value
+      },
+      immediate: true
+    },
+    roomFilterOptionsAreReady: {
+      handler () {
+        if (this.roomFilterOptionsAreReady) { this.fetchFloors() }
+      },
+      deep: true
+    },
+    'reservationDetails.floor': {
+      handler (value) {
+        if (value) { this.fetchRooms() }
+      }
+    },
     reservationDetailsAreReady (value) {
-      if (value) { this.currentStep = this.steps }
+      if (value && this.skipTemp) {
+        this.skipTemp = false
+        this.currentStep = this.steps
+      }
     }
   },
   mounted () {
@@ -189,22 +210,19 @@ export default {
       this.dialog = true
     },
     async fetchRooms () {
-      if (this.roomFilterOptionsAreReady && this.reservationDetails.floor) {
-        const { data } = await RoomRepository.getAvailableRooms(
-          this.reservationDetails.campus.name,
-          this.reservationDetails.building.name,
-          this.reservationDetails.floor.number,
-          this.reservationDetails.startDate,
-          this.reservationDetails.endDate
-        )
-        this.data.rooms = data
-      }
+      const { data } = await RoomRepository.getAvailableRooms(
+        this.reservationDetails.campus.name,
+        this.reservationDetails.building.name,
+        this.reservationDetails.floor.number,
+        this.reservationDetails.startDate,
+        this.reservationDetails.endDate
+      )
+      this.data.rooms = data
     },
     async fetchFloors () {
       // TODO: Empty floors better be filtered out
       const { data } = await FloorRepository.getFloors(this.reservationDetails.building.name)
       this.data.floors = data
-      await this.fetchRooms()
     },
     async postReservation () {
       const currentUserId = this.$store.state.user.info.sub
@@ -226,17 +244,8 @@ export default {
         }
       )
     },
-    updateReservationDetailsEvent (value) {
-      this.reservationDetails.campus = value.campus
-      this.reservationDetails.building = value.building
-      this.reservationDetails.startDate = value.startDate
-      this.reservationDetails.endDate = value.endDate
-      if (this.roomFilterOptionsAreReady) {
-        this.fetchFloors()
-      }
-    },
-    updateSelectedRoom (value) {
-      this.reservationDetails.room = value
+    updateReservationDetails (value) {
+      this.reservationDetails = { ...this.reservationDetails, ...value }
     },
     padTime (time) {
       return time < 10 ? `0${time}` : `${time}`
