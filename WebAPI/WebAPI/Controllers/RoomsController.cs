@@ -13,13 +13,11 @@ namespace WebAPI.Controllers
     [ApiController]
     public class RoomsController : ControllerBase
     {
-        private readonly FontysAPI _fontysApi;
         private readonly IRoomService _roomService;
 
-        public RoomsController(IRoomService roomService, FontysAPI fontysApi)
+        public RoomsController(IRoomService roomService)
         {
             _roomService = roomService;
-            _fontysApi = fontysApi;
         }
 
         [HttpGet]
