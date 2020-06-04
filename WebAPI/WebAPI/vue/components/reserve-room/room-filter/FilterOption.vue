@@ -80,10 +80,10 @@ export default defineComponent({
     const dates = useReservationDates()
     const { startDate, endDate, ...rest } = dates
     if (props.initial.startDate) {
-      rest.startTime.value = moment(startDate.value).format('HH:mm')
+      rest.startTime.value = moment(props.initial.startDate).format('HH:mm')
     }
     if (props.initial.endDate) {
-      rest.endTime.value = moment(endDate.value).format('HH:mm')
+      rest.endTime.value = moment(props.initial.endDate).format('HH:mm')
     }
 
     const selectedCampusName = ref(props.initial.campus || '')

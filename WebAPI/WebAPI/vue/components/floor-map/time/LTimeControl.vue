@@ -5,13 +5,12 @@
         ref="menu"
         v-model="menu"
         :close-on-content-click="false"
-        :return-value.sync="timeTemp"
         transition="scale-transition"
         offset-y
       >
         <template v-slot:activator="{ on }">
           <v-text-field
-            v-model="timeTemp"
+            :value="timeTemp"
             :label="label"
             :dark="false"
             :light="true"
@@ -28,6 +27,7 @@
           :max="max"
           scrollable
           :format="'24hr'"
+          @input="resetMinutes"
           @click:minute="$refs.menu.save(timeTemp)"
         />
       </v-menu>
@@ -37,6 +37,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import moment from 'moment'
 
 export default Vue.extend({
   props: {
@@ -69,6 +70,15 @@ export default Vue.extend({
   methods: {
     update () {
       this.$emit('update:time', this.timeTemp)
+    },
+    resetMinutes (value: string) {
+      const hours = moment(value, 'HH:mm').hours()
+      const minutes = this.timeTemp.split(':')[1]
+      const newTime = moment(`${hours}:${minutes}`, 'HH:mm')
+      const max = moment(this.max, 'HH:mm')
+      if (newTime.isAfter(max)) {
+        this.timeTemp = `${hours}:00`
+      }
     }
   }
 })
