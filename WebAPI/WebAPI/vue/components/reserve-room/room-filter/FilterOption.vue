@@ -80,10 +80,10 @@ export default defineComponent({
     const dates = useReservationDates()
     const { startDate, endDate, ...rest } = dates
     if (props.initial.startDate) {
-      rest.startTime.value = moment(startDate.value).format('HH:mm')
+      rest.startTime.value = moment(props.initial.startDate).format('HH:mm')
     }
     if (props.initial.endDate) {
-      rest.endTime.value = moment(endDate.value).format('HH:mm')
+      rest.endTime.value = moment(props.initial.endDate).format('HH:mm')
     }
 
     const selectedCampusName = ref(props.initial.campus || '')
@@ -118,6 +118,17 @@ export default defineComponent({
       details.building = details.campus.buildings.filter((building: any) => building.name === name)[0]
       updateReservationDetailsEvent()
     })
+
+    // watch(() => props.initial.startDate, (startDate) => {
+    //   if (startDate) {
+    //     rest.startTime.value = moment(startDate).format('HH:mm')
+    //   }
+    // })
+    // watch(() => props.initial.endDate, (endDate) => {
+    //   if (endDate) {
+    //     rest.endTime.value = moment(endDate).format('HH:mm')
+    //   }
+    // })
 
     watch(() => [details.startDate, details.endDate],
       () => {

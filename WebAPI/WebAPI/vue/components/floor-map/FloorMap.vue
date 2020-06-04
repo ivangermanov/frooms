@@ -1,5 +1,6 @@
 <template>
   <div style="height: 100%">
+    <!-- TODO: Show spinner while loading -->
     <client-only>
       <l-map ref="map" :options="mapOptions" style="height: 100%; z-index: 0;">
         <l-control-zoom position="topright" />
