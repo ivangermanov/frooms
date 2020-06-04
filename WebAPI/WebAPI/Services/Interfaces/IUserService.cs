@@ -15,10 +15,15 @@ namespace WebAPI.Services.Interfaces
         public Task<UserDto> AddUserAsync(PostUserModel model);
 
         /// <summary>
-        /// Gets a user based on specified number or name.
-        /// If nothing is pecified returns all users.
+        /// Gets a user based on specified ID.
+        /// Returns null if user does not exist.
         /// </summary>
-        public Task<IEnumerable<UserDto>> GetUserAsync(Guid? id=null, string? name=null);
+        public Task<UserDto> GetUserByIdAsync(Guid id);
+
+        /// <summary>
+        /// Gets all users.
+        /// </summary>
+        public Task<IEnumerable<UserDto>> GetAllUsersAsync();
 
         /// <summary>
         /// Blocks the user.
