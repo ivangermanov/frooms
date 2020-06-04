@@ -58,11 +58,19 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> CheckIfBlocked()
         {
             var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var user = await _userService.GetUserAsync(userId);
 
-            if (user.Single(x => x.Id == userId).IsBlocked)
+            // prevents exception if user is not registered
+            try
             {
-                return Ok(true);
+                var user = await _userService.GetUserAsync(userId);
+                if (user.Single(x => x.Id == userId).IsBlocked)
+                {
+                    return Ok(true);
+                }
+            }
+            catch
+            {
+                return Ok(false);
             }
 
             return Ok(false);
