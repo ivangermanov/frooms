@@ -59,21 +59,12 @@ namespace WebAPI.Controllers
         {
             var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            // prevents exception if user is not registered
-            try
-            {
-                var user = await _userService.GetUserAsync(userId);
-                if (user.Single(x => x.Id == userId).IsBlocked)
-                {
-                    return Ok(true);
-                }
-            }
-            catch
-            {
-                return Ok(false);
-            }
+            var user = await _userService.GetUserByIdAsync(userId);
 
-            return Ok(false);
+            if (user is null || !user.IsBlocked)
+                return Ok(false);
+
+            return Ok(true);
         }
 
         [Route("me/notifications")]
