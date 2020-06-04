@@ -119,17 +119,6 @@ export default defineComponent({
       updateReservationDetailsEvent()
     })
 
-    // watch(() => props.initial.startDate, (startDate) => {
-    //   if (startDate) {
-    //     rest.startTime.value = moment(startDate).format('HH:mm')
-    //   }
-    // })
-    // watch(() => props.initial.endDate, (endDate) => {
-    //   if (endDate) {
-    //     rest.endTime.value = moment(endDate).format('HH:mm')
-    //   }
-    // })
-
     watch(() => [details.startDate, details.endDate],
       () => {
         updateReservationDetailsEvent()
