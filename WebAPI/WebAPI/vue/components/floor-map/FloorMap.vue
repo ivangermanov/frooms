@@ -76,6 +76,7 @@
       <reserve-modal
         v-if="reservationDetails.room"
         :external-reservation-details="reservationDetails"
+        :skip="true"
         @close="reservationDetails.room = null"
       />
     </portal>

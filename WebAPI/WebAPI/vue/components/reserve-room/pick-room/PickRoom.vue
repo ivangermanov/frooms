@@ -5,11 +5,6 @@
     </v-card-title>
     <v-card-text>
       <v-row>
-        <v-col v-if="false" class="col">
-          <div style="height: 350px">
-            <floor-map />
-          </div>
-        </v-col>
         <v-col class="col">
           <base-drop-down-selector
             :items="floorNumbers"
@@ -41,12 +36,11 @@
 
 <script>
 import BaseDropDownSelector from '@/components/base/BaseDropdownSelector.vue'
-import FloorMap from '@/components/floor-map/FloorMap.vue'
 
 export default {
-  components: { FloorMap, BaseDropDownSelector },
+  components: { BaseDropDownSelector },
   props: {
-    initialFloor: {
+    initialFloorNumber: {
       required: false,
       type: String,
       default: ''
@@ -58,71 +52,76 @@ export default {
     },
     selectedFloor: {
       type: Object,
-      default () {
-        return null
-      }
+      default: null
     },
     selectedRoom: {
       type: Object,
-      default () {
-        return null
-      }
+      default: null
     },
-    rooms: {
+    floors: {
       type: Array,
       required: true
     },
-    floors: {
+    rooms: {
       type: Array,
       required: true
     }
   },
   data () {
     return {
-      selectedRoomIndex: undefined,
-      currentRoom: null,
-      selectedFloorNumber: ''
+      selectedFloorNumber: '',
+      selectedRoomNumber: '',
+      selectedRoomIndex: ''
     }
   },
   computed: {
     floorNumbers () {
       return this.floors.map(f => f.number)
     },
-    initialRoomIndex () {
-      return this.rooms.findIndex(room => room.number === this.initialRoomNumber)
+    roomNumbers () {
+      return this.rooms.map(r => r.number)
+    },
+    selectedFloorTemp () {
+      return this.floors.find(f => f.number === this.selectedFloorNumber)
+    },
+    selectedRoomTemp () {
+      return this.rooms.find(r => r.number === this.selectedRoomNumber)
     }
   },
   watch: {
-    initialFloor: {
+    initialFloorNumber: {
       handler (value) {
         this.selectedFloorNumber = value
       },
       immediate: true
     },
-    initialRoomIndex: {
+    initialRoomNumber: {
       handler (value) {
-        this.selectedRoomIndex = value
+        this.selectedRoomNumber = value
       },
       immediate: true
     },
-    floors () {
+    rooms (value) {
+      if (value) {
+        this.selectedRoomIndex = value.findIndex(r => r.number === this.selectedRoomNumber)
+      }
+    },
+    selectedFloorTemp () {
       this.updateSelectedFloor()
     },
-    selectedRoomIndex () {
-      if (this.selectedRoomIndex !== undefined) {
-        this.currentRoom = this.rooms[this.selectedRoomIndex]
-        this.updateSelectedRoom()
-      }
+    selectedRoomTemp () {
+      this.updateSelectedRoom()
+    },
+    selectedRoomIndex (value) {
+      this.selectedRoomNumber = this.rooms[value]?.number
     }
   },
   methods: {
     updateSelectedRoom () {
-      this.$emit('update-selected-room', this.currentRoom)
+      this.$emit('update:selected-room', this.selectedRoomTemp)
     },
     updateSelectedFloor () {
-      const selected = this.floors.filter(f => f.number === this.selectedFloorNumber)[0]
-      this.$emit('update:selected-floor', selected)
-      this.$emit('fetch-rooms')
+      this.$emit('update:selected-floor', this.selectedFloorTemp)
     }
   }
 }
