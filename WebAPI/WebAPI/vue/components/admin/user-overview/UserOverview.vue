@@ -39,6 +39,7 @@
         </v-dialog>
       </template>
       <template v-slot:item.actions="{ item }">
+        <!-- TODO: Add hover over text to icons -->
         <v-icon
           small
           class="mr-2"

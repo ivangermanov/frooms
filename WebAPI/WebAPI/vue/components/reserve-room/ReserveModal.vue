@@ -63,14 +63,9 @@
             </v-stepper-items>
           </v-responsive>
           <div class="text-right mt-3 mb-3 mr-5">
-            <v-btn
-              :disabled="reservationDetailsAreReady === false"
-              color="primary"
-              @click="nextStep()"
-            >
-              {{ currentStep === 3 ? 'Finish' : 'Continue' }}
+            <v-btn text @click="$emit('close');">
+              Cancel
             </v-btn>
-
             <v-btn
               :disabled="currentStep === 1"
               color="red lighten-1"
@@ -78,9 +73,12 @@
             >
               Previous
             </v-btn>
-
-            <v-btn text @click="$emit('close');">
-              Cancel
+            <v-btn
+              :disabled="reservationDetailsAreReady === false"
+              color="primary"
+              @click="nextStep()"
+            >
+              {{ currentStep === 3 ? 'Finish' : 'Next' }}
             </v-btn>
           </div>
         </v-stepper>

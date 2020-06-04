@@ -2,12 +2,11 @@
   <v-dialog
     :ref="`dialog-time-picker-${_uid}`"
     v-model="modal"
-    :return-value.sync="timeTemp"
     width="290px"
   >
     <template v-slot:activator="{ on }">
       <v-text-field
-        v-model="timeTemp"
+        :value="timeTemp"
         :label="label"
         :prepend-icon="icon"
         readonly
@@ -22,13 +21,17 @@
       scrollable
       :format="'24hr'"
       full-width
+      @input="resetMinutes"
       @click:minute="$refs[`dialog-time-picker-${_uid}`].save(timeTemp)"
     />
   </v-dialog>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+import moment from 'moment'
+
+export default Vue.extend({
   props: {
     icon: { type: String, default: 'mdi-clock' },
     label: { type: String, default: 'Pick a time' },
@@ -60,7 +63,16 @@ export default {
   methods: {
     update () {
       this.$emit('update:time', this.timeTemp)
+    },
+    resetMinutes (value: string) {
+      const hours = moment(value, 'HH:mm').hours()
+      const minutes = this.timeTemp.split(':')[1]
+      const newTime = moment(`${hours}:${minutes}`, 'HH:mm')
+      const max = moment(this.max, 'HH:mm')
+      if (newTime.isAfter(max)) {
+        this.timeTemp = `${hours}:00`
+      }
     }
   }
-}
+})
 </script>
