@@ -25,7 +25,7 @@ namespace WebAPI.Controllers.admin
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
-            var result = await _userService.GetUserAsync();
+            var result = await _userService.GetAllUsersAsync();
             return Ok(result.ToList());
         }
 
