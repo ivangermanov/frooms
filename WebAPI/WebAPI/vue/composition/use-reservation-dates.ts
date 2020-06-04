@@ -77,8 +77,13 @@ export default function useRoomsData () {
   function updateCurrentDate () {
     const remaining = (60 - currentDate.value.seconds()) * 1000
     timer = setTimeout(() => {
-      currentDate.value = moment()
+      const curMoment = moment()
+      currentDate.value = curMoment
       updateCurrentDate()
+      if (startDateMoment.value.isBefore(curMoment)) {
+        data.date = curMoment.format('YYYY-MM-DD')
+        data.startTime = curMoment.format('HH:mm')
+      }
     }, remaining)
   }
 
