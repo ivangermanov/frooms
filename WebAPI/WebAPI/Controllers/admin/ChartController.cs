@@ -24,23 +24,10 @@ namespace WebAPI.Controllers.admin
         }
 
         [HttpGet]
-        [Route("reservations")]
-        public async Task<IActionResult> GetReservationData(string chartName, int? items = null, DateTime? start = null, DateTime? end = null)
+        [Route("reservations/user")]
+        public async Task<IActionResult> GetUserReservationsChartData(int? items = null, DateTime? start = null, DateTime? end = null)
         {
-            ChartDataDto data = null;
-
-            switch (chartName)
-            {
-                case "Users":
-                    data = await _chartService.GetUserReservationsChartData(items, start, end);
-                    break;
-                case "Buildings":
-                    data = await _chartService.GetBuildingReservationsChartData(items, start, end);
-                    break;
-                case "Days":
-                    data = await _chartService.GetDayReservationsChartData(items, start, end);
-                    break;
-            }
+            var data = await _chartService.GetUserReservationsChartData(items, start, end);
 
             return Ok(data);
         }
