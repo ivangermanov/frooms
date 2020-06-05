@@ -16,7 +16,7 @@
       </v-tab>
     </v-tabs>
 
-    <v-tabs-items v-model="tab">
+    <v-tabs-items v-model="tab" style="width:100%">
       <v-tab-item>
         <user-overview :users="users" />
       </v-tab-item>
@@ -24,9 +24,7 @@
         <reservations-overview :reservations="reservations" />
       </v-tab-item>
       <v-tab-item>
-        <v-card class="d-inline-block mx-auto">
-          <chart-viewer />
-        </v-card>
+        <chart-viewer />
       </v-tab-item>
     </v-tabs-items>
   </v-layout>
