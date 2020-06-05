@@ -5,9 +5,10 @@ import reservationRepository from './reservationRepository'
 import buildingRepository from './buildingRepository'
 import floorRepository from './floorRepository'
 import fontysApiRepository from './fontysApiRepository'
+import chartRepository from './chartRepository'
 import adminUserRepository from './admin/userRepository'
 import adminReservationRepository from './admin/reservationRepository'
-import chartRepository from './admin/chartRepository'
+import adminChartRepository from './admin/chartRepository'
 
 const repositories = {
   room: roomRepository,
@@ -17,9 +18,10 @@ const repositories = {
   building: buildingRepository,
   floor: floorRepository,
   fontysApi: fontysApiRepository,
+  chart: chartRepository,
   adminUser: adminUserRepository,
   adminReservation: adminReservationRepository,
-  chart: chartRepository
+  adminChart: adminChartRepository
 }
 
 export const RepositoryFactory = repositories

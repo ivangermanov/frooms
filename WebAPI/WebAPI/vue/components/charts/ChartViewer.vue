@@ -1,98 +1,111 @@
 <template>
-  <v-card>
-    <v-container>
-      <v-row class="mb-4" justify="space-between">
-        <v-col md="4">
-          <v-btn icon @click="fetchChartData">
-            <v-icon>mdi-refresh</v-icon>
-          </v-btn>
-          <chart-settings
-            :items.sync="settings.items"
-            :start.sync="settings.start"
-            :end.sync="settings.end"
-            @update-settings="fetchChartData"
-          />
-        </v-col>
-        <v-col md="5">
-          <v-btn-toggle
-            v-model="selectedChart"
-            mandatory
-          >
-            <v-btn>
-              User
-            </v-btn>
-            <v-btn>
-              Building
-            </v-btn>
-            <v-btn>
-              Day
-            </v-btn>
-          </v-btn-toggle>
-        </v-col>
-      </v-row>
-      <v-row class="px-4">
+  <v-container fluid>
+    <v-row>
+      <v-col>
+        <v-btn icon @click="fetchChartData">
+          <v-icon>mdi-refresh</v-icon>
+        </v-btn>
+        <chart-settings
+          :items.sync="settings.items"
+          :start.sync="settings.start"
+          :end.sync="settings.end"
+          @update-settings="fetchChartData"
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" md="6" lg="3">
         <base-chart
           v-if="!loading"
-          :title="chartData[selectedChart].title"
-          :chart-type="'bar'"
-          :categories="chartData[selectedChart].categories"
-          :series="chartData[selectedChart].series"
+          :title="chartData.user.title"
+          :chart-type="chartData.user.chartType"
+          :categories="chartData.user.categories"
+          :series="chartData.user.series"
         />
-      </v-row>
-    </v-container>
-  </v-card>
+      </v-col>
+      <v-col cols="12" md="6" lg="3">
+        <base-chart
+          v-if="!loading"
+          :title="chartData.peakhours.title"
+          :chart-type="chartData.peakhours.chartType"
+          :categories="chartData.peakhours.categories"
+          :series="chartData.peakhours.series"
+        />
+      </v-col>
+      <v-col cols="12" md="6" lg="3">
+        <base-chart
+          v-if="!loading"
+          :title="chartData.building.title"
+          :chart-type="chartData.building.chartType"
+          :categories="chartData.building.categories"
+          :series="chartData.building.series"
+        />
+      </v-col>
+      <v-col cols="12" md="6" lg="3">
+        <base-chart
+          v-if="!loading"
+          :title="chartData.day.title"
+          :chart-type="chartData.day.chartType"
+          :categories="chartData.day.categories"
+          :series="chartData.day.series"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, onMounted, ref } from '@vue/composition-api'
 import moment from 'moment'
 import BaseChart from './BaseChart.vue'
 import ChartSettings from './ChartSettings.vue'
-import { RepositoryFactory } from '@/api/repositoryFactory'
+import useChartData from '@/composition/use-chart-data'
 
-const chartRepository = RepositoryFactory.chart
-
-export default {
+export default defineComponent({
   components: { BaseChart, ChartSettings },
 
-  data () {
+  setup () {
+    const intitialItemLimit = 5
+    const intialStartDate = moment().startOf('year').toISOString(true)
+    const initialEndDate = moment().toISOString(true)
+
+    const {
+      loading,
+      itemLimit,
+      startDate,
+      endDate,
+      chartData,
+      getPeakHourReservationChartData,
+      getBuildingReservationsChartData,
+      getDayReservationsChartData,
+      getUserReservationsChartData
+    } = useChartData(intitialItemLimit, intialStartDate, initialEndDate)
+
+    const fetchChartData = async () => {
+      loading.value = true
+      await getPeakHourReservationChartData()
+      await getBuildingReservationsChartData()
+      await getDayReservationsChartData()
+      await getUserReservationsChartData()
+      loading.value = false
+    }
+
+    onMounted(
+      fetchChartData
+    )
+
+    const settings = ref({
+      items: itemLimit,
+      start: startDate,
+      end: endDate
+    })
+
     return {
-      loading: true,
-      selectedChart: 0,
-      settings: {
-        items: 3,
-        start: moment().startOf('year'),
-        end: moment()
-      },
-      chartData: []
-    }
-  },
-
-  computed: {
-    formattedStartDate () {
-      return this.settings.start.toISOString(true) ?? null
-    },
-    formattedEndDate () {
-      return this.settings.end.toISOString(true) ?? null
-    }
-  },
-
-  mounted () {
-    this.fetchChartData()
-  },
-
-  methods: {
-    async fetchChartData () {
-      this.loading = true
-      this.chartData = []
-      await this.fetchReservationChartData('Users')
-      await this.fetchReservationChartData('Buildings')
-      await this.fetchReservationChartData('Days')
-      this.loading = false
-    },
-    async fetchReservationChartData (chartName) {
-      const { data } = await chartRepository.getReservationData(chartName, this.settings.items, this.formattedStartDate, this.formattedEndDate)
-      this.chartData.push(data)
+      loading,
+      settings,
+      chartData,
+      fetchChartData
     }
   }
-}
+})
 </script>

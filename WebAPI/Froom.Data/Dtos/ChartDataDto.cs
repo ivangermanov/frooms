@@ -10,6 +10,8 @@ namespace Froom.Data.Dtos
 
         public string Title { get; set; }
 
+        public string ChartType { get; set; }
+
         public IEnumerable<string> Categories { get; set; }
 
         public IEnumerable<ChartDataSeries> Series { get; set;}

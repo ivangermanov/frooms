@@ -25,11 +25,17 @@ namespace WebAPI.Services.Interfaces
         public Task<ChartDataDto> GetBuildingReservationsChartData(int? items = null, DateTime? start = null, DateTime? end = null);
 
         /// <summary>
-        /// Get the chart data for a day reservations.
+        /// Get the chart data for week days reservations.
         /// </summary>
-        /// <param name="items">The limit for the number of items.</param>
         /// <param name="start">The limit for the start date</param>
         /// <param name="end">The limit for the end date.</param>
-        public Task<ChartDataDto> GetDayReservationsChartData(int? items = null, DateTime? start = null, DateTime? end = null);
+        public Task<ChartDataDto> GetDayReservationsChartData(DateTime? start = null, DateTime? end = null);
+
+        /// <summary>
+        /// Get the chart data for peak hours reservations.
+        /// </summary>
+        /// <param name="start">The limit for the start date</param>
+        /// <param name="end">The limit for the end date.</param>
+        public Task<ChartDataDto> GetPeakHoursReservationsChartData(DateTime? start = null, DateTime? end = null);
     }
 }
