@@ -3,10 +3,9 @@ import Repository from '../repository'
 const resource = '/admin/charts'
 
 export default {
-  getReservationData (chartName: string, items?: number, start?: string, end?: string) {
-    return Repository.get(`${resource}/reservations`, {
+  getUserReservationsChartData (items?: number, start?: string, end?: string) {
+    return Repository.get(`${resource}/reservations/user`, {
       params: {
-        chartName,
         items,
         start,
         end

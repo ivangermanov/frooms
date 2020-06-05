@@ -1,24 +1,24 @@
 <template>
-  <v-container class="container">
-    <v-layout row wrap justify-space-between>
-      <v-flex xs12 md7>
+  <v-container>
+    <v-row>
+      <v-col md="7">
         <reservations-list />
-      </v-flex>
-      <v-flex xs12 md4>
-        <notifications-list />
-      </v-flex>
-    </v-layout>
+      </v-col>
+      <v-col md="5">
+        <chart-viewer-tabbed />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import NotificationsList from '~/components/notifications/NotificationsList.vue'
-import ReservationsList from '~/components/reservations/ReservationsList.vue'
+import { defineComponent } from '@vue/composition-api'
+import ReservationsList from '@/components/reservations/ReservationsList.vue'
+import ChartViewerTabbed from '@/components/charts/ChartViewerTabbed.vue'
 
-export default Vue.extend({
+export default defineComponent({
   components: {
-    NotificationsList, ReservationsList
+    ReservationsList, ChartViewerTabbed
   }
 })
 </script>

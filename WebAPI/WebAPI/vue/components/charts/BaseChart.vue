@@ -54,8 +54,9 @@ export default {
         },
         plotOptions: {
           column: {
-            pointPadding: 0.2,
-            borderWidth: 0
+            pointPadding: 0.1,
+            borderWidth: 0,
+            groupPadding: 0
           }
         },
         series: this.series,
