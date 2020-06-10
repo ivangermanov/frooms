@@ -11,15 +11,14 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+<script>
 import ReservationsList from '@/components/reservations/ReservationsList.vue'
 import ChartViewerTabbed from '@/components/charts/ChartViewerTabbed.vue'
 import { RepositoryFactory } from '@/api/repositoryFactory'
 
 const ReservationRepository = RepositoryFactory.reservation
 
-export default defineComponent({
+export default {
   components: {
     ReservationsList, ChartViewerTabbed
   },
@@ -33,11 +32,9 @@ export default defineComponent({
   },
   methods: {
     async getUserReservations () {
-      const { data } = await ReservationRepository.getReservations(
-        this.$store.state.user.info.sub
-      )
+      const { data } = await ReservationRepository.getReservations(this.$store.state.user.info.sub)
       this.reservations = data
     }
   }
-})
+}
 </script>
