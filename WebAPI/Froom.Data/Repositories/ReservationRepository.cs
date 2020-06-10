@@ -49,6 +49,7 @@ namespace Froom.Data.Repositories
         {
             return _reservations
                 .Include(r => r.User)
+                .Include(r => r.Room)
                 .Where(r => r.UserId == Id);
         }
 

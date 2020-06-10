@@ -26,20 +26,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
-        [Route("getCurrentUserReservations")]
-        public async Task<IActionResult> GetAllReservationsPerCurrentUser()
-        {
-            var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-            var user = await _userService.GetUserByIdAsync(userId);
-            var reservations = user is null ? null : await _reservationService.GetReservationsForUser(userId);
-
-            return Ok(reservations);
-        }
-
-        [HttpGet]
-        [Route("{userId}")]
+        [Route("user/{userId}")]
         public async Task<IActionResult> GetReservationsForUser(Guid userId)
         {
             var reservations = await _reservationService.GetReservationsForUser(userId);
