@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col md="7">
-        <reservations-list />
+        <reservations-list :reservations="reservations" />
       </v-col>
       <v-col md="5">
         <chart-viewer-tabbed />
@@ -15,10 +15,29 @@
 import { defineComponent } from '@vue/composition-api'
 import ReservationsList from '@/components/reservations/ReservationsList.vue'
 import ChartViewerTabbed from '@/components/charts/ChartViewerTabbed.vue'
+import { RepositoryFactory } from '@/api/repositoryFactory'
+
+const ReservationRepository = RepositoryFactory.reservation
 
 export default defineComponent({
   components: {
     ReservationsList, ChartViewerTabbed
+  },
+  data () {
+    return {
+      reservations: []
+    }
+  },
+  beforeMount () {
+    this.getUserReservations()
+  },
+  methods: {
+    async getUserReservations () {
+      const { data } = await ReservationRepository.getReservations(
+        this.$store.state.user.info.sub
+      )
+      this.reservations = data
+    }
   }
 })
 </script>
