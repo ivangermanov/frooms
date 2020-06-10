@@ -30,7 +30,8 @@ namespace Froom.Data.Repositories
         {
             return _notifications
                 .Where(x => x.UserId == userId)
-                .OrderByDescending(x => x.CreatedDate);
+                .OrderByDescending(x => x.CreatedDate)
+                .Take(100);
         }
 
         public async Task MarkReadAsync(int notificationId)
