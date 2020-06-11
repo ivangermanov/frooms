@@ -73,7 +73,7 @@ export default {
       overlay: false
     }
   },
-  beforeMount () {
+  onMounted () {
     if (this.reservations.length === 0) {
       this.overlay = true
     }
