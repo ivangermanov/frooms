@@ -67,7 +67,7 @@ export default defineComponent({
   setup () {
     const intitialItemLimit = 5
     const intialStartDate = moment().startOf('year').toISOString(true)
-    const initialEndDate = moment().toISOString(true)
+    const initialEndDate = moment().startOf('year').add(1, 'year').toISOString(true)
 
     const {
       loading,
