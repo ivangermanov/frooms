@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col md="7">
+      <v-col md="7" style="width: 100%">
         <reservations-list :reservations="reservations" />
       </v-col>
       <v-col md="5">
@@ -23,9 +23,7 @@ export default {
     ReservationsList, ChartViewerTabbed
   },
   data () {
-    return {
-      reservations: []
-    }
+    return { reservations: [] }
   },
   beforeMount () {
     this.getUserReservations()
