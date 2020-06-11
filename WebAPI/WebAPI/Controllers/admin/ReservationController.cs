@@ -35,5 +35,11 @@ namespace WebAPI.Controllers.admin
             await _reservationService.DeleteReservation(reservationId);
             return Ok();
         }
+        [HttpPut]
+        public async Task<IActionResult> UpdateReservation(AdminUpdateReservationModel reservationAdmin)
+        {
+            await _reservationService.UpdateReservation(reservationAdmin);
+            return Ok();
+        }
     }
 }

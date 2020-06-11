@@ -18,6 +18,8 @@ namespace Froom.Data.Entities
 
         public DateTime EndDate { get; set; }
 
+        public bool IsCancelled { get; set; }
+
         public bool IsExpired() => DateTime.Compare(this.EndDate, DateTime.Now) > 0;
     }
 }

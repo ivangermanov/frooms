@@ -2,3 +2,4 @@ export { RoomDTO, IRoomDTO, IFloormapRoomDTO, RoomModel, IRoomModel, IPoint, Cre
 export { IFloor } from './floor'
 export { IUser, IPostUser, UserRole } from './user'
 export { IReservation } from './reservation'
+export { IReservationAdmin } from './reservation'

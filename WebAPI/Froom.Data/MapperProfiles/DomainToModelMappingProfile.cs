@@ -30,6 +30,7 @@ namespace Froom.Data.MapperProfiles
 
             CreateMap<PostReservationModel, Reservation>();
             CreateMap<PostUserModel, User>();
+            CreateMap<AdminUpdateReservationModel, Reservation>();
             CreateMap<PostCampusModel, Campus>();
             CreateMap<PostBuildingModel, Building>();
         }
