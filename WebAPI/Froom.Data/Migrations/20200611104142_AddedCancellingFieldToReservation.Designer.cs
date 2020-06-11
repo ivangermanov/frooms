@@ -4,14 +4,16 @@ using Froom.Data.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Froom.Data.Migrations
 {
     [DbContext(typeof(FroomContext))]
-    partial class FroomContextModelSnapshot : ModelSnapshot
+    [Migration("20200611104142_AddedCancellingFieldToReservation")]
+    partial class AddedCancellingFieldToReservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -269,11 +271,11 @@ namespace Froom.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("Cancelled")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsCancelled")
-                        .HasColumnType("bit");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
@@ -296,8 +298,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 1,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 5, 8, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 1,
                             StartDate = new DateTime(2020, 5, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("5c861938-98ba-41d2-9e24-da3610e34544")
@@ -305,8 +307,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 2,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 5, 9, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 2,
                             StartDate = new DateTime(2020, 5, 5, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("5c861938-98ba-41d2-9e24-da3610e34544")
@@ -314,8 +316,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 3,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 5, 10, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 3,
                             StartDate = new DateTime(2020, 5, 5, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("5c861938-98ba-41d2-9e24-da3610e34544")
@@ -323,8 +325,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 4,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 5, 11, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 4,
                             StartDate = new DateTime(2020, 5, 5, 11, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("5c861938-98ba-41d2-9e24-da3610e34544")
@@ -332,8 +334,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 5,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 5, 12, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 1,
                             StartDate = new DateTime(2020, 5, 5, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("5c861938-98ba-41d2-9e24-da3610e34544")
@@ -341,8 +343,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 6,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 5, 13, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 5,
                             StartDate = new DateTime(2020, 5, 5, 13, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("5c861938-98ba-41d2-9e24-da3610e34544")
@@ -350,8 +352,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 7,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 5, 14, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 6,
                             StartDate = new DateTime(2020, 5, 5, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("05847a38-8ea2-4232-966e-512d4159c554")
@@ -359,8 +361,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 8,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 6, 8, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 7,
                             StartDate = new DateTime(2020, 5, 6, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("05847a38-8ea2-4232-966e-512d4159c554")
@@ -368,8 +370,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 9,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 6, 9, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 8,
                             StartDate = new DateTime(2020, 5, 6, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("05847a38-8ea2-4232-966e-512d4159c554")
@@ -377,8 +379,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 10,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 6, 10, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 1,
                             StartDate = new DateTime(2020, 5, 6, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("05847a38-8ea2-4232-966e-512d4159c554")
@@ -386,8 +388,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 11,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 7, 8, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 2,
                             StartDate = new DateTime(2020, 5, 7, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("05847a38-8ea2-4232-966e-512d4159c554")
@@ -395,8 +397,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 12,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 7, 9, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 3,
                             StartDate = new DateTime(2020, 5, 7, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("ab81a843-3e70-4cd2-9c89-d6b5719c3a6b")
@@ -404,8 +406,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 13,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 7, 10, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 4,
                             StartDate = new DateTime(2020, 5, 7, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("ab81a843-3e70-4cd2-9c89-d6b5719c3a6b")
@@ -413,8 +415,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 14,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 7, 11, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 5,
                             StartDate = new DateTime(2020, 5, 7, 11, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("ab81a843-3e70-4cd2-9c89-d6b5719c3a6b")
@@ -422,8 +424,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 15,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 8, 8, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 6,
                             StartDate = new DateTime(2020, 5, 8, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("ab81a843-3e70-4cd2-9c89-d6b5719c3a6b")
@@ -431,8 +433,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 16,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 8, 9, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 7,
                             StartDate = new DateTime(2020, 5, 8, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("ab81a843-3e70-4cd2-9c89-d6b5719c3a6b")
@@ -440,8 +442,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 17,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 10, 8, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 8,
                             StartDate = new DateTime(2020, 5, 10, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("ac408ff3-2e5d-4975-96a8-83e6e67f9e03")
@@ -449,8 +451,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 18,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 1,
                             StartDate = new DateTime(2020, 5, 10, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("ac408ff3-2e5d-4975-96a8-83e6e67f9e03")
@@ -458,8 +460,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 19,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 10, 10, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 2,
                             StartDate = new DateTime(2020, 5, 10, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("ac408ff3-2e5d-4975-96a8-83e6e67f9e03")
@@ -467,8 +469,8 @@ namespace Froom.Data.Migrations
                         new
                         {
                             Id = 20,
+                            Cancelled = false,
                             EndDate = new DateTime(2020, 5, 10, 11, 30, 0, 0, DateTimeKind.Unspecified),
-                            IsCancelled = false,
                             RoomId = 3,
                             StartDate = new DateTime(2020, 5, 10, 11, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = new Guid("ac408ff3-2e5d-4975-96a8-83e6e67f9e03")

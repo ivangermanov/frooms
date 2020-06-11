@@ -21,7 +21,7 @@
         <user-overview :users="users" />
       </v-tab-item>
       <v-tab-item>
-        <reservations-overview :reservations="reservations" />
+        <reservations-overview :input-reservations="reservations" :input-users="users" />
       </v-tab-item>
       <v-tab-item>
         <chart-viewer />
@@ -62,10 +62,11 @@ export default Vue.extend({
     },
     async getAllReservationsForAdmin () {
       const { data } = await AdminReservationRepository.getAllReservations()
-      console.log(data)
       this.reservations = data.map((reservation:any) => {
         reservation.startingDate = moment(reservation.startingTime).format('DD/MM/YYYY')
         reservation.startingTime = moment(reservation.startingTime).format('HH:MM:SS')
+        reservation.endingDate = moment(reservation.endDate).format('DD/MM/YYYY')
+        reservation.endingTime = moment(reservation.endDate).format('HH:MM:SS')
         return reservation
       })
     }
