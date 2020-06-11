@@ -52,6 +52,22 @@ namespace WebAPI.Services
             await _notificationRepository.AddAsync(notification);
         }
 
+        
+
+        public async Task UpdateReservation(AdminUpdateReservationModel reservationAdmin)
+        {
+            //TODO: Implement overriding conflicts
+            var reservation = _mapper.Map<Reservation>(reservationAdmin);
+
+            //fetch all the reservations in that segment
+
+
+            //flag all of them as cancelled
+
+
+
+            await _reservationRepository.UpdateAsync(reservation);
+        }
         public async Task<IEnumerable<ReservationDto>> GetReservationsForRoom(int roomId)
         {
             var reservations = _reservationRepository.GetAll()

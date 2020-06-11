@@ -32,6 +32,7 @@ namespace WebAPI.Services.Interfaces
         /// </summary>
         /// <returns></returns>
         public Task<IEnumerable<ReservationDto>> GetAllReservations();
+        public Task UpdateReservation(AdminUpdateReservationModel reservationAdmin);
 
         /// <summary>
         /// Removes a reservation given the correct id ( Admin usage )
