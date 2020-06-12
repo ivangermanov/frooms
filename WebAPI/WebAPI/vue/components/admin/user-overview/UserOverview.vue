@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col cols="8">
+      <v-col cols="12" md="8">
         <v-card>
           <v-card-title>
             <v-text-field

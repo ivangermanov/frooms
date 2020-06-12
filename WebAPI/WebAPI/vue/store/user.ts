@@ -28,5 +28,11 @@ export const getters = {
       return state.info.role.includes('admin')
     }
     return false
+  },
+  getGivenName: (state: any) => {
+    if (state.info.given_name) {
+      return state.info.given_name
+    }
+    return 'Unknown'
   }
 }
