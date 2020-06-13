@@ -3,7 +3,7 @@ using Froom.Data.Entities;
 
 namespace Froom.Data.Dtos
 {
-    public class FloorMapRoomDTO
+    public class FloorMapRoomDto
     {
         public int Id { get; set; }
         public string Number { get; set; }
