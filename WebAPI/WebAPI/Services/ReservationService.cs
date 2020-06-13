@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Helpers;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Services
@@ -68,6 +69,18 @@ namespace WebAPI.Services
 
             await _reservationRepository.UpdateAsync(reservation);
         }
+
+        public ReservationRulesDto GetReservationRules()
+        {
+            return new ReservationRulesDto()
+            {
+                CurrentDate = ReservationRules.CurrentDate,
+                StartTime = ReservationRules.StartTime,
+                EndTime = ReservationRules.EndTime,
+                AvailableDays = ReservationRules.AvailableDays
+            };
+        }
+
         public async Task<IEnumerable<ReservationDto>> GetReservationsForRoom(int roomId)
         {
             var reservations = _reservationRepository.GetAll()
