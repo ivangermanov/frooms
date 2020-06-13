@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace WebAPI.Helpers
 {
@@ -17,6 +17,6 @@ namespace WebAPI.Helpers
         };
         public static TimeSpan MinReservationTime => TimeSpan.FromMinutes(15);
         public static TimeSpan MaxReservationTime => TimeSpan.FromHours(3);
-        public static DateTime MaxForwardReservationPeriod => DateTime.Today.AddMonths(3);
+        public static TimeSpan MaxForwardReservationPeriod => TimeSpan.FromDays(90);
     }
 }
