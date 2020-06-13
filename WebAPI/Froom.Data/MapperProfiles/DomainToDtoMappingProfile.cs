@@ -27,7 +27,7 @@ namespace Froom.Data.MapperProfiles
                     dto => dto.FloorNumber,
                     conf => conf.MapFrom(r => r.Details.FloorNumber));
 
-            CreateMap<Room, FloorMapRoomDTO>()
+            CreateMap<Room, FloorMapRoomDto>()
                 .ForMember(
                     dto => dto.CampusName,
                     conf => conf.MapFrom(r => r.Details.CampusName))
