@@ -1,13 +1,7 @@
-﻿using Froom.Data.Dtos;
-using Froom.Data.Exceptions;
-using Froom.Data.Models.Reservations;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System;
 using System.Threading.Tasks;
+using Froom.Data.Models.Reservations;
+using Microsoft.AspNetCore.Mvc;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Controllers
@@ -16,8 +10,8 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ReservationsController : ControllerBase
     {
-        IReservationService _reservationService;
-        IUserService _userService;
+        private readonly IReservationService _reservationService;
+        private readonly IUserService _userService;
 
         public ReservationsController(IReservationService reservationService, IUserService userService)
         {
@@ -51,7 +45,7 @@ namespace WebAPI.Controllers
 
             if (user.IsBlocked)
                 return Forbid("Your profile is blocked and the reservation cannot be made." +
-                " Please contact the system's admin.");
+                              " Please contact the system's admin.");
 
             await _reservationService.AddReservationAsync(model);
             return Ok();
