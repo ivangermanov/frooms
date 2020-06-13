@@ -9,5 +9,8 @@ export default {
   },
   getReservations (userId: string) {
     return Repository.get(`${resource}/user/${userId}`)
+  },
+  getRules () {
+    return Repository.get(`${resource}/rules`)
   }
 }
