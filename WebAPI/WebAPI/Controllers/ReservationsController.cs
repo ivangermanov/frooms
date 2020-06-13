@@ -35,6 +35,14 @@ namespace WebAPI.Controllers
             return Ok(reservations);
         }
 
+        [HttpGet]
+        [Route("rules")]
+        public IActionResult GetReservationRules()
+        {
+            var rules = _reservationService.GetReservationRules();
+            return Ok(rules);
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostReservation(PostReservationModel model)
         {
