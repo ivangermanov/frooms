@@ -34,5 +34,8 @@ export const getters = {
       return state.info.given_name
     }
     return 'Unknown'
+  },
+  isBlocked: (state: any) => {
+    return state.info.isBlocked
   }
 }
