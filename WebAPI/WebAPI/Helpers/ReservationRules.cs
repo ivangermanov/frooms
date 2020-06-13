@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 
 namespace WebAPI.Helpers
 {
     public static class ReservationRules
     {
-        public static DateTime CurrentDate => DateTime.Today;
+        public static DateTime CurrentDate => DateTime.Now;
         public static DateTime MinTime => DateTime.Today.AddHours(9);
         public static DateTime MaxTime => DateTime.Today.AddHours(17);
         public static DayOfWeek[] AvailableDays => new[]
