@@ -1,6 +1,6 @@
 export interface IReservationRules {
     currentDate: string;
-    startTime: number;
-    endTime: string;
+    minTime: string;
+    maxTime: string;
     availableDates: number[];
   }
