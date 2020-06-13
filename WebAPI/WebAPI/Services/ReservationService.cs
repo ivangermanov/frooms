@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Froom.Data.Dtos;
 using Froom.Data.Entities;
 using Froom.Data.Models.Reservations;
@@ -80,7 +80,7 @@ namespace WebAPI.Services
                 AvailableDays = ReservationRules.AvailableDays,
                 MinReservationTime = ReservationRules.MinReservationTime.TotalMilliseconds,
                 MaxReservationTime = ReservationRules.MaxReservationTime.TotalMilliseconds,
-                MaxForwardReservationPeriod = ReservationRules.MaxForwardReservationPeriod
+                MaxForwardReservationPeriod = ReservationRules.MaxForwardReservationPeriod.TotalMilliseconds
             };
         }
 
