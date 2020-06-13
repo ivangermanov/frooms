@@ -77,7 +77,10 @@ namespace WebAPI.Services
                 CurrentDate = ReservationRules.CurrentDate,
                 MinTime = ReservationRules.MinTime,
                 MaxTime = ReservationRules.MaxTime,
-                AvailableDays = ReservationRules.AvailableDays
+                AvailableDays = ReservationRules.AvailableDays,
+                MinReservationTime = ReservationRules.MinReservationTime.TotalMilliseconds,
+                MaxReservationTime = ReservationRules.MaxReservationTime.TotalMilliseconds,
+                MaxForwardReservationPeriod = ReservationRules.MaxForwardReservationPeriod
             };
         }
 
