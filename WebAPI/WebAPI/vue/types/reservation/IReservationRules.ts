@@ -3,4 +3,7 @@ export interface IReservationRules {
     minTime: string;
     maxTime: string;
     availableDates: number[];
+    minReservationTime: number;
+    maxReservationTime: number;
+    maxForwardReservationPeriod: string;
   }
