@@ -75,8 +75,8 @@ namespace WebAPI.Services
             return new ReservationRulesDto()
             {
                 CurrentDate = ReservationRules.CurrentDate,
-                StartTime = ReservationRules.StartTime,
-                EndTime = ReservationRules.EndTime,
+                MinTime = ReservationRules.MinTime,
+                MaxTime = ReservationRules.MaxTime,
                 AvailableDays = ReservationRules.AvailableDays
             };
         }
