@@ -170,6 +170,7 @@ export default function useRoomsData () {
     minStart,
     maxStart,
     minEnd,
-    maxEnd
+    maxEnd,
+    availableDays
   }
 }

@@ -1,7 +1,12 @@
 <template>
   <v-row>
     <v-col class="col">
-      <base-date-picker :date.sync="date" :min="minDate" :max="maxDate" />
+      <base-date-picker
+        :date.sync="date"
+        :min="minDate"
+        :max="maxDate"
+        :available-days="availableDays"
+      />
     </v-col>
 
     <v-col class="col">

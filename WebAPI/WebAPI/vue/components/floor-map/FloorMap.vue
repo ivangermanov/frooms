@@ -31,7 +31,12 @@
                   :building-name.sync="reservationDetails.building"
                   :buildings="buildingNames"
                 />
-                <l-date-control :date.sync="date" :min="minDate" :max="maxDate" />
+                <l-date-control
+                  :date.sync="date"
+                  :min="minDate"
+                  :max="maxDate"
+                  :available-days="availableDays"
+                />
                 <l-time-control
                   label="Start time"
                   icon="mdi-clock-time-four"
