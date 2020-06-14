@@ -1,6 +1,7 @@
 import moment from 'moment'
 import { reactive, ref, toRefs, computed, onUnmounted, watch, onMounted } from '@vue/composition-api'
 import { RepositoryFactory } from '@/api/repositoryFactory'
+import { DayOfWeek } from '~/types'
 const ReservationRepository = RepositoryFactory.reservation
 
 export default function useRoomsData () {
@@ -13,6 +14,12 @@ export default function useRoomsData () {
   const maxReservationTime = ref(10800000)
   // 3 months
   const maxForwardReservationPeriod = ref(7776000000)
+  const availableDays = ref([
+    DayOfWeek.MONDAY,
+    DayOfWeek.TUESDAY,
+    DayOfWeek.WEDNESDAY,
+    DayOfWeek.THURSDAY,
+    DayOfWeek.FRIDAY])
 
   const data = reactive({
     date: currentDate.value.format('YYYY-MM-DD'),
@@ -24,7 +31,9 @@ export default function useRoomsData () {
   })
 
   const minDate = computed(() => {
-    if (currentDate.value.isAfter(maxTime.value)) {
+    if (!availableDays.value.includes(currentDate.value.weekday())) {
+      return currentDate.value.clone().weekday(1).format('YYYY-MM-DD')
+    } else if (currentDate.value.isAfter(maxTime.value)) {
       return currentDate.value.clone().add(1, 'day').format('YYYY-MM-DD')
     }
     return currentDate.value.format('YYYY-MM-DD')
@@ -99,6 +108,8 @@ export default function useRoomsData () {
     maxTime.value = moment(data.maxTime)
     minReservationTime.value = data.minReservationTime
     maxReservationTime.value = data.maxReservationTime
+    console.log(data)
+    availableDays.value = data.availableDays
     clearTimeout(timer)
     updateCurrentDate()
   })
