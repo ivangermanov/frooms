@@ -1,5 +1,13 @@
 import moment from 'moment'
-import { reactive, ref, toRefs, computed, onUnmounted, watch, onMounted } from '@vue/composition-api'
+import {
+  reactive,
+  ref,
+  toRefs,
+  computed,
+  onUnmounted,
+  watch,
+  onMounted
+} from '@vue/composition-api'
 import { RepositoryFactory } from '@/api/repositoryFactory'
 import { DayOfWeek } from '~/types'
 const ReservationRepository = RepositoryFactory.reservation
@@ -19,7 +27,8 @@ export default function useRoomsData () {
     DayOfWeek.TUESDAY,
     DayOfWeek.WEDNESDAY,
     DayOfWeek.THURSDAY,
-    DayOfWeek.FRIDAY])
+    DayOfWeek.FRIDAY
+  ])
 
   const data = reactive({
     date: currentDate.value.format('YYYY-MM-DD'),
@@ -31,40 +40,68 @@ export default function useRoomsData () {
   })
 
   const minDate = computed(() => {
-    if (!availableDays.value.includes(currentDate.value.weekday())) {
-      return currentDate.value.clone().weekday(1).format('YYYY-MM-DD')
+    if (
+      !availableDays.value.includes(currentDate.value.weekday()) ||
+      (currentDate.value.weekday() === 5 &&
+        currentDate.value.isAfter(maxTime.value))
+    ) {
+      return currentDate.value
+        .clone()
+        .weekday(1)
+        .format('YYYY-MM-DD')
     } else if (currentDate.value.isAfter(maxTime.value)) {
-      return currentDate.value.clone().add(1, 'day').format('YYYY-MM-DD')
+      return currentDate.value
+        .clone()
+        .add(1, 'day')
+        .format('YYYY-MM-DD')
     }
     return currentDate.value.format('YYYY-MM-DD')
   })
   const maxDate = computed(() =>
-    currentDate.value.clone()
+    currentDate.value
+      .clone()
       .add(maxForwardReservationPeriod.value, 'milliseconds')
       .format('YYYY-MM-DD')
   )
 
   const minStart = computed(() => {
-    if (startDateMoment.value.isAfter(maxTime.value) || startDateMoment.value.isBefore(minTime.value)) {
+    if (
+      startDateMoment.value.isAfter(maxTime.value) ||
+      startDateMoment.value.isBefore(minTime.value)
+    ) {
       return minTime.value.format('HH:mm')
     }
     return currentDate.value.format('HH:mm')
   })
   const maxStart = computed(() =>
-    maxTime.value.clone().subtract(minReservationTime.value, 'milliseconds').format('HH:mm')
+    maxTime.value
+      .clone()
+      .subtract(minReservationTime.value, 'milliseconds')
+      .format('HH:mm')
   )
 
   const minEnd = computed(() => {
-    const startOffset = moment(data.startTime, 'HH-mm').add(minReservationTime.value, 'milliseconds')
-    return startOffset.isAfter(maxTime.value) ? maxTime.value.format('HH:mm') : startOffset.format('HH:mm')
-  }
-  )
+    const startOffset = moment(data.startTime, 'HH-mm').add(
+      minReservationTime.value,
+      'milliseconds'
+    )
+    return startOffset.isAfter(maxTime.value)
+      ? maxTime.value.format('HH:mm')
+      : startOffset.format('HH:mm')
+  })
   const maxEnd = computed(() => {
-    const startOffset = moment(data.startTime, 'HH-mm').add(maxReservationTime.value, 'milliseconds')
-    return startOffset.isAfter(maxTime.value) ? maxTime.value.format('HH:mm') : startOffset.format('HH:mm')
+    const startOffset = moment(data.startTime, 'HH-mm').add(
+      maxReservationTime.value,
+      'milliseconds'
+    )
+    return startOffset.isAfter(maxTime.value)
+      ? maxTime.value.format('HH:mm')
+      : startOffset.format('HH:mm')
   })
 
-  const startDateMoment = computed(() => moment(`${data.date} ${data.startTime}`))
+  const startDateMoment = computed(() =>
+    moment(`${data.date} ${data.startTime}`)
+  )
   const startDate = computed(() => startDateMoment.value.toISOString(true))
   const endDateMoment = computed(() => moment(`${data.date} ${data.endTime}`))
   const endDate = computed(() => endDateMoment.value.toISOString(true))
@@ -73,7 +110,13 @@ export default function useRoomsData () {
     const min = moment(minStart.value, 'HH:mm')
     const max = moment(maxStart.value, 'HH:mm')
     const current = moment(data.startTime, 'HH:mm')
-    if (current.isAfter(max) || current.isBefore(min)) {
+    if (
+      !availableDays.value.includes(currentDate.value.weekday()) ||
+      (currentDate.value.weekday() === 5 &&
+        currentDate.value.isAfter(maxTime.value)) ||
+      current.isAfter(max) ||
+      current.isBefore(min)
+    ) {
       data.startTime = min.format('HH:mm')
     }
   })
