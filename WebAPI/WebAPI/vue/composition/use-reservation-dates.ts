@@ -6,7 +6,7 @@ import {
   computed,
   onUnmounted,
   watch,
-  onMounted
+  onBeforeMount
 } from '@vue/composition-api'
 import { RepositoryFactory } from '@/api/repositoryFactory'
 import { DayOfWeek } from '~/types'
@@ -111,9 +111,6 @@ export default function useRoomsData () {
     const max = moment(maxStart.value, 'HH:mm')
     const current = moment(data.startTime, 'HH:mm')
     if (
-      !availableDays.value.includes(currentDate.value.weekday()) ||
-      (currentDate.value.weekday() === 5 &&
-        currentDate.value.isAfter(maxTime.value)) ||
       current.isAfter(max) ||
       current.isBefore(min)
     ) {
@@ -144,15 +141,22 @@ export default function useRoomsData () {
     }, remaining)
   }
 
-  onMounted(async () => {
-    const { data } = await ReservationRepository.getRules()
-    currentDate.value = moment(data.currentDate)
-    minTime.value = moment(data.minTime)
-    maxTime.value = moment(data.maxTime)
-    minReservationTime.value = data.minReservationTime
-    maxReservationTime.value = data.maxReservationTime
-    console.log(data)
-    availableDays.value = data.availableDays
+  onBeforeMount(async () => {
+    const { data: json } = await ReservationRepository.getRules()
+    currentDate.value = moment(json.currentDate)
+    minTime.value = moment(json.minTime)
+    maxTime.value = moment(json.maxTime)
+    minReservationTime.value = json.minReservationTime
+    maxReservationTime.value = json.maxReservationTime
+    console.log(json)
+    availableDays.value = json.availableDays
+    if (
+      !availableDays.value.includes(currentDate.value.weekday()) ||
+      (currentDate.value.weekday() === 5 &&
+        currentDate.value.isAfter(maxTime.value))
+    ) {
+      // data.startTime = moment(minStart.value, 'HH:mm').format('HH:mm')
+    }
     clearTimeout(timer)
     updateCurrentDate()
   })
