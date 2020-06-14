@@ -1,8 +1,10 @@
+import { DayOfWeek } from './DayOfWeek'
+
 export interface IReservationRules {
     currentDate: string;
     minTime: string;
     maxTime: string;
-    availableDates: number[];
+    availableDays: DayOfWeek[];
     minReservationTime: number;
     maxReservationTime: number;
     maxForwardReservationPeriod: number;
