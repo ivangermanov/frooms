@@ -32,9 +32,6 @@ namespace WebAPI.Services
 
         public async Task AddReservationAsync(PostReservationModel model)
         {
-            if (model is null)
-                throw new ArgumentException($"{nameof(PostReservationModel)} is null.");
-
             var reservation = _mapper.Map<Reservation>(model);
             await _reservationRepository.AddAsync(reservation);
 
