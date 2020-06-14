@@ -150,13 +150,6 @@ export default function useRoomsData () {
     maxReservationTime.value = json.maxReservationTime
     console.log(json)
     availableDays.value = json.availableDays
-    if (
-      !availableDays.value.includes(currentDate.value.weekday()) ||
-      (currentDate.value.weekday() === 5 &&
-        currentDate.value.isAfter(maxTime.value))
-    ) {
-      // data.startTime = moment(minStart.value, 'HH:mm').format('HH:mm')
-    }
     clearTimeout(timer)
     updateCurrentDate()
   })
