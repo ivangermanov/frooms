@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Froom.Data.Models.Reservations;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Helpers;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Controllers
@@ -47,6 +48,8 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> PostReservation(PostReservationModel model)
         {
+            if (!ReservationRules.IsValid(model.StartDate, model.EndDate)) return BadRequest();
+
             var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             var user = await _userService.GetUserByIdAsync(userId);
