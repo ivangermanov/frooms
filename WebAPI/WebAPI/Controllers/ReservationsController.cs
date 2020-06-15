@@ -1,13 +1,9 @@
-﻿using Froom.Data.Dtos;
-using Froom.Data.Exceptions;
-using Froom.Data.Models.Reservations;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Froom.Data.Models.Reservations;
+using Microsoft.AspNetCore.Mvc;
+using WebAPI.Helpers;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Controllers
@@ -16,8 +12,8 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ReservationsController : ControllerBase
     {
-        IReservationService _reservationService;
-        IUserService _userService;
+        private readonly IReservationService _reservationService;
+        private readonly IUserService _userService;
 
         public ReservationsController(IReservationService reservationService, IUserService userService)
         {
@@ -41,17 +37,27 @@ namespace WebAPI.Controllers
             return Ok(reservations);
         }
 
+        [HttpGet]
+        [Route("rules")]
+        public IActionResult GetReservationRules()
+        {
+            var rules = _reservationService.GetReservationRules();
+            return Ok(rules);
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostReservation(PostReservationModel model)
         {
-            var user = await _userService.GetUserByIdAsync(model.UserId);
+            if (!ReservationRules.IsValid(model.StartDate, model.EndDate)) return BadRequest();
 
-            if (user is null)
-                return BadRequest();
+            var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
+            var user = await _userService.GetUserByIdAsync(userId);
             if (user.IsBlocked)
                 return Forbid("Your profile is blocked and the reservation cannot be made." +
-                " Please contact the system's admin.");
+                              " Please contact the system's admin.");
+
+            model.UserId = userId;
 
             await _reservationService.AddReservationAsync(model);
             return Ok();

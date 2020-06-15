@@ -35,6 +35,12 @@ namespace WebAPI.Services.Interfaces
         public Task UpdateReservation(AdminUpdateReservationModel reservationAdmin);
 
         /// <summary>
+        /// Returns the system-wide reservation rules.
+        /// </summary>
+        /// <returns></returns>
+        public ReservationRulesDto GetReservationRules();
+
+        /// <summary>
         /// Removes a reservation given the correct id ( Admin usage )
         /// </summary>
         /// <returns></returns>

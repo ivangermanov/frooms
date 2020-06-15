@@ -1,7 +1,12 @@
 <template>
   <v-row>
     <v-col class="col">
-      <base-date-picker :date.sync="date" :min="minDate" :max="maxDate" />
+      <base-date-picker
+        :date.sync="date"
+        :min="minDate"
+        :max="maxDate"
+        :available-days="availableDays"
+      />
     </v-col>
 
     <v-col class="col">
@@ -80,6 +85,7 @@ export default defineComponent({
     const dates = useReservationDates()
     const { startDate, endDate, ...rest } = dates
     if (props.initial.startDate) {
+      rest.date.value = moment(props.initial.startDate).format('YYYY-MM-DD')
       rest.startTime.value = moment(props.initial.startDate).format('HH:mm')
     }
     if (props.initial.endDate) {

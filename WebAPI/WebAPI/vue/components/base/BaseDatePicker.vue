@@ -3,17 +3,22 @@
     v-model="dateTemp"
     :min="min"
     :max="max"
+    :allowed-dates="allowedDates"
   />
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import moment from 'moment'
+import { PropType } from '@vue/composition-api'
+import { DayOfWeek } from '@/types'
 
-export default {
+export default Vue.extend({
   props: {
     date: { type: String, default: '' },
     min: { type: String, default: '' },
-    max: { type: String, default: '' }
+    max: { type: String, default: '' },
+    availableDays: { type: Array as PropType<Array<DayOfWeek>>, default: () => [] }
   },
   data () {
     return {
@@ -52,7 +57,11 @@ export default {
       if (current.isAfter(max) || current.isBefore(min)) {
         this.dateTemp = min.format('YYYY-MM-DD')
       }
+    },
+    allowedDates (val: string) {
+      const weekDay = moment(val).weekday()
+      return this.availableDays.includes(weekDay)
     }
   }
-}
+})
 </script>
