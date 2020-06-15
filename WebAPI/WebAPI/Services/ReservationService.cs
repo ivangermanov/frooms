@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Helpers;
 using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Services
@@ -31,9 +32,6 @@ namespace WebAPI.Services
 
         public async Task AddReservationAsync(PostReservationModel model)
         {
-            if (model is null)
-                throw new ArgumentException($"{nameof(PostReservationModel)} is null.");
-
             var reservation = _mapper.Map<Reservation>(model);
             await _reservationRepository.AddAsync(reservation);
 
@@ -68,6 +66,21 @@ namespace WebAPI.Services
 
             await _reservationRepository.UpdateAsync(reservation);
         }
+
+        public ReservationRulesDto GetReservationRules()
+        {
+            return new ReservationRulesDto()
+            {
+                CurrentDate = ReservationRules.CurrentDate,
+                MinTime = ReservationRules.MinTime,
+                MaxTime = ReservationRules.MaxTime,
+                AvailableDays = ReservationRules.AvailableDays,
+                MinReservationTime = ReservationRules.MinReservationTime.TotalMilliseconds,
+                MaxReservationTime = ReservationRules.MaxReservationTime.TotalMilliseconds,
+                MaxForwardReservationPeriod = ReservationRules.MaxForwardReservationPeriod.TotalMilliseconds
+            };
+        }
+
         public async Task<IEnumerable<ReservationDto>> GetReservationsForRoom(int roomId)
         {
             var reservations = _reservationRepository.GetAll()

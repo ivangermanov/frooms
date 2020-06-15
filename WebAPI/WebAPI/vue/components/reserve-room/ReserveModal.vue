@@ -190,7 +190,7 @@ export default {
       if (this.currentStep < this.steps) {
         this.currentStep += 1
       } else {
-        await this.postReservation()
+        await this.postReservation().catch((e) => { console.log(e) })
         this.dialog = false
         this.$emit('close')
       }

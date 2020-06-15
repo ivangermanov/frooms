@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: Maybe use BaseDatePicker here, so only 1 component is used app. wide -->
   <div class="control">
     <v-container>
       <v-menu
@@ -26,6 +27,7 @@
           v-model="dateTemp"
           :min="min"
           :max="max"
+          :allowed-dates="allowedDates"
           no-title
           scrollable
         >
@@ -45,12 +47,15 @@
 <script lang="ts">
 import Vue from 'vue'
 import moment from 'moment'
+import { PropType } from '@vue/composition-api'
+import { DayOfWeek } from '@/types'
 
 export default Vue.extend({
   props: {
     date: { type: String, default: '' },
     min: { type: String, default: '' },
-    max: { type: String, default: '' }
+    max: { type: String, default: '' },
+    availableDays: { type: Array as PropType<Array<DayOfWeek>>, default: () => [] }
   },
   data () {
     return {
@@ -90,6 +95,10 @@ export default Vue.extend({
       if (current.isAfter(max) || current.isBefore(min)) {
         this.dateTemp = min.format('YYYY-MM-DD')
       }
+    },
+    allowedDates (val: string) {
+      const weekDay = moment(val).weekday()
+      return this.availableDays.includes(weekDay)
     }
   }
 })

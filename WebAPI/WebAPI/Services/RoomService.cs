@@ -29,7 +29,7 @@ namespace WebAPI.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<FloorMapRoomDTO>> GetFloormapRooms(string? campus, string? building,
+        public async Task<IEnumerable<FloorMapRoomDto>> GetFloormapRooms(string? campus, string? building,
             string? floor, DateTime? fromDate,
             DateTime? toDate)
         {
@@ -38,10 +38,10 @@ namespace WebAPI.Services
                 .Where(r => string.IsNullOrEmpty(building) || r.Details.BuildingName.Equals(building))
                 .Where(r => string.IsNullOrEmpty(floor) || r.Details.FloorNumber == floor).ToListAsync();
 
-            var dto = new List<FloorMapRoomDTO>(rooms.Count);
+            var dto = new List<FloorMapRoomDto>(rooms.Count);
             foreach (var room in rooms)
             {
-                var mapped = _mapper.Map<FloorMapRoomDTO>(room);
+                var mapped = _mapper.Map<FloorMapRoomDto>(room);
                 mapped.IsAvailable = room.IsAvailable(fromDate, toDate);
                 dto.Add(mapped);
             }
