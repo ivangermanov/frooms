@@ -54,7 +54,7 @@
               Home
             </v-list-item-content>
           </v-list-item>
-          <v-list-item to="/api/logout">
+          <v-list-item href="/api/logout">
             <v-list-item-icon>
               <v-icon>
                 mdi-logout
