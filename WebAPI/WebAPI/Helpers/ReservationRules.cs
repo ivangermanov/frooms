@@ -23,7 +23,7 @@ namespace WebAPI.Helpers
         public static TimeSpan MaxForwardReservationPeriod => TimeSpan.FromDays(90);
 
         public static bool IsValid(DateTime startDate, DateTime endDate) =>
-            startDate > CurrentDate &&
+            startDate >= RoundDown(CurrentDate, TimeSpan.FromMinutes(1)) &&
             endDate - CurrentDate <= MaxForwardReservationPeriod &&
             endDate - startDate >= MinReservationTime &&
             endDate - startDate <= MaxReservationTime &&
@@ -31,5 +31,11 @@ namespace WebAPI.Helpers
             endDate.Hour <= MaxTime.Hour &&
             AvailableDays.Contains(startDate.DayOfWeek) &&
             AvailableDays.Contains(endDate.DayOfWeek);
+
+        private static DateTime RoundDown(DateTime dt, TimeSpan d)
+        {
+            var delta = dt.Ticks % d.Ticks;
+            return new DateTime(dt.Ticks - delta, dt.Kind);
+        }
     }
 }
