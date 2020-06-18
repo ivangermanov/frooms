@@ -1,14 +1,18 @@
 <template>
-  <floor-map />
+  <blocked-wrapper>
+    <floor-map />
+  </blocked-wrapper>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import FloorMap from '@/components/floor-map/FloorMap.vue'
+import BlockedWrapper from '~/components/blocked-flow/BlockedWrapper.vue'
 
 export default Vue.extend({
   components: {
-    FloorMap
+    FloorMap,
+    BlockedWrapper
   },
   computed: {
     editMode () : Boolean {

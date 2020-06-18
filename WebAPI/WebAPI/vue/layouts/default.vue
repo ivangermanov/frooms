@@ -45,7 +45,7 @@
               />
             </v-list-item-content>
           </v-list-item>
-          <v-list-item to="/admin">
+          <v-list-item v-if="isAdmin" to="/admin">
             <v-list-item-icon>
               <v-icon>
                 mdi-view-dashboard
@@ -55,7 +55,7 @@
               Admin
             </v-list-item-content>
           </v-list-item>
-          <v-list-item to="/api/logout">
+          <v-list-item href="/api/logout">
             <v-list-item-icon>
               <v-icon>
                 mdi-logout
