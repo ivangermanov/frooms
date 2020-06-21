@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Froom.Data.Database;
@@ -63,6 +64,11 @@ namespace Froom.Data.Repositories
         public async Task UpdateAsync(Reservation reservation)
         {
             _reservations.Update(reservation);
+            await _context.SaveChangesAsync();
+        }
+        public async Task UpdateRangeAsync(IEnumerable<Reservation> reservation)
+        {
+            _reservations.UpdateRange(reservation);
             await _context.SaveChangesAsync();
         }
     }

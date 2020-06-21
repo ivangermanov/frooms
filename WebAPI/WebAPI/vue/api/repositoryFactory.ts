@@ -9,6 +9,7 @@ import chartRepository from './chartRepository'
 import adminUserRepository from './admin/userRepository'
 import adminReservationRepository from './admin/reservationRepository'
 import adminChartRepository from './admin/chartRepository'
+import adminRoomRepository from './admin/roomRepository'
 
 const repositories = {
   room: roomRepository,
@@ -21,7 +22,8 @@ const repositories = {
   chart: chartRepository,
   adminUser: adminUserRepository,
   adminReservation: adminReservationRepository,
-  adminChart: adminChartRepository
+  adminChart: adminChartRepository,
+  roomAdmin: adminRoomRepository
 }
 
 export const RepositoryFactory = repositories

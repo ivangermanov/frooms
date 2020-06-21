@@ -20,6 +20,6 @@ namespace Froom.Data.Entities
 
         public bool IsCancelled { get; set; }
 
-        public bool IsExpired() => DateTime.Compare(this.EndDate, DateTime.Now) > 0;
+        public bool IsExpired() => DateTime.Compare(this.EndDate, DateTime.Now) <= 0;
     }
 }
