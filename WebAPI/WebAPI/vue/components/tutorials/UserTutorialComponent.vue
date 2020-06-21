@@ -161,7 +161,7 @@ export default {
         plan: require('~/assets/plan.png'),
         choose: require('~/assets/choose.png'),
         book: require('~/assets/book.png'),
-        view: require('~/assets/book.png'),
+        view: require('~/assets/view.png'),
         enjoy: require('~/assets/enjoy.png')
       }
     }
