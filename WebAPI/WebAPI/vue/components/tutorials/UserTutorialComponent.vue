@@ -7,39 +7,19 @@
   >
     <v-stepper v-model="e1">
       <v-stepper-header>
-        <v-stepper-step :complete="e1 > 1" step="1">
-          Welcome
-        </v-stepper-step>
-
-        <v-divider />
-
-        <v-stepper-step :complete="e1 > 2" step="2">
-          Plan
-        </v-stepper-step>
-
-        <v-divider />
-
-        <v-stepper-step :complete="e1 > 3" step="3">
-          Choose
-        </v-stepper-step>
-
-        <v-divider />
-
-        <v-stepper-step :complete="e1 > 4" step="4">
-          Book
-        </v-stepper-step>
-
-        <v-divider />
-
-        <v-stepper-step :complete="e1 > 5" step="5">
-          View
-        </v-stepper-step>
-
-        <v-divider />
-
-        <v-stepper-step step="6">
-          Enjoy
-        </v-stepper-step>
+        <template v-for="n in steps">
+          <v-stepper-step
+            :key="`${n}-step`"
+            :complete="e1 > n"
+            :step="n"
+          >
+            {{ headers[n - 1] }}
+          </v-stepper-step>
+          <v-divider
+            v-if="n !== steps"
+            :key="n"
+          />
+        </template>
       </v-stepper-header>
 
       <v-stepper-items>
@@ -174,6 +154,8 @@ export default {
     return {
       e1: 1,
       dialog: true,
+      steps: 6,
+      headers: ['Welcome', 'Plan', 'Choose', 'Book', 'View', 'Enjoy'],
       images: {
         welcome: require('~/assets/froom_big_logo.png'),
         plan: require('~/assets/plan.png'),
@@ -186,7 +168,7 @@ export default {
   },
   methods: {
     nextStep (n) {
-      if (n === 6) {
+      if (n === this.steps) {
         this.e1 = 1
       } else {
         this.e1 = n + 1
