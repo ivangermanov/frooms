@@ -14,6 +14,7 @@ namespace Froom.Data.Dtos
         public DateTime EndDate { get; set; }
 
         public bool Expired { get; set; }
+        public bool IsCancelled { get; set; }
 
         /// <summary>
         /// Used only by IMapper. Initializes a new instance of ReservationDto.

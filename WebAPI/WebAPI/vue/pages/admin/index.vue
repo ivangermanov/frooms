@@ -63,10 +63,10 @@ export default Vue.extend({
     async getAllReservationsForAdmin () {
       const { data } = await AdminReservationRepository.getAllReservations()
       this.reservations = data.map((reservation:any) => {
-        reservation.startingDate = moment(reservation.startingTime).format('DD/MM/YYYY')
-        reservation.startingTime = moment(reservation.startingTime).format('HH:MM:SS')
-        reservation.endingDate = moment(reservation.endDate).format('DD/MM/YYYY')
-        reservation.endingTime = moment(reservation.endDate).format('HH:MM:SS')
+        reservation.startingDate = moment(reservation.startDate.split('T')[0]).format('DD/MM/YYYY')
+        reservation.startingTime = moment(reservation.startDate.split('T')[1], 'hh:mm').format('hh:mm')
+        reservation.endingDate = moment(reservation.endDate.split('T')[0]).format('DD/MM/YYYY')
+        reservation.endingTime = moment(reservation.endDate.split('T')[1], 'hh:mm').format('hh:mm')
         return reservation
       })
     }

@@ -45,5 +45,12 @@ namespace WebAPI.Services.Interfaces
         /// </summary>
         /// <param name="model">The rooms to be deleted.</param>
         public Task RemoveRangeAsync(IEnumerable<DeleteRoomModel> model);
+
+
+        /// <summary>
+        /// Return all rooms
+        /// </summary>
+        /// <param name="model">Return all rooms for the admin</param>
+        public Task<IEnumerable<RoomDto>> GetAllRooms();
     }
 }

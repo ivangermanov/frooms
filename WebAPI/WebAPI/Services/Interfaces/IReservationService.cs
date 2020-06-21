@@ -44,6 +44,6 @@ namespace WebAPI.Services.Interfaces
         /// Removes a reservation given the correct id ( Admin usage )
         /// </summary>
         /// <returns></returns>
-        public Task DeleteReservation(int idOfReservationToDelete);
+        public Task CancelReservation(int idOfReservationToDelete);
     }
 }
