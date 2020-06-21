@@ -8,7 +8,7 @@
         <chart-viewer-tabbed />
       </v-col>
       <v-overlay
-        v-if="tutorial"
+        v-if="tutorial && !$vuetify.breakpoint.xs"
         absolute
         color="primary"
       >

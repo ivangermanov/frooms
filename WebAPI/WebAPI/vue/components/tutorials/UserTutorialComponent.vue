@@ -5,7 +5,6 @@
     max-width="650px"
     persistent
   >
-    <loader :loading="loading" />
     <v-stepper v-model="e1">
       <v-stepper-header>
         <v-stepper-step :complete="e1 > 1" step="1" :editable="true">
@@ -51,6 +50,7 @@
             :src="images.welcome"
             class="mb-4"
             height="350px"
+            rel="preload"
           />
           <v-btn
             color="primary"
@@ -66,12 +66,14 @@
 
         <v-stepper-content step="2">
           <span>To have easier planning, we provide statistics about busiest time slots, days, and buildings.</span>
-          <v-img
-            :src="images.plan"
-            class="mb-4"
-            height="370px"
-            width="350px"
-          />
+          <v-row align="center" justify="center">
+            <v-img
+              :src="images.plan"
+              class="mb-4"
+              height="370px"
+              width="350px"
+            />
+          </v-row>
 
           <v-btn
             color="primary"
@@ -180,6 +182,16 @@ export default {
         view: require('~/assets/book.png'),
         enjoy: require('~/assets/enjoy.png')
       }
+    }
+  },
+  beforeMount () {
+    this.images = {
+      welcome: require('~/assets/froom_big_logo.png'),
+      plan: require('~/assets/plan.png'),
+      choose: require('~/assets/choose.png'),
+      book: require('~/assets/book.png'),
+      view: require('~/assets/book.png'),
+      enjoy: require('~/assets/enjoy.png')
     }
   },
   methods: {
