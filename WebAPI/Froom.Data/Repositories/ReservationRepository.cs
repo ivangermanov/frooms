@@ -50,6 +50,7 @@ namespace Froom.Data.Repositories
             return _reservations
                 .Include(r => r.User)
                 .Include(r => r.Room)
+                    .ThenInclude(room => room.Details)
                 .Where(r => r.UserId == Id);
         }
 
