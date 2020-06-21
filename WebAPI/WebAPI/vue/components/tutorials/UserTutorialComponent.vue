@@ -7,37 +7,37 @@
   >
     <v-stepper v-model="e1">
       <v-stepper-header>
-        <v-stepper-step :complete="e1 > 1" step="1" :editable="true">
+        <v-stepper-step :complete="e1 > 1" step="1">
           Welcome
         </v-stepper-step>
 
         <v-divider />
 
-        <v-stepper-step :complete="e1 > 2" step="2" :editable="true">
+        <v-stepper-step :complete="e1 > 2" step="2">
           Plan
         </v-stepper-step>
 
         <v-divider />
 
-        <v-stepper-step :complete="e1 > 3" step="3" :editable="true">
+        <v-stepper-step :complete="e1 > 3" step="3">
           Choose
         </v-stepper-step>
 
         <v-divider />
 
-        <v-stepper-step :complete="e1 > 4" step="4" :editable="true">
+        <v-stepper-step :complete="e1 > 4" step="4">
           Book
         </v-stepper-step>
 
         <v-divider />
 
-        <v-stepper-step :complete="e1 > 5" step="5" :editable="true">
+        <v-stepper-step :complete="e1 > 5" step="5">
           View
         </v-stepper-step>
 
         <v-divider />
 
-        <v-stepper-step step="6" :editable="true">
+        <v-stepper-step step="6">
           Enjoy
         </v-stepper-step>
       </v-stepper-header>
@@ -70,8 +70,8 @@
             <v-img
               :src="images.plan"
               class="mb-4"
-              height="370px"
-              width="350px"
+              max-height="370px"
+              max-width="350px"
             />
           </v-row>
 
@@ -96,7 +96,7 @@
 
           <v-btn
             color="primary"
-            @click="nextStep (2)"
+            @click="nextStep (3)"
           >
             Continue
           </v-btn>
@@ -115,7 +115,7 @@
 
           <v-btn
             color="primary"
-            @click="nextStep (2)"
+            @click="nextStep (4)"
           >
             Continue
           </v-btn>
@@ -134,7 +134,7 @@
 
           <v-btn
             color="primary"
-            @click="nextStep (2)"
+            @click="nextStep (5)"
           >
             Continue
           </v-btn>
@@ -184,19 +184,9 @@ export default {
       }
     }
   },
-  beforeMount () {
-    this.images = {
-      welcome: require('~/assets/froom_big_logo.png'),
-      plan: require('~/assets/plan.png'),
-      choose: require('~/assets/choose.png'),
-      book: require('~/assets/book.png'),
-      view: require('~/assets/book.png'),
-      enjoy: require('~/assets/enjoy.png')
-    }
-  },
   methods: {
     nextStep (n) {
-      if (n === 3) {
+      if (n === 6) {
         this.e1 = 1
       } else {
         this.e1 = n + 1
