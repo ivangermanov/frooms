@@ -91,15 +91,27 @@ namespace WebAPI.Services
 
         public async Task<IEnumerable<ReservationDto>> GetReservationsForUser(Guid userId)
         {
-            var reservations = _reservationRepository.GetForUser(userId);
-            return await _mapper.ProjectTo<ReservationDto>(reservations).ToListAsync();
+            var reservations = _reservationRepository.GetForUser(userId).Select(e => new ReservationDto
+            {
+                Room = _mapper.Map<RoomDto>(e.Room),
+                StartDate = e.StartDate,
+                EndDate = e.EndDate,
+                Expired = e.IsExpired()
+            });
+
+            return await reservations.ToListAsync();
         }
 
         public async Task<IEnumerable<ReservationDto>> GetAllReservations()
         {
-            var reservations = _reservationRepository.GetAll();
-
-            return await _mapper.ProjectTo<ReservationDto>(reservations).ToListAsync();
+            var reservations = _reservationRepository.GetAll().Select(e => new ReservationDto
+            {
+                Room = _mapper.Map<RoomDto>(e.Room),
+                StartDate = e.StartDate,
+                EndDate = e.EndDate,
+                Expired = e.IsExpired()
+            });
+            return await reservations.ToListAsync();
         }
 
         public async Task DeleteReservation(int idOfReservationToDeleteData)
