@@ -128,5 +128,11 @@ namespace WebAPI.Services
 
             return detailsId;
         }
+        public async Task<IEnumerable<RoomDto>> GetAllRooms()
+        {
+            var rooms = await _roomRepository.GetAll().ToListAsync();
+
+            return _mapper.Map<IEnumerable<RoomDto>>(rooms);
+        }
     }
 }

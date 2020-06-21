@@ -30,9 +30,9 @@ namespace WebAPI.Controllers.admin
 
         [HttpDelete]
         [Route("{reservationId}")]
-        public async Task<IActionResult> DeleteReservation(int reservationId)
+        public async Task<IActionResult> CancelDeleteReservation(int reservationId)
         {
-            await _reservationService.DeleteReservation(reservationId);
+            await _reservationService.CancelReservation(reservationId);
             return Ok();
         }
         [HttpPut]

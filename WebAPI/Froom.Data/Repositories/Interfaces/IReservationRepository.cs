@@ -1,5 +1,6 @@
 ﻿using Froom.Data.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,6 +36,12 @@ namespace Froom.Data.Repositories.Interfaces
         /// </summary>
         /// <param name="reservation"> The reservation to be updated.</param>
         Task UpdateAsync(Reservation reservation);
+
+        /// <summary>
+        /// Updates information about a reservation.
+        /// </summary>
+        /// <param name="reservation"> The reservation to be updated.</param>
+        Task UpdateRangeAsync(IEnumerable<Reservation> reservation);
 
         /// <summary>
         /// Updates information about a reservation.

@@ -45,39 +45,21 @@
               <v-icon
                 v-if="item.expired"
                 small
-                class="ml-4"
               >
-                mdi-checkbox-marked
-              </v-icon>
-              <v-icon
-                v-else
-                small
-                class="ml-4"
-              >
-                mdi-close-box
+                mdi-checkbox-marked-circle
               </v-icon>
             </template>
             <template v-slot:item.isCancelled="{ item }">
               <v-icon
                 v-if="item.isCancelled"
                 small
-                class="ml-4"
               >
-                mdi-checkbox-marked
-              </v-icon>
-              <v-icon
-                v-else
-                small
-                class="ml-4"
-              >
-                mdi-close-box
+                mdi-checkbox-marked-circle
               </v-icon>
             </template>
             <template v-slot:item.actions="{ item }">
               <v-icon
-                v-if="item.isCancelled === false"
                 small
-                class="ml-4"
                 @click="cancelReservation(item)"
               >
                 mdi-delete
@@ -112,7 +94,7 @@ export default {
         { text: 'Start Time', value: 'startingTime' },
         { text: 'End Date', value: 'endingDate' },
         { text: 'End Time', value: 'endingTime' },
-        { text: 'Expired', value: 'expired' },
+        { text: 'Expired', value: 'isExpired' },
         { text: 'Cancelled', value: 'isCancelled' },
         { text: 'Actions', value: 'actions', sortable: false }
       ],
