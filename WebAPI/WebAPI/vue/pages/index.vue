@@ -31,7 +31,7 @@ export default {
     ReservationsList, ChartViewerTabbed, UserTutorial
   },
   data () {
-    return { reservations: [], tutorial: true }
+    return { reservations: [], tutorial: false }
   },
   mounted () {
     this.getUserReservations()
