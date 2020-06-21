@@ -7,6 +7,13 @@
       <v-col md="5">
         <chart-viewer-tabbed />
       </v-col>
+      <v-overlay
+        v-if="tutorial && !$vuetify.breakpoint.xs"
+        absolute
+        color="primary"
+      >
+        <user-tutorial @close="close" />
+      </v-overlay>
     </v-row>
   </v-container>
 </template>
@@ -15,23 +22,30 @@
 import ReservationsList from '@/components/reservations/ReservationsList.vue'
 import ChartViewerTabbed from '@/components/charts/ChartViewerTabbed.vue'
 import { RepositoryFactory } from '@/api/repositoryFactory'
+import UserTutorial from '@/components/tutorials/UserTutorialComponent.vue'
 
 const ReservationRepository = RepositoryFactory.reservation
 
 export default {
   components: {
-    ReservationsList, ChartViewerTabbed
+    ReservationsList, ChartViewerTabbed, UserTutorial
   },
   data () {
-    return { reservations: [] }
+    return { reservations: [], tutorial: false }
   },
-  beforeMount () {
+  mounted () {
     this.getUserReservations()
   },
   methods: {
     async getUserReservations () {
       const { data } = await ReservationRepository.getReservations(this.$store.state.user.info.sub)
       this.reservations = data
+      if (this.reservations.length === 0) {
+        this.tutorial = true
+      }
+    },
+    close () {
+      this.tutorial = false
     }
   }
 }
