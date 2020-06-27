@@ -80,7 +80,21 @@ namespace WebAPI.Helpers
         {
             await SetAccessTokenInHeader();
 
-            return await Client.GetByteArrayAsync($"{FontysAPIEndpoints.location}/mapimage/{campus}/{building}/{floor}");
+            if (campus != "EHV" || building != "R10")
+                return await Client.GetByteArrayAsync(
+                    $"{FontysAPIEndpoints.location}/mapimage/{campus}/{building}/{floor}");
+
+            return floor switch
+            {
+                // R10 is mocked
+                "BG" => await Client.GetByteArrayAsync("https://i.ibb.co/Q6CWjTY/BG.png"),
+                "1e" => await Client.GetByteArrayAsync("https://i.ibb.co/8B9svhT/1e.png"),
+                "2e" => await Client.GetByteArrayAsync("https://i.ibb.co/LPDL4z1/2e.png"),
+                "3e" => await Client.GetByteArrayAsync("https://i.ibb.co/2kDc20G/3e.png"),
+                "4e" => await Client.GetByteArrayAsync("https://i.ibb.co/1KNmPpP/4e.png"),
+                _ => await Client.GetByteArrayAsync(
+                    $"{FontysAPIEndpoints.location}/mapimage/{campus}/{building}/{floor}")
+            };
         }
 
         public async Task<string> GetLocationFloorStatistics()
