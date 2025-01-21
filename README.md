@@ -6,3 +6,6 @@ Developed an interactive room reservation system.
 - **Backend API**: Built a back-end REST API using C# ASP.NET by following the repository pattern, dividing the API into controllers, services, and a database layer.
 - **Real-time Data**: Integrated the university's open API for real-time room availability.
 - **Database Management**: Managed database schema evolution using migrations.
+
+---
+Vue front-end files can be found in `WebAPI/WebAPI/vue`.
